@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<ui:composition template="/framework/template/templateList.xhtml">
+
+	<ui:param name="controller" value="#{naPermissaoController}" />
+	<ui:param name="nomeTela" value="Permissões" />
+	<ui:param name="permissao" value="NA_PERMISSOES" />
+	<ui:param name="exibeBotaoNovo" value="false" />
+	<ui:param name="exibeBotaoExcluir" value="false" />
+	<ui:param name="exibeBotaoEditar" value="false" />
+
+	<ui:define name="dataTablePrincipal">
+
+		<p:ajax event="rowSelect" global="false" />
+
+		<p:column id="dtDescricao" headerText="Descricao" resizable="true">
+			<h:outputText value="#{dt.descricao}" />
+		</p:column>
+
+		<p:column id="dtAtivo" headerText="Ativo" resizable="true">
+			<div align="center">
+				<h:outputText value="#{dt.ativo}" />
+			</div>
+		</p:column>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="http://java.sun.com/jsf/composite" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="value" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+	<cc:attribute name="rendered" required="false" type="boolean" default="true"
+		shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+	<cc:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+	<cc:attribute name="pattern" default="#,##0" type="String" required="false"
+		shortDescription="Costume padrão de formatação que determina como a seqüência número deve ser formatado e analisado." />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<h:outputText value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" style="#{cc.attrs.style}">
+		<f:convertNumber locale="pt_BR" pattern="#{cc.attrs.pattern}" />
+	</h:outputText>
+</cc:implementation>
+</html>

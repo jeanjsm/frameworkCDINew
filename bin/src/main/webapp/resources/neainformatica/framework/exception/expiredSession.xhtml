@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/framework/template/template.xhtml">
+
+	<ui:define name="body">
+		<div align="center" style="width: 100%;">
+
+			<p:panel style="width:60%;">
+				<p
+					style="color: #FF6600; font-family: Tahoma; font-size: 100px; font-weight: normal;margin-top: 0;"
+					align="center" >OPS! :(</p>
+				<h2 align="center" style="margin: -10% 0 5% 0;">Sua sessão expirou.</h2>
+				<div>
+					<p:commandButton action="login.xhtml" value="Efetuar login."
+						styleClass="buton-volar" icon="ui-icon-home"></p:commandButton>
+				</div>
+
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

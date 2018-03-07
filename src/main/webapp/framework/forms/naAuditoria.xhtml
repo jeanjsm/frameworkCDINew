@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/template.xhtml">
+
+
+	<ui:param name="controller" value="#{naAuditoriaController}" />
+	<ui:param name="nomeTela" value="Auditoria" />
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{naAuditoriaController.initConversation}" />
+		</f:metadata>
+
+		<p:panel style="padding: 5px; border:none;" rendered="#{identity.loggedIn}" widgetVar="panelFiltros">
+
+			<h:form prependId="false" id="templateListForm">
+				<p:panel id="panelCtrlAuditoria" header="Controle de Auditoria">
+
+					<h:link outcome="#{(empty linkBotaoFechar ? '/index.xhtml' : linkBotaoFechar)}">
+						<p:graphicImage name="neainformatica/framework/images/close23.png" id="form_close" styleClass="nea-close-icon-auditoria" title="Clique aqui para fechar" />
+					</h:link>
+
+					<div class="ui-g">
+						<div class="ui-g-6 ui-md-4 ui-lg-2">
+							<nea:inputDate id="dtInicial" value="#{naAuditoriaController.dataInicial}" label="Data Inicial" controller="#{naAuditoriaController}" navigator="true"
+								ignoreReadOnlyController="true" />
+						</div>
+						<div class="ui-g-6 ui-md-4 ui-lg-2">
+							<nea:inputDate id="dtFinal" value="#{naAuditoriaController.dataFinal}" label="Data Final" controller="#{naAuditoriaController}" navigator="true"
+								ignoreReadOnlyController="true" />
+						</div>
+						<div class="ui-g-6 ui-md-4 ui-lg-3">
+							<nea:inputText id="txtNomeTabela" value="#{naAuditoriaController.nomeTabela}" label="Nome Tabela" controller="#{naAuditoriaController}"
+								ignoreReadOnlyController="true" />
+						</div>
+						<div class="ui-g-6 ui-md-4 ui-lg-3">
+							<nea:inputText id="txtChaveRegistro" value="#{naAuditoriaController.chaveRegistro}" label="Chave Registro" controller="#{naAuditoriaController}"
+								ignoreReadOnlyController="true" />
+
+						</div>
+						<div class="ui-g-6 ui-md-4 ui-lg-2">
+							<nea:selectEnum id="enumTipoOperacao" itemLabel="#{item.descricao}" items="#{naAuditoriaController.listaOperacoes}" stylePanel="width: 100%" width="100%"
+								value="#{naAuditoriaController.operacao}" label="Tipo Operação" controller="#{naAuditoriaController}" ignoreReadOnlyController="true" />
+						</div>
+					</div>
+
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-12 ui-lg-6">
+							<h:outputLabel value="Usuário" />
+							<br />
+							<p:autoComplete id="acUsuario" value="#{naAuditoriaController.usuario}" var="u" itemLabel="#{u.nome}" itemValue="#{u}"
+								converter="#{genericEntityConverter}" dropdown="true" forceSelection="true" scrollHeight="250" size="65"
+								completeMethod="#{naUsuarioController.getListaUsuarioSistema}" itemtipMyPosition="left" itemtipAtPosition="right">
+							</p:autoComplete>
+						</div>
+						<div class="ui-g-12 ui-md-12 ui-lg-4">
+							<nea:selectBooleanCheckBox id="checkBoxSomenteCliente" title="Somente do Cliente Atual" value="#{naAuditoriaController.somenteClienteAtual}"
+								label="Somente do Cliente Atual" ignoreReadOnlyController="true" stylePanel="width: 100%" width="100%" />
+
+						</div>
+					</div>
+
+					<hr />
+
+					<div align="center">
+
+						<p:commandButton id="btnPesquisar" value="Pesquisar" icon="ui-icon-search" ajax="true" action="#{naAuditoriaController.pesquisar()}"
+							style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Pesquisar" update="@widgetVar(dtLazy)"
+							process="panelCtrlAuditoria" />
+
+						<p:spacer width="15px" />
+						<p:commandButton id="btnLimpar" value="limpar" icon="ui-icon-refresh" ajax="true" update="@widgetVar(panelFiltros)"
+							action="#{naAuditoriaController.iniciaCamposDePesquisa}"
+							style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Pesquisar" />
+
+					</div>
+				</p:panel>
+
+				<p:outputPanel id="panelGridPrincipal">
+					<div align="center">
+						<p:dataTable id="dataTable" value="#{naAuditoriaController.listaNaAuditoria}" var="dt" paginator="true" paginatorPosition="bottom" widgetVar="dtLazy"
+							lazy="true" rows="10" emptyMessage="Não há dados cadastrados">
+
+							<p:ajax event="rowToggle" listener="#{naAuditoriaController.carregarItens(dt)}" immediate="true" update="@widgetVar(wdtItemAuditoria)" />
+							<p:ajax event="page" listener="#{naClienteController.paginacao}" />
+
+							<p:column style="width:16px">
+								<p:rowToggler />
+							</p:column>
+
+							<p:column id="dtTabela" headerText="Tabela">
+								<h:outputText value="#{dt.tabela}" />
+							</p:column>
+
+							<p:column id="dtUsuario" headerText="Usuário">
+								<h:outputText value="#{dt.usuario}" />
+							</p:column>
+
+							<p:column id="dtDataAuditoria" headerText="Data Auditoria">
+								<h:outputText value="#{dt.dataAuditoria}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</p:column>
+
+							<p:column id="dtTpOperacao" headerText="Tipo Operação">
+								<h:outputText value="#{dt.tipoOperacao.getDescricao()}" />
+							</p:column>
+
+							<p:column id="dtChaveRegistro" headerText="Chave (Registro)">
+								<h:outputText value="#{dt.chaveRegistro}" />
+							</p:column>
+
+							<p:rowExpansion>
+
+								<p:dataTable id="dtItemAuditoria" value="#{dt.auditoriaItems}" var="ai" emptyMessage="Nenhum registro localizado" widgetVar="wdtItemAuditoria"
+									lazy="true">
+
+									<f:facet name="header">
+        								Itens da Auditoria
+    								</f:facet>
+
+									<p:column headerText="Campo" width="20%">
+										<div align="left">
+											<h:outputText value="#{ai.campo}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Valor Anterior" width="40%">
+										<div align="left">
+											<h:outputText value="#{ai.valorAnterior}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Novo Valor" width="40%">
+										<div align="left">
+											<h:outputText value="#{ai.valorNovo}" />
+										</div>
+									</p:column>
+
+									<f:facet name="footer">
+										<h:outputLabel value="" />
+									</f:facet>
+
+								</p:dataTable>
+							</p:rowExpansion>
+
+						</p:dataTable>
+					</div>
+
+				</p:outputPanel>
+
+				<p:outputPanel id="panelGridDetalhes">
+					<div align="right" style="padding-top: 10px;"></div>
+				</p:outputPanel>
+
+				<ui:insert name="itens_adicionais" />
+
+			</h:form>
+
+		</p:panel>
+
+		<br />
+		<br />
+
+		<nea:ajaxStatus id="ajstList" />
+
+	</ui:define>
+
+</ui:composition>
+

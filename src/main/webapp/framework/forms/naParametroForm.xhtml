@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+	<ui:param name="controller" value="#{naParametroController}" />
+	<ui:param name="nomeTela" value="Parâmetro" />
+
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<p:panelGrid columns="2">
+			<nea:outputText value="Agrupamento:" />
+			<nea:outputText id="txtgrupo" value="#{controller.naParametroValor.parametro.grupo.nome}" required="false" />
+
+			<nea:outputText value="Nome: " />
+			<nea:outputText id="txtnome" value="#{controller.naParametroValor.parametro.nome}" required="false" />
+
+			<nea:outputText value="Chave: " />
+			<nea:outputText id="txtchave" value="#{controller.naParametroValor.chave}" required="false" />
+			
+			<nea:outputText value="Descrição: " />
+			<nea:outputText id="txtdescricao" value="#{controller.naParametroValor.parametro.descricao}" required="false" />
+
+			<nea:outputText value="Valor: " />
+			<nea:inputText id="txtvalorTexto" value="#{controller.naParametroValor.valor}" required="false" width="350px" 
+				controller="#{controller}" rendered="#{controller.exibeCampoTipoParametroTexto}"  label="Valor Texto"/>
+						
+			<nea:inputDate id="txtvalorData" value="#{controller.valorTipoDate}" required="false" controller="#{naParametroController}" width="15"
+				rendered="#{naParametroController.exibeCampoTipoParametroData}" label="Data"/>
+				
+			<nea:inputInteger id="txtvalorInteiro" value="#{controller.naParametroValor.valor}" required="false" width="350px"  controller="#{controller}"
+				rendered="#{controller.exibeCampoTipoParametroInteiro}" label="Valor Inteiro"/>
+				
+			<nea:inputDateTime id="txtvalorDataTime" title="valor" value="#{controller.valorTipoDateTime}" controller="#{controller}"
+				rendered="#{controller.exibeCampoTipoParametroDataTime}"/>
+			
+			<nea:selectEnum controller="#{controller}" id="txtValorEnum"  value="#{naParametroController.valorEnum}" itemLabel="#{item.descricao}" 
+			                items="#{naParametroController.simNao}" rendered="#{controller.exibeCampoTipoParametroEnum}" label="Valor Enum"/>
+
+
+		</p:panelGrid>
+
+	</ui:define>
+
+
+
+
+</ui:composition>

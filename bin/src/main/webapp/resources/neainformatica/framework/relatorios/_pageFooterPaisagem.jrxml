@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="_pageFooterPaisagem" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="751" leftMargin="0" rightMargin="91" topMargin="0" bottomMargin="0" uuid="081f8acb-33cc-484a-8517-8b583a832d62">
+	<property name="ireport.zoom" value="1.21"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Arial" fontSize="8"/>
+	<parameter name="NOME_USUARIO" class="java.lang.String"/>
+	<parameter name="SITE" class="java.lang.String"/>
+	<parameter name="VERSAO" class="java.lang.String"/>
+	<parameter name="FILTROS" class="java.lang.String"/>
+	<detail>
+		<band height="28">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="751" height="1" uuid="37a47e6f-71a1-459b-ae49-37e2da2623ab"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="300" height="12" uuid="157f119c-0b30-44ee-807c-a3493191091b"/>
+				<textFieldExpression><![CDATA["Usuário: " + $P{NOME_USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="751" height="22" uuid="f3a18832-06b3-4277-b52e-2a420af39535"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{SITE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="451" y="0" width="285" height="12" uuid="3c301ae1-4dea-4ee9-81e1-796014702c54"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Versão: " + $P{VERSAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="12" y="12" width="739" height="10" uuid="55df6b1a-df9b-4274-823c-148bc7a94106"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FILTROS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

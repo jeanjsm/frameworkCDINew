@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:s="http://jboss.org/seam/faces"
+	template="/framework/template/template.xhtml" xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="title" value="Recuperação de Senha" />
+	<ui:param name="ignoraLogin" value="true" />
+	<ui:param name="exibeMenu" value="false" />
+
+
+	<ui:define name="body">
+		<h:form id="frmDados">
+			<p:messages id="messages" />
+
+			<h:panelGroup id="pnlConfirmacaoSenha" style="width:60%; margin: 0 auto;" rendered="#{recuperarSenhaEmailController.renderizaPagina()}">
+
+				<div align="center" style="width: 220px; margin: 0 auto; text-align: left;">
+					<h2>Trocar a Senha</h2>
+					<h3>Olá #{recuperarSenhaEmail.naAlteracaoSenha.usuario.nome}!</h3>
+					<p style="margin-top: -1%">Crie uma nova senha para a sua conta.</p>
+				</div>
+				<div align="center" style="width: 220px; margin: 0 auto; text-align: left;">
+					<p:password id="inputPassword" title="Senha" label="Informe uma Senha:" value="#{recuperarSenhaEmailController.novaSenhaDigitada}" required="true"
+						style="width: 200px; " />
+					<p:watermark for="inputPassword" value="Informe uma senha *" />
+					<br /> <br />
+					<p:password id="inputConfirmaSenha" label="Confirme a senha:" title="Confima Senha" value="#{recuperarSenhaEmailController.novaSenhaConfirmacaoDigitada}"
+						required="true" style="width: 200px;" />
+					<p:watermark for="inputConfirmaSenha" value="Confirme sua senha *" />
+					<br /> <br />
+					<table class="table-captcha" width="200px">
+						<tr>
+							<td valign="baseline" class="table-td-img-captcha"><h:graphicImage value="/kaptcha.jpg" width="100%" /></td>
+						</tr>
+						<tr>
+							<td valign="middle"><p:inputText id="captcha-input-text" style="width: 100%;" required="true" value="#{recuperarSenhaEmailController.captchaDigitado}"
+									requiredMessage="Informe a chave de validação" onkeyup="toLowerCase(this)" title="Digite os caracteres da imagem acima:" /> <p:watermark
+									for="captcha-input-text" value="Digite os caracteres acima *" /></td>
+						</tr>
+					</table>
+				</div>
+				<div align="center" style="width: 220px; margin: 0 auto; text-align: left;">
+					<h4>Dicas para uma senha mais segura:</h4>
+					<ul style="width: 220px;">
+						<li style="margin-top: -10px">Combine letras e números</li>
+						<li>Não use informações pessoais</li>
+						<li>Evite o uso de palavras muito comuns</li>
+						<li>Nunca escreva suas senhas em uma papel</li>
+					</ul>
+				</div>
+
+				<div align="center">
+					<p:commandButton value="Alterar Senha" action="#{recuperarSenhaEmailController.recuperacaoDaSenhaViaEmail()}" icon="ui-icon-disk" process="pnlConfirmacaoSenha"
+						update="@form" />
+				</div>
+			</h:panelGroup>
+
+			<p:outputPanel rendered="#{not recuperarSenhaEmailController.renderizaPagina()}">
+				<div align="center" style="width: 100%;">
+					<p:panel style="width:60%;">
+						<p style="color: #FF6600; font-family: Tahoma; font-size: 100px; font-weight: normal; margin-top: 0;" align="center">OPS! :(</p>
+						<h2 align="center" style="margin: -10% 0 5% 0;">O link que está tentando acessar é inválido ou está expirado!</h2>
+						<div>
+							<p:commandButton action="#{recuperarSenhaEmailController.redirecionarParaLogin()}" value="Ir para a tela de Login" styleClass="buton-voltar" icon="ui-icon-home"
+								ajax="false" immediate="true" />
+						</div>
+					</p:panel>
+				</div>
+			</p:outputPanel>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

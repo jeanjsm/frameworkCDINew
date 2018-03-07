@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	template="/framework/template/templateForm.xhtml">
+
+ 
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 20/06/2014 17:57:21
+	@Author  = NELSON
+	@Versão da Classe = 
+**********************************************************  
+-->
+
+	<ui:param name="controller" value="#{organogramaLocalFisicoController}" />
+	<ui:param name="nomeTela" value="Local Físico" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+		
+
+        <nea:inputText id="txtorganograma" title="Organograma" value="#{controller.objeto.organograma}" required="false" width="70px" label="Organograma" controller="#{controller}"/>
+  
+        <nea:inputDate id="txtDataInicioVigencia" label="DataInicioVigencia" value="#{controller.objeto.dataInicioVigencia}" controller="#{controller}" style="width:100px;" required="false" />
+  
+        <nea:inputText id="txtlocalfisicoprotocolo" title="Localfisicoprotocolo" value="#{controller.objeto.localfisicoprotocolo}" required="false" width="70px" label="Localfisicoprotocolo" controller="#{controller}"/>
+  
+        <nea:inputText id="txtusuario" title="Usuario" value="#{controller.objeto.usuario}" required="false" width="70px" label="Usuario" controller="#{controller}"/>
+  
+        <nea:inputText id="txtlocalfisicofrotas" title="Localfisicofrotas" value="#{controller.objeto.localfisicofrotas}" required="false" width="70px" label="Localfisicofrotas" controller="#{controller}"/>
+  
+        <nea:inputText id="txtlotacaofuncionariofr" title="Lotacaofuncionariofr" value="#{controller.objeto.lotacaofuncionariofr}" required="false" width="70px" label="Lotacaofuncionariofr" controller="#{controller}"/>
+  
+		
+	</ui:define>
+
+</ui:composition>

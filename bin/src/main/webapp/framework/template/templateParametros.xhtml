@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/template.xhtml">
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{controller.initConversation}" />
+		</f:metadata>
+
+		<p:panel style="padding: 5px; border:0" rendered="#{(empty ignoraLogin ? false : ignoraLogin) or (identity.loggedIn)}">
+
+			<h:form id="templateParametrosForm">
+
+				<p:tabView id="tbvTemplateParametros" style="display: table" styleClass="formRelevo" dynamic="true" cache="false">
+
+					<p:tab title="#{nomeTela}" id="tabParametros">
+					   <p:commandLink action="/index.xhtml" ajax="false">
+							<p:graphicImage name="neainformatica/framework/images/close23.png" id="form_close" styleClass="nea-close-icon" title="Clique aqui para fechar" />
+						</p:commandLink>
+
+						<ui:insert name="topoFormParametros" />
+
+						<div align="center">
+							<p:toolbar id="panelBotoesParametros" styleClass="toolbarCadastro" rendered="#{exibeBarrabotoes}">
+								<p:toolbarGroup align="left">
+									<ui:insert name="botoesEsquerda" />
+								</p:toolbarGroup>
+								<p:toolbarGroup align="right" id="tgRight">
+									<ui:insert name="botoesDireita" />
+								</p:toolbarGroup>
+							</p:toolbar>
+						</div>
+
+						<div align="left">
+							<p:panel id="panelCampos" style="float:left;">
+								<ui:insert name="panelParametros" />
+							</p:panel>
+						</div>
+
+						<ui:insert name="tabsAdicionais" />
+
+					</p:tab>
+
+					<ui:insert name="itens" />
+
+				</p:tabView>
+
+			</h:form>
+
+			<ui:insert name="areaForaFormPrincipal" />
+
+
+		</p:panel>
+
+		<nea:ajaxStatus />
+
+	</ui:define>
+
+
+
+</ui:composition>

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="systemName" required="true" type="String" shortDescription="Mensagem no cabeçalho do Dialog do componente." />
+		<composite:attribute name="widgetVar" required="true" type="String" default="widgetVarInputText_#{cc.attrs.id}"
+			shortDescription="Nome utilizado pelo Primefaces para recuperar e referenciar elementos client-side em outros componentes." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:dialog id="dlgAbout" header="#{cc.attrs.systemName}" widgetVar="dlgAbout" modal="true" dynamic="true" resizable="false" width="600" height="400"
+			closeOnEscape="true">
+
+			<div align="center">
+				<p:graphicImage value="#{resource['neainformatica/framework/images/about.png']}" width="550" />
+			</div>
+			<br />
+
+			<h:outputText value="Sobre #{infrastructureController.getNeaInfrastructureSistemaNome()}" />
+			<h:outputText value=" - Framework: #{infrastructureController.getNeaInfrastruraFrameworkVersao()}" />
+
+			<h3>#{aboutController.about.name}</h3>
+
+			<p:accordionPanel style="width:500" value="#{aboutController.about.versions}" var="version" multiple="true">
+				<p:tab title="#{version.name}">
+					<p:accordionPanel value="#{version.builds}" var="build" multiple="true">
+						<p:tab title="#{build.name}">
+							<p:dataList value="#{build.implementations}" var="impl">
+                        #{impl.name}
+                     </p:dataList>
+						</p:tab>
+					</p:accordionPanel>
+				</p:tab>
+			</p:accordionPanel>
+
+			<br />
+			<div>
+				<p>N&amp;A Informática Ltda.</p>
+				<p>Rua: Engenheiro Roberto Mange, 849 - Amambaí Campo Grande - MS</p>
+			</div>
+		</p:dialog>
+
+	</composite:implementation>
+
+</ui:composition>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+    <!--
+**********************************************************
+@Empresa: N&A Informática Ltda
+@Gerador: MultiSource
+Dados da Classe:
+    @Data  = 13/05/2014 16:53:05
+    @Author  = NELSON
+    @Versão da Classe =
+**********************************************************
+    -->
+
+    <ui:param name="controller" value="#{naAgendamentoController}" />
+    <ui:param name="nomeTela" value="Agendamento" />
+
+    <!-- Define os campos do formulário -->
+    <ui:define name="camposForm">
+
+        <nea:inputText id="txtCodigoTarefa" title="Código Tarefa" value="#{controller.objeto.codigoTarefa}" required="false" width="309px" label="Código" readOnly="true"
+                       controller="#{controller}" />
+
+        <h:panelGroup>
+        <nea:inputSearch2 disabled="true" id="sistema" atributoCodigo="id" controller="#{controller}" label="Sistema" atributoDescricao="#{controller.objeto.sistema.sistema}" 
+                             value="#{controller.objeto.sistema}" classType="br.com.neainformatica.infrastructure.entity.NaSistema" widthDialog="450px"></nea:inputSearch2>
+        </h:panelGroup>
+
+        <nea:inputText id="txtNome" title="Nome" value="#{controller.objeto.nome}" required="false" width="350px" label="Nome" disabled="true"
+                       controller="#{controller}" />
+
+        <nea:inputText id="txtDescricao" title="Descrição" value="#{controller.objeto.descricao}" required="false" width="350px" label="Descrição" disabled="true"
+                       controller="#{controller}" />
+
+        <nea:inputText id="txtExpressaoCron" title="Expressão Cron" value="#{controller.objeto.expressaoCron}" required="false" width="350px" label="Expressão Cron"
+                       controller="#{controller}" />
+
+        <nea:selectEnum id="cmbAtivo" label="Ativo" value="#{controller.objeto.ativo}" controller="#{Controller}" items="#{controller.convertEnumToList('ativo')}"
+                        itemLabel="#{item.descricao}" width="90px" required="true">
+        </nea:selectEnum>
+
+    </ui:define>
+
+</ui:composition>

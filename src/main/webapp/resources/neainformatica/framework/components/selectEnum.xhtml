@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true" type="String" shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="O valor atual deste componente." />
+		<composite:attribute name="title" required="false" type="String" default="#{cc.attrs.label}" shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="width" required="false" type="String" default="250px" shortDescription="Tamanho do campo selectOneRadio valor em pixels. Por exemplo 100px" />
+		<composite:attribute name="rendered" required="false" type="boolean" shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="disabled" required="false" type="boolean" default="false" shortDescription="Sinalizador indicando que este elemento não deve nunca recebem o foco ou ser incluído em uma subsequente enviar. Um valor de falsas causas nenhum atributo a ser prestado, enquanto um valor de true faz com que o atributo a ser processado como disabled = 'desabled'." />
+		<composite:attribute name="required" required="false" type="boolean" default="false" shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="requiredMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é obrigatório!" shortDescription="um atributo habilitado expressão de valor que, se presente, será usado como o texto da mensagem de validação para a instalação 'necessária', se a instalação 'necessária' é usado." />
+		<composite:attribute name="mensagensNoComponent" required="false" type="boolean" default="false" shortDescription="indica se a mensagem de erro aparecera abaixo no camponente ou no cabeçalho do formulario" />
+		<composite:attribute name="widgetVar" type="String" default="wv#{cc.attrs.id}" shortDescription="Nome utilizado pelo Primefaces para recuperar e referenciar elementos client-side em outros componentes." />
+
+		<composite:attribute name="controller" required="true" shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="stylePanel" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada no panel que envolve o componente." />
+		<composite:attribute name="styleClass" required="false" type="String" default="selectRadio form-control" shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+		<composite:attribute name="immediate" required="false" type="boolean" default="false" shortDescription="Sinalizador que indica que o valor deste componente deve ser convertido e validado imediatamente ( isto é, durante fase de Aplicar Pedido de valores), em vez de esperar até a fase validações de processo." />
+		<composite:attribute name="onkeyup" required="false" type="String" shortDescription="Javascript código executado quando uma tecla é liberada sobre este elemento." />
+		<composite:attribute name="ignoreReadOnlyController" required="false" type="boolean" default="false" shortDescription="Não utiliza o controller para definir a propriedade readOnly (default:false)" />
+
+		<composite:attribute name="converter" required="false" default="genericEnumConverter" shortDescription="Instância conversor registrado com esse componente." />
+		<composite:attribute name="converterMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é inválido! " shortDescription="valor de expressão um atributo que, se estiver presente, será utilizado como o texto da mensagem conversor activado, substituindo qualquer mensagem que vem do conversor." />
+		<composite:attribute name="update" required="false" type="String" default="" shortDescription="Avalia a Collection String. Identificadores dos componentes que irão participar da parte de 'executar' do Request de Processamento de Ciclo de Vida. Se um literal é especificado os identificadores devem ser espaço delimitado. Qualquer uma das palavras-chave '@this' , '@form' , '@all', '@none' Pode ser especificado na lista de identificador." />
+		<composite:attribute name="items" required="true" shortDescription="Lista de objetos enum, que derá ser exibidos no select." />
+		<composite:attribute name="itemLabel" required="true" type="String"	shortDescription="Atributo avaliado como uma String que servirá como o rótulo a ser mostrado para o item." />
+		<composite:attribute name="onchange" required="false" shortDescription="Código Javascript executado quando este elemento perde o foco e seu valor foi modificado desde obtenha foco." />
+		<composite:attribute name="selecioneLabel" required="false" default=".: Selecione :." shortDescription="Label que será exibido como primeiro elemento do Select. Serve como placeHolder deste componente." />
+		<composite:attribute name="filter" required="false" type="boolean" default="false" shortDescription="Exibe um filtro de entrada para a lista." />
+		<composite:attribute name="filterMatchMode" required="false" type="String" default="startsWith"	shortDescription="Modo de jogo para a filtragem, os valores válidos são startsWith (padrão), contém, endsWith e personalizado." />
+
+		<composite:attribute name="process" required="false" type="String" default="@this" />
+
+	</composite:interface>
+	<composite:implementation>
+		<h:panelGroup id="#{cc.attrs.id}" rendered="#{cc.attrs.rendered}" style="#{cc.attrs.stylePanel}" styleClass="panelComponentesNeA">
+			<nea:outputText id="lbl_#{cc.attrs.id}" value="#{cc.attrs.label}" required="#{cc.attrs.required}"/>
+			<br/>
+			<p:selectOneMenu id="inputSelEnum_#{cc.attrs.id}" value="#{cc.attrs.value}" label="#{cc.attrs.label}" required="#{cc.attrs.required}"
+							 requiredMessage="#{cc.attrs.requiredMessage}" style="width: #{cc.attrs.width} ; #{cc.attrs.style}" rendered="#{cc.attrs.rendered}"
+							 disabled="#{cc.attrs.disabled}" filter="#{cc.attrs.filter}" filterMatchMode="#{cc.attrs.filterMatchMode}" autoWidth="false"
+							 widgetVar="#{cc.attrs.widgetVar}" immediate="#{cc.attrs.immediate}" onchange="#{cc.attrs.onchange}">
+
+				<f:selectItem itemValue="" itemLabel="#{cc.attrs.selecioneLabel}"
+							  itemDisabled="#{(cc.attrs.controller != null and cc.attrs.controller.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController)}"/>
+				<f:selectItems value="#{cc.attrs.items}" var="item" itemLabel="#{cc.attrs.itemLabel}" itemValue="#{item}"
+							   itemDisabled="#{(cc.attrs.controller != null and cc.attrs.controller.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController)}"/>
+
+				<f:converter converterId="genericEnumConverter"/>
+
+				<f:ajax event="change" execute="#{cc.attrs.process}" render="#{cc.attrs.update}" disabled="#{cc.attrs.update == ''}"/>
+
+				<composite:insertChildren/>
+
+			</p:selectOneMenu>
+
+			<p:message for="inputSelEnum_#{cc.attrs.id}" rendered="#{cc.attrs.mensagensNoComponent eq true}"/>
+
+		</h:panelGroup>
+	</composite:implementation>
+</ui:composition>

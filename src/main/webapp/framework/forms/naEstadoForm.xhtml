@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+
+	<ui:param name="controller" value="#{naEstadoController}" />
+	<ui:param name="nomeTela" value="Estado" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+
+		<nea:inputText id="txtIbge" value="#{controller.objeto.ibge}" required="true" width="90px" label="Código do IBGE" controller="#{controller}" />
+
+		<nea:inputText id="txtNome" value="#{controller.objeto.nome}" required="true" width="250px" label="Nome" controller="#{controller}" />
+
+		<nea:inputText id="txtSigla" value="#{controller.objeto.sigla}" required="true" width="20px" label="Sigla" controller="#{controller}" />
+
+		<!-- <nea:inputSearch id="inputSearchPais" atributoCodigo="#{controller.objeto.pais.id}" atributoDescricao="#{controller.objeto.pais.nome}"
+			value="#{controller.objeto.pais}" label="País" controller="#{naPaisController}" controllerLocal="#{controller}" required="true" /> -->
+		<nea:inputSearch2 atributoCodigo="id" label="Pais" id="pais_input_search" controller="#{controller}" atributoDescricao="#{controller.objeto.pais.nome}" value="#{controller.objeto.pais}" classType="br.com.neainformatica.infrastructure.entity.NaPais"></nea:inputSearch2>
+		<nea:selectEnum id="cmbAtivo" label="Ativo" value="#{controller.objeto.ativo}" controller="#{Controller}" items="#{controller.convertEnumToList('ativo')}"
+			itemLabel="#{item.descricao}" width="100px" required="true">
+		</nea:selectEnum>
+
+		<nea:inputText id="txtNomeFormal" value="#{controller.objeto.nomeFormal}" required="true" width="450px" label="Nome Formal" controller="#{controller}" />
+
+
+	</ui:define>
+
+</ui:composition>

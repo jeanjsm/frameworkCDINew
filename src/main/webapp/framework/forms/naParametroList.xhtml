@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	template="/framework/template/templateList.xhtml">
+
+
+
+	<ui:param name="controller" value="#{naParametroController}" />
+	<ui:param name="exibeDataTablePrincipal" value="false" />
+	<ui:param name="exibeBarrabotoes" value="false" />
+	<ui:param name="nomeTela" value="Parâmetros do Sistema" />
+
+
+	<ui:define name="conteudoAdicionalRodapeDataTable">
+
+		<h:form id="formConsultaParametro">
+
+
+			<nea:selectEntity id="txtGrupo" label="Agrupamento" value="#{naParametroController.grupo}" ignoreReadOnlyController="true"
+				items="#{naParametroGrupoController.listarParametroGrupo()}" controller="#{naParametroController}" itemLabel="#{item.nome}" />
+
+			<nea:inputText id="txtNome" value="#{controller.nomeParametro}" width="200px" label="Nome do parâmetro:" controller="#{controller}"
+				ignoreReadOnlyController="true" />
+
+			<p:commandButton id="btnPesquisar" value="Pesquisar" icon="detail16" accesskey="t" action="#{controller.pesquisarParametro()}" ajax="false"
+				style="text-align: center; font-size: 8pt; font-size-adjust: inherit; height: 30px; width: 85px; margin: 10px 19px 15px 5px;" title="Pesquisar" />
+
+
+		</h:form>
+
+
+		<p:dataTable id="dataTableParametros" value="#{controller.naParametros}" var="dt" paginator="true" paginatorPosition="bottom" lazy="true"
+			rows="#{controller.quantidadeLinhasNoGrid}" emptyMessage="Não há dados cadastrados">
+			<p:ajax event="rowToggle" listener="#{naParametroController.onRowToggle}" />
+
+			<p:column style="width:16px">
+				<p:rowToggler rendered="#{dt.valorFixo.value eq 'N'}" />
+			</p:column>
+
+			<p:column headerText="Grupo" style="text-align:center; ">
+				<h:outputText value="#{dt.grupo.nome}" />
+			</p:column>
+
+			<p:column headerText="Parâmetro" style="text-align:center; ">
+				<h:outputText value="#{dt.nome}" />
+			</p:column>
+			<p:column headerText="Valor" style="text-align:center; ">
+				<h:outputText value="#{dt.parametroValor}" />
+			</p:column>
+			<p:column headerText="Nível Mínimo para alteração" style="text-align:center; ">
+				<h:outputText value="#{dt.nivelUsuario}" />
+			</p:column>
+			<p:column headerText="Alterar">
+				<p:commandLink id="btnEditar" accesskey="x" immediate="true" action="#{controller.alterarNaParametroValorFixo(dt)}" ajax="false">
+					<p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/icons/edit.png" style="margin-left: 0.5em"
+						rendered="#{dt.valorFixo.value eq 'S'}" />
+				</p:commandLink>
+			</p:column>
+
+
+			<p:rowExpansion>
+				<p:dataTable id="daTavleParametroValor" value="#{controller.naParametroValores}" var="parametroValor"
+					emptyMessage="Não há dados cadastrados">
+					<h:inputHidden value="dt.id" />
+					<p:column headerText="Chave" style="text-align:center;">
+						<h:outputText value="#{parametroValor.chave}" />
+					</p:column>
+
+					<p:column headerText="Descrição" style="text-align:center;">
+						<h:outputText value="#{parametroValor.descricao}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align:center;">
+						<h:outputText value="#{parametroValor.valor}" />
+					</p:column>
+
+					<p:column headerText="Alterar">
+						<p:commandLink id="btnEditar" accesskey="x" immediate="true" action="#{controller.alterarNaParametroValor(parametroValor)}" ajax="false">
+							<p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/icons/edit.png" style="margin-left: 0.5em " rendered="true" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</p:rowExpansion>
+		</p:dataTable>
+
+	</ui:define>
+
+
+
+</ui:composition>
+

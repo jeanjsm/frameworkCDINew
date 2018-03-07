@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+<ui:composition template="/framework/template/templateForm.xhtml">
+
+	<ui:param name="controller" value="#{naUsuarioController}" />
+	<ui:param name="nomeTela" value="Usuário" />
+	<ui:param name="permissao" value="Usuário" />
+	<ui:param name="exibeBarrabotoes" value="false" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<fieldset class="fieldSetDefault">
+			<legend>Dados do Usuário</legend>
+
+			<nea:inputText id="txtNome" value="#{controller.objeto.nome}" width="500px" maxlength="300" watermark="Entre com o nome do Usuário" required="true"
+				label="Nome" title="Nome de Usuário" controller="#{controller}" />
+
+			<nea:inputMask id="maskCpf" value="#{controller.objeto.cpfCnpj}" label="CPF" controller="#{controller}" typeMask="cpf" required="true"
+				disabled="#{controller.objeto.cpfCnpj != null}" width="358px" />
+
+			<nea:inputDate id="idDataNascimento" value="#{controller.objeto.dataNascimento}" label="Data de Nascimento" controller="#{controller}" />
+
+			<nea:inputText id="txtEmail" value="#{controller.objeto.email}" label="E-mail" required="true" width="500px" maxlength="150" controller="#{controller}" />
+
+			<nea:selectEnum id="idNivelUsuario" itemLabel="#{item.descricao}" items="#{controller.listaNivelSistemaUsuario}" value="#{controller.objeto.nivelUsuario}"
+				label="Nivel de acesso no sistema - #{naSessionController.naUsuarioSistema.sistema.sistema}" controller="#{controller}" required="true" width="500px"
+				rendered="#{controller.state != 'BROWSE'}" />
+
+		</fieldset>
+
+		<fieldset class="fieldSetDefault">
+			<legend>Perfis do usuário</legend>
+
+
+			<div align="center">
+				<nea:outputText value="Perfil de acesso do usuário (Selecione um ou mais perfis): " />
+				<br />
+
+				<p:pickList id="pickListPerfil" value="#{naUsuarioController.perfis}" required="true" filterMatchMode="contains" showTargetFilter="true"
+					showSourceFilter="true" requiredMessage="Selecione pelo menos um perfil." var="p" itemLabel="#{p}" itemValue="#{p}" converter="#{naPerfilConverter}">
+
+					<f:facet name="sourceCaption">Perfis disponíveis</f:facet>
+					<f:facet name="targetCaption">Selecionados</f:facet>
+
+				</p:pickList>
+			</div>
+		</fieldset>
+	</ui:define>
+
+	<ui:define name="botoesAdicionais">
+
+		<p:commandButton id="btnSalvar1" value="Salvar" icon="save" accesskey="s" title="Salvar registro. (Alt + S)" action="#{controller.salvarNovoUsuario}"
+			ajax="true" rendered="#{naUsuarioController.novaSenha ne null}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" onclick="PF('dlgNovaSenha').show()" />
+
+		<p:commandButton id="btnSalvar2" value="Salvar" icon="save" accesskey="s" title="Salvar registro. (Alt + S)" action="#{controller.salvar}" ajax="false"
+			rendered="#{naUsuarioController.novaSenha eq null and (controller.state eq 'EDIT' or controller.state eq 'INSERT')}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+		<p:dialog header="Nova Senha" widgetVar="dlgNovaSenha" modal="true" height="90" width="190" closable="false">
+			<h:outputText value="Sua nova senha é:" style="FONT-SIZE: medium;" />
+			<br />
+			<h:outputText value="#{naUsuarioController.novaSenha}" style="FONT-SIZE: xx-large; FONT-WEIGHT: bold;" />
+			<br />
+			<p:commandButton id="cmdFecharModal" value="Fechar" action="#{naUsuarioController.fecharModalSenha()}" ajax="false" style="font-size:16px" />
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

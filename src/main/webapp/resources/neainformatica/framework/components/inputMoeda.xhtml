@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true" type="String"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="title" required="false" type="String" default="#{cc.attrs.label}"
+			shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="width" required="false" type="String" default="130px"
+			shortDescription="Tamanho do campo selectOneRadio valor em pixels. Por exemplo 100px" />
+		<composite:attribute name="rendered" required="false" type="boolean" default="true"
+			shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="required" required="false" type="boolean" default="false"
+			shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="mensagensNoComponent" required="false" type="boolean" default="false"
+			shortDescription="indica se a mensagem de erro aparecera abaixo no camponente ou no cabeçalho do formulario" />
+		<composite:attribute name="type" required="false" type="String" shortDescription="Tipo de campo de entrada. O padrão é texto." />
+		<composite:attribute name="controller" required="true"
+			shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="converter" required="false" type="String" default="valorConverter"
+			shortDescription="Uma expressão el ou um texto literal que define um conversor para o componente. Quando é uma expressão EL, está resolvido para uma instância do conversor. No caso, é um texto estático, ele deve se referir a um ID de conversor." />
+		<composite:attribute name="converterMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é inválido! "
+			shortDescription="valor de expressão um atributo que, se estiver presente, será utilizado como o texto da mensagem conversor activado, substituindo qualquer mensagem que vem do conversor." />
+		<composite:attribute name="validatorId" required="false" type="String" default=""
+			shortDescription="Registrar uma instância Validador nomeado no UIComponent associado com a ação personalizada mais próximo UIComponent pai. Se este elemento está aninhado dentro de uma tag UIComponent que tem outras crianças UIComponent, o validador será automaticamente adicionado a todos os componentes da criança, bem como este. A implementação deve garantir isso ocorre mesmo se o pai desse elemento não é uma instância de EditableValueHolder." />
+		<composite:attribute name="validatorMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é inválido! "
+			shortDescription="Mensagem que será exibida quando a validação falhar!" />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="styleClass" required="false" type="String"
+			shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+		<composite:attribute name="ignoreReadOnlyController" required="false" type="boolean" default="false"
+			shortDescription="Não utiliza o controller para definir a propriedade readOnly (default:false)" />
+		<composite:attribute name="maxlength" required="false" type="Integer" default="255"
+			shortDescription="Define o número máximo de caracteres de recipiente textarea. O padrão é 0, significa que não há limite." />
+		<composite:attribute name="onkeyup" required="false" type="String"
+			shortDescription="Javascript código executado quando uma tecla é liberada sobre este elemento." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<h:outputScript library="neainformatica" name="framework/js/formatos.js" target="head" />
+
+		<nea:inputText id="decimal_#{cc.attrs.id}" label="#{cc.attrs.label}" value="#{cc.attrs.value}" required="#{cc.attrs.required}"
+			requiredMessage="O campo #{cc.attrs.label} é obrigatório! " title="#{cc.attrs.title}" type="#{cc.attrs.type}" style="width: #{cc.attrs.width} ;"
+			converter="#{cc.attrs.converter}" converterMessage="#{cc.attrs.converterMessage}" validatorMessage="#{cc.attrs.validatorMessage}"
+			styleClass="#{cc.attrs.styleClass}" validatorId="#{cc.attrs.validatorId}" controller="#{cc.attrs.controller}"
+			mensagensNoComponent="#{cc.attrs.mensagensNoComponent}" onkeyup="formataValor(this)" />
+
+	</composite:implementation>
+</ui:composition>

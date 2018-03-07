@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+
+	<h:outputStylesheet library="neainformatica" name="framework/css/estilo.css" />
+
+</h:head>
+
+<h:body>
+
+	<p:panel id="panelAlterarSenha" styleClass="dlgRecuperarSenha">
+
+		<h3>Alterar senha</h3>
+
+		<p:messages id="messagesAlterarSenha" closable="true" />
+
+		<p>É necessário definir uma nova senha de acesso para atender aos requisitos de segurança do sistema</p>
+		<br />
+
+
+		<div align="center">
+			<h:panelGrid columns="2">
+				<h:outputText value="Senha Atual:" />
+				<p:password id="oldPass" value="#{autenticador.senhaAtual}" required="true" requiredMessage="A senha atual deve ser informada!" />
+
+				<h:outputText value="Nova Senha:" />
+				<p:password id="newPass" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte" promptLabel="Entre com a Senha!"
+					value="#{autenticador.novaSenha}" required="true" requiredMessage="A nova senha deve ser informada!" maxlength="32" />
+
+				<h:outputText value="Digite novamente:" />
+				<p:password id="confirmNewPass" value="#{autenticador.novaSenhaConfirmacao}" required="true" requiredMessage="Confirme a nova senha!" immediate="false"
+					maxlength="32" />
+
+			</h:panelGrid>
+		</div>
+
+		<hr />
+		<div align="center">
+			<p:commandButton value="Alterar" actionListener="#{autenticador.alterarSenhaAntesLogin}" title="Clique para alterar sua senha!" update="@form"
+				icon="password" ajax="false" />
+		</div>
+
+	</p:panel>
+
+</h:body>
+
+</html>

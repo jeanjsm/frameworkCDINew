@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+<h:head>
+
+</h:head>
+
+<ui:composition template="/framework/template/templateList.xhtml">
+
+	<ui:param name="controller" value="#{naAtorController}" />
+	<ui:param name="nomeTela" value="Permissões de Acesso" />
+	<ui:param name="permissao" value="Permissões de Acesso" />
+
+	<ui:param name="exibeDataTablePrincipal" value="false" />
+	<ui:param name="exibeBarrabotoes" value="false" />
+
+	<ui:define name="conteudoAdicionalRodapeDataTable">
+
+
+		<p:panel id="panelGeral" style="width:680px !important;">
+
+
+			<p:remoteCommand id="atualizaAtor" name="atualizaAtor" process="selTipoAtor" update="@form" />
+
+			<nea:selectRadioEnum id="selTipoAtor" label="Você quer configurar acesso por:" itemLabel="#{item.descricao}" items="#{controller.tiposAtores()}"
+				value="#{controller.tipoAtorSelecionado}" controller="#{controller}" ignoreReadOnlyController="true" onchange="atualizaAtor()" />
+
+			<nea:selectEntity id="searchAtor" label="#{naAtorController.labelInputSearchAtor}" value="#{naAtorController.atorSelecionado}"
+							  items="#{naAtorController.listAtores}" itemLabel="#{item.nome}" />
+
+
+			<nea:quebraLinha />
+
+			<p:commandButton value="Buscar Permissões" action="#{naAtorController.buscarPermissoes()}" update="pgGridPermissoes" style="float:left; height:30px;" />
+
+			<nea:quebraLinha />
+
+			<h:panelGroup id="pgGridPermissoes" style="float:left;">
+				<p:dataTable id="dtPermissoes" value="#{naAtorController.listaAtorPermissao}" var="p" emptyMessage="Clique no botão Buscar Permissões para exibir os dados">
+
+					<f:facet name="header">
+						<h:outputText value="Permissões de acesso" />
+					</f:facet>
+
+					<p:column headerText="Descrição" width="300">
+						<h:outputText value="#{p.permissao.descricao}" />
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:panelGroup>
+								<p:commandLink action="#{naAtorController.desmarcarTodosColuna('ACESSAR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('ACESSAR') == true}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<p:commandLink action="#{naAtorController.marcarTodosColuna('ACESSAR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('ACESSAR') == false}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<h:outputText value="Acessar" />
+							</h:panelGroup>
+						</f:facet>
+
+						<div align="center">
+							<p:commandLink action="#{naAtorController.alterarPermissaoAcessar(p)}" update="@form" disabled="#{naAtorController.perfilPadrao}">
+								<nea:outputSimNaoCheck value="#{p.acessar.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:panelGroup>
+								<p:commandLink action="#{naAtorController.desmarcarTodosColuna('INSERIR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('INSERIR') == true}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<p:commandLink action="#{naAtorController.marcarTodosColuna('INSERIR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('INSERIR') == false}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<h:outputText value="Inserir" />
+							</h:panelGroup>
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{naAtorController.alterarPermissaoInserir(p)}" update="@form" disabled="#{naAtorController.perfilPadrao}">
+								<nea:outputSimNaoCheck value="#{p.inserir.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:panelGroup>
+								<p:commandLink action="#{naAtorController.desmarcarTodosColuna('ALTERAR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('ALTERAR') == true}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<p:commandLink action="#{naAtorController.marcarTodosColuna('ALTERAR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('ALTERAR') == false}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<h:outputText value="Alterar" />
+							</h:panelGroup>
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{naAtorController.alterarPermissaoAlterar(p)}" update="@form" disabled="#{naAtorController.perfilPadrao}">
+								<nea:outputSimNaoCheck value="#{p.alterar.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:panelGroup>
+								<p:commandLink action="#{naAtorController.desmarcarTodosColuna('EXCLUIR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('EXCLUIR') == true}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<p:commandLink action="#{naAtorController.marcarTodosColuna('EXCLUIR')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('EXCLUIR') == false}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<h:outputText value="Excluir" />
+							</h:panelGroup>
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{naAtorController.alterarPermissaoExcluir(p)}" update="@form" disabled="#{naAtorController.perfilPadrao}">
+								<nea:outputSimNaoCheck value="#{p.excluir.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column id="colSelecionarTodos">
+						<f:facet name="header">
+							<h:panelGroup>
+								<p:commandLink action="#{naAtorController.desmarcarTodosColuna('TODOS')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('TODOS') == true}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<p:commandLink action="#{naAtorController.marcarTodosColuna('TODOS')}" update="@form"
+									rendered="#{naAtorController.mostraSelecionarTodosColuna('TODOS') == false}" disabled="#{naAtorController.perfilPadrao}">
+									<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+								</p:commandLink>
+
+								<h:outputText value="Todos" />
+							</h:panelGroup>
+						</f:facet>
+
+						<div align="center">
+
+							<p:commandLink action="#{naAtorController.desmarcarTodosHorizontal(p)}" update="@form" rendered="#{p.todosSelecionados()}" disabled="#{naAtorController.perfilPadrao}">
+								<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box.png']}" />
+							</p:commandLink>
+
+							<p:commandLink action="#{naAtorController.selecionarTodosHorizontal(p)}" update="@form" rendered="#{!p.todosSelecionados()}" disabled="#{naAtorController.perfilPadrao}">
+								<p:graphicImage value="#{resource['neainformatica/framework/images/ui_check_box_uncheck.png']}" style="position: relative; top: 4px;" />
+							</p:commandLink>
+
+						</div>
+					</p:column>
+
+
+				</p:dataTable>
+			</h:panelGroup>
+
+			<nea:quebraLinha />
+
+			<p:commandButton value="Gravar Alterações" action="#{naAtorController.gravarAlteracoes()}" update="@form" style="float:left;" />
+
+
+		</p:panel>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

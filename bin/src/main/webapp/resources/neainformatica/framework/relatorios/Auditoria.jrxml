@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Auditoria" pageWidth="595" pageHeight="842" columnWidth="503" leftMargin="70" rightMargin="22" topMargin="22" bottomMargin="22" uuid="85f705e3-6f41-4f2e-8b1a-6737c4bd296b">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Arial" fontSize="8"/>
+	<subDataset name="dsItens" uuid="b7d9c237-eeed-4dc5-a14f-f40bef0a88b2">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="valorAnterior" class="java.lang.String">
+			<fieldDescription><![CDATA[valorAnterior]]></fieldDescription>
+		</field>
+		<field name="id" class="java.lang.Integer">
+			<fieldDescription><![CDATA[id]]></fieldDescription>
+		</field>
+		<field name="auditoria" class="br.com.neainformatica.infrastructure.entity.NaAuditoria">
+			<fieldDescription><![CDATA[auditoria]]></fieldDescription>
+		</field>
+		<field name="campo" class="java.lang.String">
+			<fieldDescription><![CDATA[campo]]></fieldDescription>
+		</field>
+		<field name="valorNovo" class="java.lang.String">
+			<fieldDescription><![CDATA[valorNovo]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BRASAO_PREFEITURA" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="NOME_PREFEITURA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_SECRETARIA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_DIVISAO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_SISTEMA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBTITULO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DATA_HORA_IMPRESSAO" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="NOME_USUARIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SITE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="VERSAO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="PAGE_HEADER" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="PAGE_FOOTER" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="auditoriaItems" class="java.util.List">
+		<fieldDescription><![CDATA[auditoriaItems]]></fieldDescription>
+	</field>
+	<field name="chaveRegistro" class="java.lang.String">
+		<fieldDescription><![CDATA[chaveRegistro]]></fieldDescription>
+	</field>
+	<field name="dataAuditoria" class="java.util.Date">
+		<fieldDescription><![CDATA[dataAuditoria]]></fieldDescription>
+	</field>
+	<field name="exportacaoDados" class="java.lang.Integer">
+		<fieldDescription><![CDATA[exportacaoDados]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="tabela" class="java.lang.String">
+		<fieldDescription><![CDATA[tabela]]></fieldDescription>
+	</field>
+	<field name="tipoOperacao" class="br.com.neainformatica.infrastructure.enumeration.EnumAuditoriaOperacao">
+		<fieldDescription><![CDATA[tipoOperacao]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[usuario]]></fieldDescription>
+	</field>
+	<group name="Auditoria">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="36">
+				<rectangle>
+					<reportElement uuid="e420bab4-c2cd-4fb5-84df-6017de289fb6" x="0" y="0" width="503" height="24"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement uuid="55c5c6c1-bd18-4795-8c80-b40b67432101" x="0" y="24" width="503" height="12"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement uuid="81cc67d7-fbd4-4fc9-8992-406ff0c2b0a1" x="121" y="0" width="1" height="36"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="25a7d035-4f13-4309-a1ae-d239b8dc87b9" x="222" y="0" width="1" height="24"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="7a49b851-048e-4764-8261-1f36644154ea" x="311" y="0" width="1" height="36"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="c530c1dc-45a4-43b8-a471-6e68dec5632c" x="411" y="0" width="1" height="24"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement uuid="ccd63efb-3e3f-489b-9d19-4e7f118340b7" x="2" y="1" width="120" height="10"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Tabela]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="6174bfc8-b91d-4229-8a8c-580e9853a1a6" x="2" y="11" width="120" height="12"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tabela}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="1e6bd181-9bf7-4e12-bf27-60a4f8fb4bfd" x="123" y="1" width="100" height="10"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Usuário]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="003be0c4-b976-494d-a105-f91346c42190" x="123" y="11" width="100" height="12"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="19cd0285-7e43-410c-ac2c-bf4cc18ee4b4" x="224" y="1" width="88" height="10"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Data e Hora]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="4b209e10-f6fb-4627-bf60-fa1be76276ac" x="224" y="11" width="88" height="12"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dataAuditoria}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="6a0d96bd-bc57-4138-b874-5d674e9cf889" x="313" y="1" width="99" height="10"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Operação]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="82a8faf5-6423-4b81-ad8f-db5a706c7826" x="313" y="11" width="99" height="12"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""+$F{tipoOperacao}.getDescricao()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="b8416b22-21c7-493a-a032-0b8d1b1b4730" x="413" y="1" width="88" height="10"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Chave registro]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="e1448866-cd7a-462a-a175-5bdadf0ecaca" x="413" y="11" width="88" height="12"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chaveRegistro}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="8f0a26e1-6f57-4495-9c6c-50c5a4023ba8" x="2" y="25" width="120" height="10"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Campo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="2aa89a68-3df7-4556-bdec-b1c6465b6274" x="123" y="25" width="189" height="10"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Valor anterior]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d4859cd2-5283-48ff-9508-8d826bee8acf" x="312" y="25" width="189" height="10"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Novo valor]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12"/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement uuid="ef02533c-0704-4cba-bff6-99772de19a69" x="0" y="0" width="503" height="60"/>
+				<subreportParameter name="TITULO">
+					<subreportParameterExpression><![CDATA[$P{TITULO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_DIVISAO">
+					<subreportParameterExpression><![CDATA[$P{NOME_DIVISAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATA_HORA_IMPRESSAO">
+					<subreportParameterExpression><![CDATA[$P{DATA_HORA_IMPRESSAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BRASAO_PREFEITURA">
+					<subreportParameterExpression><![CDATA[$P{BRASAO_PREFEITURA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PAGINA">
+					<subreportParameterExpression><![CDATA[$V{PAGE_NUMBER}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_SECRETARIA">
+					<subreportParameterExpression><![CDATA[$P{NOME_SECRETARIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBTITULO">
+					<subreportParameterExpression><![CDATA[$P{SUBTITULO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_PREFEITURA">
+					<subreportParameterExpression><![CDATA[$P{NOME_PREFEITURA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_SISTEMA">
+					<subreportParameterExpression><![CDATA[$P{NOME_SISTEMA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{PAGE_HEADER} != null ? $P{PAGE_HEADER} : null]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="c8d8d7af-3cf6-4252-9603-077a4a0dbfbc" stretchType="RelativeToBandHeight" x="0" y="0" width="503" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<componentElement>
+				<reportElement uuid="1cccf764-60cc-40e4-8838-a53e12e56c35" x="0" y="0" width="503" height="12"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dsItens" uuid="45e3dd82-2fce-475d-9047-bae38e81af39">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{auditoriaItems})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="12" width="503">
+						<textField>
+							<reportElement uuid="9c5dc5ae-5bea-48d9-9da0-e6c515231f54" x="2" y="0" width="120" height="12"/>
+							<textElement>
+								<font fontName="Arial" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement uuid="518b7113-1f3c-4d8a-ae48-635c377e852a" x="123" y="0" width="189" height="12"/>
+							<textElement textAlignment="Justified">
+								<font fontName="Arial" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valorAnterior}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement uuid="2b4f716a-8c99-4afc-9f31-b6088071c618" x="313" y="0" width="189" height="12"/>
+							<textElement textAlignment="Justified">
+								<font fontName="Arial" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valorNovo}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement uuid="bc670aef-f8f5-49c1-af17-1a1866d3406f" stretchType="RelativeToBandHeight" x="121" y="0" width="1" height="12"/>
+							<graphicElement>
+								<pen lineWidth="0.5"/>
+							</graphicElement>
+						</line>
+						<line>
+							<reportElement uuid="059ef878-da0d-4977-8253-afdaca742768" stretchType="RelativeToBandHeight" x="311" y="0" width="1" height="12"/>
+							<graphicElement>
+								<pen lineWidth="0.5"/>
+							</graphicElement>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="12">
+			<subreport isUsingCache="false">
+				<reportElement uuid="5b390051-04a6-4f06-b02a-6f8ebcaca6d6" x="0" y="0" width="503" height="12"/>
+				<subreportParameter name="NOME_USUARIO">
+					<subreportParameterExpression><![CDATA[$P{NOME_USUARIO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SITE">
+					<subreportParameterExpression><![CDATA[$P{SITE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="VERSAO">
+					<subreportParameterExpression><![CDATA[$P{VERSAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{PAGE_FOOTER} != null ? $P{PAGE_FOOTER} : null]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

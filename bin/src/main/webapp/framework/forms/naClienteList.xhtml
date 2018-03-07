@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" 
+    template="/framework/template/templateList.xhtml">
+<!-- 
+**********************************************************
+   @Empresa: N&A Inform�tica Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 18/07/2014 18:18:44
+	@Author  = NELSON
+	@Vers�o da Classe = 
+**********************************************************  
+-->
+
+   <ui:param name = "controller" value="#{naClienteController}" />
+   <ui:param name = "nomeTela" value = "Dados do Cliente" />
+   <ui:param name = "permissao" value="NA_CLIENTE" />
+   <ui:param name = "exibeBotaoNovo" value="false" />
+
+	<ui:define name="dataTablePrincipal">
+		<p:column headerText="Nome" style="text-align:center" >
+			<h:outputText value="#{dt.nome}" />
+		</p:column>
+		<p:column headerText="Cnpj" style="text-align:center" >
+			<h:outputText value="#{dt.cnpj}">
+				<f:converter converterId="cpfCnpjConverter" />
+			</h:outputText>
+		</p:column>
+	</ui:define>
+
+	<ui:define name="itens_adicionais">
+	</ui:define>
+
+	<ui:define name="itens">
+	</ui:define>
+
+</ui:composition>

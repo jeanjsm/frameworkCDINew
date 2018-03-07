@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+	<!-- 
+    **********************************************************
+       @Empresa: N&A Informática Ltda
+       @Gerador: MultiSource 
+       Dados da Classe:
+            @Data  = 22/07/2014 11:44:30
+            @Author  = NELSON
+            @Vers�o da Classe = 
+    **********************************************************  
+    -->
+
+	<ui:param name="controller" value="#{naCidadeController}" />
+	<ui:param name="nomeTela" value="Cidade" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+
+		<nea:inputText id="txtCodigoIbge" value="#{controller.objeto.codigoIbge}" required="true" width="70px" label="Código IBGE" controller="#{controller}" />
+
+		<nea:inputText id="txtDescricao" value="#{controller.objeto.descricao}" required="true" width="350px" label="Descrição" controller="#{controller}" />
+
+		<nea:inputSearch2 atributoCodigo="sigla" controller="#{controller}" widthDialog="800px" filtroDefault="nome" label="Estado" id="inputSearchEstado" atributoDescricao="#{controller.objeto.estado.nome}" value="#{controller.objeto.estado}" classType="br.com.neainformatica.infrastructure.entity.NaEstado"></nea:inputSearch2>	
+			
+		<nea:selectEnum id="cmbCapital" label="Capital" value="#{controller.objeto.capital}" controller="#{Controller}"
+			items="#{controller.convertEnumToList('capital')}" itemLabel="#{item.descricao}" width="90px" required="true">
+		</nea:selectEnum>
+
+		<nea:selectEnum id="cmbAtivo" label="Ativo" value="#{controller.objeto.ativo}" controller="#{Controller}" items="#{controller.convertEnumToList('ativo')}"
+			itemLabel="#{item.descricao}" width="90px" required="true">
+		</nea:selectEnum>
+
+
+	</ui:define>
+
+</ui:composition>

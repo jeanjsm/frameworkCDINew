@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<div class="footer FixedBottom">
+		<div align="left">
+			<span id="empresa" style="float: left;"> Copyright© N&amp;A
+				Informática Ltda. (<span>#{infrastructureController.getNeaInfrastructureSistemaVersao()}</span>)
+			</span>
+			<c:if test="#{(empty exibeMenu ? true : exibeMenu)}">
+				<span id="cronometro_div_" style="float: right"> Sessão
+					expira em <span id="cronometro_"></span>
+				</span>
+			</c:if>
+		</div>
+	</div>
+
+	<p:dialog styleClass="no-print" onHide="goHome();"
+		header="Zzzzzzzzzz..." resizable="false" widgetVar="idleDialog"
+		modal="true" width="450" style="z-index:1;" appendTo="@(body)">
+		<h:panelGrid columns="1">
+			<p:spacer height="20" width="20" />
+			<h:outputText
+				value="Sua sessão expirou! Você será redirecionado para a página inicial..."
+				style="color:#B30000;font-weight:bold;" />
+			<p:spacer height="20" width="20" />
+		</h:panelGrid>
+	</p:dialog>
+
+	<script type="text/javascript" language="javascript">  
+		var campo = document.getElementById("cronometro_");  
+		var campo_div = document.getElementById("cronometro_div_");  
+		var minutos= #{naSessionController.tempoDeSessao()};  
+		var seconds=00;  
+		
+		function startCountdown() 
+		{  
+	    	if ( 0 >= seconds){    
+	        	seconds=60;  
+	        	minutos-=1;  
+	    	 }   
+	    	if ( -1 >=  minutos){   
+	        	seconds=0;  
+	        	seconds+=1;  
+	        	campo.innerHTML="";  
+	        	campo_div.innerHTML="Sessão expirada!";  
+	        	idleDialog.show();       	
+		     } else{   
+		        	seconds-=1  
+		        if(10 > seconds) {  
+		            seconds = "0" + seconds;  
+		        }   
+		        campo.innerHTML = " " + minutos+":"+seconds;  
+		        setTimeout("startCountdown()",1000);   
+		    }    
+		}  
+
+		function aumentaTempoSessao(m) {
+			minutos = m;
+		}
+		
+		startCountdown();
+		function goHome() {
+			document.location.href = '#{request.contextPath}/common/login.xhtml';
+		}    
+	</script>
+</ui:composition>

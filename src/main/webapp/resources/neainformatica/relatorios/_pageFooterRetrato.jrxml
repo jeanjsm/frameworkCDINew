@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="_pageFooterRetrato" pageWidth="595" pageHeight="842" columnWidth="504" leftMargin="0" rightMargin="91" topMargin="0" bottomMargin="0" uuid="9ead7f66-88e4-445a-951a-87417686ebe1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Arial" fontSize="8"/>
+	<parameter name="NOME_USUARIO" class="java.lang.String"/>
+	<parameter name="SITE" class="java.lang.String"/>
+	<parameter name="VERSAO" class="java.lang.String"/>
+	<detail>
+		<band height="12">
+			<line>
+				<reportElement uuid="faae5254-9e41-448e-abc8-030b04cbc6f8" x="0" y="0" width="504" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ab4adbf1-221a-4401-9d19-47fed8c508a4" x="0" y="0" width="220" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Usuário: " + $P{NOME_USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f386c815-8124-4c39-a51d-f3ec047c8fd6" x="0" y="0" width="504" height="12"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{SITE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d45eafb8-5b99-47d5-9951-88d93478bada" x="284" y="0" width="220" height="12"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Versão: " + $P{VERSAO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

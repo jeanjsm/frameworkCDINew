@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" 
+    template="/framework/template/templateList.xhtml">
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 20/06/2014 17:59:58
+	@Author  = NELSON
+	@Versão da Classe = 
+**********************************************************  
+-->
+
+   <ui:param name = "controller" value="#{organogramaController}" />
+   <ui:param name = "nomeTela" value = "Organograma" />
+   <ui:param name = "permissao" value="Organograma" />
+
+	<ui:define name="dataTablePrincipal">
+
+		<p:column headerText="Estruturanivel">
+		   <h:outputText value="#{dt.estruturanivel}" />
+		</p:column>
+		<p:column headerText="Estruturaorganizacion">
+		   <h:outputText value="#{dt.estruturaorganizacion}" />
+		</p:column>
+		<p:column headerText="Organogramasuperior">
+		   <h:outputText value="#{dt.organogramasuperior}" />
+		</p:column>
+		<p:column headerText="Descricao">
+		   <h:outputText value="#{dt.descricao}" />
+		</p:column>
+	</ui:define>
+
+	<ui:define name="itens_adicionais">
+	</ui:define>
+
+	<ui:define name="itens">
+	</ui:define>
+
+</ui:composition>

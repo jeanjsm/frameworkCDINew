@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+<ui:composition template="/framework/template/templateForm.xhtml">
+
+	<ui:param name="controller" value="#{naPerfilController}" />
+	<ui:param name="nomeTela" value="Perfil de Acesso" />
+	<ui:param name="permissao" value="Perfil" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<nea:inputText id="txtDescricao" controller="#{naPerfilController}" value="#{controller.objeto.descricao}" width="300px" required="true" label="Descrição"
+			title="nome do perfil" />
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

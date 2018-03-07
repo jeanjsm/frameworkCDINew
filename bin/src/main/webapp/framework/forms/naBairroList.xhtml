@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" 
+    template="/framework/template/templateList.xhtml">
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 28/04/2014 17:43:44
+	@Author  = NELSON
+	@Versão da Classe = 
+**********************************************************  
+-->
+
+   <ui:param name = "controller" value="#{naBairroController}" />
+   <ui:param name = "nomeTela" value = "Bairro" />
+   <ui:param name = "permissao" value="NA_BAIRRO" />
+
+	<ui:define name="dataTablePrincipal">
+
+		 
+		<p:column headerText="Tipo">
+		   <h:outputText value="#{dt.tipoBairro.descricao}" />
+		</p:column>		
+		 
+		<p:column headerText="Descrição">
+		   <h:outputText value="#{dt.descricao}" />
+		</p:column>
+		 
+		 
+	</ui:define>
+
+	<ui:define name="itens_adicionais">
+	</ui:define>
+
+	<ui:define name="itens">
+	</ui:define>
+
+</ui:composition>

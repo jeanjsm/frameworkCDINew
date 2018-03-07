@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite" xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+	<composite:interface>
+
+		<composite:attribute name="id" required="true"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="controller" required="true"
+			shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+
+		<composite:attribute name="naPermissao" required="true" type="String"
+			shortDescription="Nome da permissao que o usuario do sistema deve ter para poder acessar tal recurso." />
+
+		<!-- Detail List -->
+		<composite:attribute name="src" required="true" type="String" shortDescription="Caminho da pagina que será inserida no detail." />
+		<composite:attribute name="width" required="false" type="String" default="400px" shortDescription="Tamanho do campo com valor em pixels. Por exemplo 100px" />
+		<composite:attribute name="height" required="false" type="String" default="250px" shortDescription="Altura do campo com valor em pixels. Por exemplo 100px" />
+
+		<composite:attribute name="closable" required="false" type="boolean" default="false" shortDescription="Define se perto do ícone deve ser exibido ou não." />
+		<composite:attribute name="maximizable" required="false" type="boolean" default="false"
+			shortDescription="Especifica se diálogo é minimizada ou não. Padrão falsa." />
+
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:remoteCommand id="#{cc.attrs.id}_atualizar" name="#{cc.attrs.id}_atualizar" process="@this" update="#{cc.attrs.id}_opnListaDetail" />
+
+
+		<h:panelGroup id="#{cc.attrs.id}_opnListaDetail">
+			<div align="center" id="div#{cc.attrs.id}">
+
+				<h:panelGroup id="#{cc.attrs.id}_panelToolbarDetail">
+
+					<p:toolbar id="#{cc.attrs.id}_toolbarDetail" styleClass="toolbarCadastro">
+
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="btnNovoDetail_#{cc.attrs.id}" value="Novo" icon="add" oncomplete="PF('#{cc.attrs.id}_dialogForm').show();"
+								actionListener="#{cc.attrs.controller.create()}"
+								rendered="#{autenticador.hasPermissao(cc.attrs.naPermissao.concat('-INSERIR'))}" 
+								accesskey="n" title="Criar novo registro. (Alt + N)"
+								style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" 
+								update="#{cc.attrs.id}_panelGridPrincipalDetail #{cc.attrs.id}_dataTableDetail"/>
+
+							<p:commandButton id="btnEditarDetail_#{cc.attrs.id}" value="Alterar" icon="edit"
+								rendered="#{(cc.attrs.controller.objeto.id != null) and (autenticador.hasPermissao(cc.attrs.naPermissao.concat('-ALTERAR'))) }"
+								oncomplete="PF('#{cc.attrs.id}_dialogForm').show();" action="#{cc.attrs.controller.updateInDetail()}" accesskey="x" title="Alterar registro. (Alt + X)"
+								style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+							<p:commandButton id="btnApagarDetail_#{cc.attrs.id}" value="Apagar" icon="delete"
+								rendered="#{(cc.attrs.controller.objeto.id != null) and (autenticador.hasPermissao(cc.attrs.naPermissao.concat('-EXCLUIR'))) }"
+								onclick="PF('wvDeleteConfirmDialog#{cc.attrs.id}').show();" type="button" accesskey="a" title="Apagar registro. (Alt + A)"
+								style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+							<p:confirmDialog id="deleteConfirmDialog#{cc.attrs.id}" closeOnEscape="true" message="Deseja realmente apagar este registro?"
+								header="Confirmação de Exclusão" closable="false" severity="warning32" widgetVar="wvDeleteConfirmDialog#{cc.attrs.id}">
+								<div align="center">
+									<p:commandButton id="cmdConfirmDelete#{cc.attrs.id}" value="Sim" 
+										icon="ok16" oncomplete="PF('wvDeleteConfirmDialog#{cc.attrs.id}').hide();"
+										action="#{cc.attrs.controller.delete()}" ajax="false" style="width:70px;" />
+									<p:commandButton id="cmdDeclineDelete#{cc.attrs.id}" value="Não" icon="cancel16" onclick="PF('wvDeleteConfirmDialog#{cc.attrs.id}').hide();"
+										type="button" style="width:70px;" />
+								</div>
+							</p:confirmDialog>
+
+							<p:commandButton id="btnVisualizarDetail_#{cc.attrs.id}" value="Visualizar" icon="detail16"
+								rendered="#{cc.attrs.controller.objeto != null and cc.attrs.controller.objeto.id != null}" accesskey="t"
+								oncomplete="PF('#{cc.attrs.id}_dialogForm').show();" action="#{cc.attrs.controller.showFormDetailInDetail()}"
+								style="text-align: center; font-size: 8pt; height: 30px; width: 85px;" title="Mostrar detalhes (Alt + T)" immediate="true"/>
+
+						</p:toolbarGroup>
+
+						<p:toolbarGroup align="right" id="tgRightDetail#{cc.attrs.id}">
+							<nea:simpleSearch id="searchListDetail#{cc.attrs.id}" controller="#{cc.attrs.controller}" update="@this"
+								onSearchComplete="alert('onSearchComplete');#{cc.attrs.id}_atualizar();" />
+						</p:toolbarGroup>
+					</p:toolbar>
+
+				</h:panelGroup>
+			</div>
+
+			<h:panelGroup id="#{cc.attrs.id}_panelGridPrincipalDetail">
+
+				<div align="center">
+
+					<p:dataTable id="#{cc.attrs.id}_dataTableDetail" value="#{cc.attrs.controller.lazyList}" var="dtl" paginator="true" paginatorPosition="bottom"
+						rowKey="#{dtl.id}" selectionMode="single" widgetVar="detailLazy" lazy="true" selection="#{cc.attrs.controller.objeto}" rows="15"
+						emptyMessage="Não há dados cadastrados">
+
+						<p:ajax event="rowSelect" oncomplete="#{cc.attrs.id}_atualizarToolbarDetail();" />
+
+						<p:columns id="#{cc.attrs.id}_collumns" value="#{cc.attrs.controller.columns}" var="c" columnIndexVar="colIndex">
+							<f:facet name="header">  
+                        #{c.header}  
+                     </f:facet>
+
+							<nea:outputDate value="#{dtl[c.property]}" rendered="#{c.tipoDado == 'DATE'}" />
+							<nea:outputTime value="#{dtl[c.property]}" rendered="#{c.tipoDado == 'HORA'}" />
+							<h:outputText value="#{dtl[c.property]}" rendered="#{c.tipoDado == 'TEXTO'}" />
+
+							<c:if test="#{c.tipoDado == 'CONVERTER'}">
+								<h:outputText value="#{dtl[c.property]}" rendered="#{c.tipoDado == 'CONVERTER'}">
+									<f:converter converterId="#{c.converter}" />
+								</h:outputText>
+							</c:if>
+						</p:columns>
+
+					</p:dataTable>
+				</div>
+
+				<p:remoteCommand id="#{cc.attrs.id}_atualizarToolbarDetail" name="#{cc.attrs.id}_atualizarToolbarDetail" process="@this" partialSubmit="true"
+					update="#{cc.attrs.id}_panelToolbarDetail" />
+
+				<p:remoteCommand id="#{cc.attrs.id}_atualizarOpnDialogFormDetail" name="#{cc.attrs.id}_atualizarOpnDialogFormDetail" process="@this" partialSubmit="true"
+					update="#{cc.attrs.id}_panelDialog" />
+
+			</h:panelGroup>
+
+		</h:panelGroup>
+
+
+		<p:dialog id="#{cc.attrs.id}_dialogForm" header="#{cc.attrs.label}" widgetVar="#{cc.attrs.id}_dialogForm" modal="true" resizable="true"
+			width="#{cc.attrs.width}" height="#{cc.attrs.height}" dynamic="true" onShow="#{cc.attrs.id}_atualizarOpnDialogFormDetail();"
+			onHide="#{cc.attrs.id}_atualizar();" closeOnEscape="true" maximizable="#{cc.attrs.maximizable}" closable="false">
+
+			<h:panelGroup id="#{cc.attrs.id}_panelDialog">
+
+				<p:messages id="#{cc.attrs.id}_messages_dialog" closable="true" />
+
+				<ui:include src="#{cc.attrs.src}" />
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnSalvarDetail#{cc.attrs.id}" value="Salvar" icon="save" action="#{cc.attrs.controller.salvarDetail}" accesskey="s"
+						oncomplete="fecharDialogo(xhr, status, args)" title="Salvar registro. (Alt + S)"
+						rendered="#{cc.attrs.controller.viewStateInsert eq true or cc.attrs.controller.viewStateEdit eq true}" update="#{cc.attrs.id}_panelDialog"
+						style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" ajax="true" />
+
+					<p:commandButton id="btnSalvarMaisDetail#{cc.attrs.id}" value="Salvar+" icon="saveplus" action="#{cc.attrs.controller.salvarMais}" accesskey="b"
+						title="Salvar e criar novo registro. (Alt + B)" oncomplete="#{cc.attrs.id}_atualizar();#{cc.attrs.id}_atualizarOpnDialogFormDetail();"
+						rendered="#{cc.attrs.controller.viewStateInsert eq true}"
+						style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+					<p:commandButton id="btnCancelarDetail#{cc.attrs.id}" value="Cancelar" icon="cancelar" action="#{cc.attrs.controller.cancelDetail}" accesskey="c"
+						oncomplete="PF('#{cc.attrs.id}_dialogForm').hide();" title="Cancelar. (Alt + C)"
+						style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" immediate="true" ajax="true" />
+
+					<ui:insert name="botoesAdicionais" />
+
+				</div>
+
+			</h:panelGroup>
+
+		</p:dialog>
+
+		<script type="text/javascript">
+         function fecharDialogo(xhr, status, args) {
+            if (args.validationFailed) {
+         #{cc.attrs.id}_dialogForm.jq.effect("shake", {times: 5}, 100);
+               } else {
+            	   PF('#{cc.attrs.id}_dialogForm').hide();   
+         
+               }
+            }
+      </script>
+
+	</composite:implementation>
+
+</ui:composition>

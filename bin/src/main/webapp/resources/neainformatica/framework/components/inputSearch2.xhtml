@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface componentType="CCInputSearch">
+		<composite:attribute name="id" required="true" type="String"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="rendered" type="boolean" default="true"
+			shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="disabled" required="false" type="boolean" default="false"
+			shortDescription="Sinalizador indicando que este elemento não deve nunca recebem o foco ou ser incluído em uma subsequente enviar. Um valor de falsas causas nenhum atributo a ser prestado, enquanto um valor de true faz com que o atributo a ser processado como disabled = 'desabled'." />
+		<composite:attribute name="required" required="false" type="boolean" default="false"
+			shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="requiredMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é obrigatório!" shortDescription="um atributo habilitado expressão de valor que, se presente, será usado como o texto da mensagem de validação para a instalação 'necessária', se a instalação 'necessária' é usado." />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="stylePanel" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada no panel que envolve o componente." />
+		<composite:attribute name="styleClass" required="false" type="String"
+			shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+		<composite:attribute name="widthCodigo" required="false" type="String" default="50px"
+			shortDescription="Tamanho do espaço reservado para o código - por exemplo 100px" />
+		<composite:attribute name="widthDescricao" required="false" type="String" default="300px"
+			shortDescription="Tamanho do espaço reservado para a descrição - por exemplo 100px" />
+		<composite:attribute name="widthDialog" required="false" type="String" default="600px"
+			shortDescription="Largura em px do dialog que será aberto quando o usuario clicar no botao de adicionar novo registro." />
+		<composite:attribute name="qtdeMaxResults" default="100" shortDescription="Quantidade máxima de registro que será retornada no formulario de pesquisa." />
+		<composite:attribute name="fieldList"
+			shortDescription="campos que serão exibidos na busca, caso haja mais de um separe os campos por ;.  Obs. os fields devem ser idênticos aos da entity" />
+		<composite:attribute name="ignoreReadOnlyController" required="false" type="boolean" default="false"
+			shortDescription="Não utiliza o controller para definir a propriedade readOnly (default:false)" />
+		<composite:attribute name="controller" required="true" shortDescription="Este controller é o da tela atual, responsavel por determinar se o campo é read only" />
+		<composite:attribute name="entityController" required="false"
+			shortDescription="Este controller é da entity, necessário caso a opção de inserir novo item esteje habilitada." />
+		<composite:attribute name="order" shortDescription="campos para ordenação do resultado" />
+		<composite:attribute name="filtroDefault" required="false"
+			shortDescription="Define o filtro que ja virá selecionado na combo. O nome deve ser idêntico ao field da entity" />
+		<composite:attribute name="qtdeMaxResults" required="false" shortDescription="Define o limite no resultado da busca do inputSearch." />
+		<composite:attribute name="classType" required="true" type="String" shortDescription="Define a classe da entity. Preencher com o package por extenso." />
+		<composite:attribute name="atributoDescricao" required="true"
+			shortDescription="Nome do atributo que será mostrado como identificador do registro selecionado." />
+		<composite:attribute name="atributoCodigo" required="true" type="String" shortDescription="Atributo que será mostrado como descrição do registro selecionado." />
+		<composite:attribute name="filtersBeforeSearch" required="false" type="java.util.List"
+			shortDescription="Lista de IFilter para serem filtrados junto com a busca." />
+		<composite:attribute name="entityController" required="false"
+			shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="pathFragmentForm" required="false" type="String"
+			shortDescription="Caminho completo do fragment que será exibido quando o usuario clicar no botao de adicinar novo" />
+		<composite:attribute name="naPermissao" required="false" type="String"
+			shortDescription="Nome da permissao que o usuario deve ter para poder adicionar um novo registro" />
+		<composite:attribute name="onComplete" required="false" type="String" shortDescription="nome do método javaScript que será chamado após a seleção de um registro." />
+	   <composite:attribute name="enableMask" required="false" type="boolean" default="false" shortDescription="Sinalizador indicando se o campo é mascarado ou não." />	
+       <composite:attribute name="campoMask" required="false" shortDescription="Informa o campo que será mascarado" />
+		
+	</composite:interface>
+
+	<composite:implementation>
+		<!-- https://datatables.net -->
+		<h:outputStylesheet library="neainformatica" name="framework/DataTables/datatables.min.css" />
+		<h:outputScript library="neainformatica" name="framework/DataTables/datatables.min.js" />
+
+		<h:outputStylesheet library="neainformatica" name="framework/jquery-modal/jquery.modal.min.css" />
+		<h:outputStylesheet library="neainformatica" name="framework/css/input-search.css" />
+		<h:outputScript library="neainformatica" name="framework/jquery1.12.1/jquery-ui.min.js" />
+		<h:outputScript library="neainformatica" name="framework/jquery-modal/jquery.modal.min.js" />
+
+		<script type="text/javascript">
+		//<![CDATA[
+		/*
+		* DEFINE UM NAMESPACE PARA O INPUTSEARCH, ASSIM, POSSO UTILIZAR 
+		* FUÇÕES E ATRIBUTOS DENTRO DESSE ESCOPO SEM COLIDIR COM OUTROS 
+		* INPUT-SEARCH NA VIEW
+		*/
+		var inputSearch_#{cc.attrs.id} = function () {
+
+			//view compontents
+			var formModal;//Modal de pesquisa
+			var dialogAnchor;//Componente que serve de referência para posicionar o modal
+			var btnModal;//Botao que abre modal
+			var btnPesquisar;//Botao de pesquisa dentro do modal
+			var filterText;//InputText do filtro do modal
+			var inputCodigo;//InputText do código
+			var tabela;//Tabela do modal
+
+			//local variables
+			var datatable;//Instancia da datatable
+			var filterTextMudouValor = true;
+			var modalAberto = false;
+			var primeiraVez = true;//Boolean que controla a pesquisa ao abrir o modal pela primeira vez.
+
+			function refreshDialogPosition() {
+				$(formModal).dialog({
+					position: { my: "left top", at: "left bottom", of: dialogAnchor, collision: "fit" }
+				});
+			}
+			
+			/*
+			* Função que recria a tabela.
+			*/
+		    var atualizaTabela = function atualizaTabela() {
+				tabela = $("##{cc.clientId}:pgRegistrosTable_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				if (tabela == null ||  !tabela.is('table')){
+					tabela = $("#pgRegistrosTable_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				}
+				
+				filterTextMudouValor = false;
+				datatable = $(tabela).DataTable({
+					paging: false,
+					ordering: false,
+					scrollY: 300,
+					scrollCollapse: true,
+					searching: false,
+					keys: true,
+					select: true,
+					info: false,
+					"language": {
+						    "infoEmpty": "Lista Vazia."
+					}
+				});
+
+				/*
+				* Sobrescreve o evento key-focus da extensão KeyTable, selecionando a linha da coluna que recebeu o foco.
+				*/
+				tabela.on('key-focus',  function ( e, datatable, cell, originalEvent ) {
+					if(originalEvent == null || originalEvent.type != "click") {
+			       		var row = datatable.row( cell.index().row );
+			       		datatable.rows({selected:true}).deselect();
+			        	row.select();
+					}
+			    });
+
+				//Foca na primeira celula da tabela
+				datatable.cell( ':eq(0)' ).focus();
+
+				refreshDialogPosition();
+
+			};
+
+			//Função que aciona o botão de pesquisa
+		    var pesquisar = function pesquisar(e) {
+		    	var ev = e || event;
+	            var key = ev.which || ev.keyCode;
+	            if(key == 13) {
+	            	$(btnPesquisar).click();
+	            	//devolve false para não submeter o form
+	            	return false;
+		        }
+			};
+
+			//Função acionada no keypress do modal de busca(caso a busca esteje atualizada, 
+			//seleciona o item da tabela, caso contrário uma nova busca é realizada)
+		    var dialogKeyPress = function dialogKeyPress(e, component) {
+		    	var ev = e || event;
+	            var key = ev.which || ev.keyCode;
+				//Caso tecla enter
+	            if(key == 13) {
+		            //Se alterou texto de pesquisa, refaz busca
+					if(filterTextMudouValor) {
+	            		$(btnPesquisar).click();
+					}
+					//Senão seleciona o item da tabela
+					else { 
+						var selectedRows = datatable.rows({selected:true});
+						if(selectedRows.length == 1) {
+							var rowIndex = selectedRows[0];
+							var row = datatable.row(rowIndex);
+							var rowData = row.data();
+							if(rowData != null) {
+								var lastColumnHtml = $(rowData[rowData.length - 1]);
+								var submitButton = lastColumnHtml.filter('input[type=submit]');
+								var submitButtonDOM = $("#" + submitButton.attr('id').replace(/:/g,"\\:"));
+								submitButtonDOM.click();
+							}
+						}
+					}
+					//devolve false para não submeter o form
+					return false;
+		        }
+				return true;
+			};
+
+			//Função para ignorar submissao do formulário ao pressionar enter
+			var ignorarEnter = function ignorarEnter(e) {
+		    	var ev = e || event;
+	            var key = ev.which || ev.keyCode;
+	            if(key == 13) {
+					return false;
+		        }
+			};
+
+			var setFilterTextMudouValor = function setFilterTextMudouValor(valor) {
+				filterTextMudouValor = valor;
+			}
+
+			//Função que abre o modal de pesquisa quando usuário pressiona espaço 
+			var abrirPesquisaSpace = function abrirPesquisaSpace(e, field) {
+	            var ev = e || event;
+	            var key = ev.which || ev.keyCode;
+	            if (key == 32 && !$(field).is('[readonly]')) {
+	            	console.log("abrindo caixa de pesquisa");
+	            	
+	            	abrirModal();
+	            	return false;
+	        	} else if(key == 13) {
+					return false;
+		        } 
+	        };
+
+	        var abrirModal =  function abrirModal() {
+		        modalAberto = true;
+				$(formModal).dialog("open");
+				$(formModal).dialog("moveToTop");
+				//Coloca foco no inputText do modal
+				$(filterText).focus();
+				$(filterText).select();
+				if(datatable == null) {
+					atualizaTabela();
+					filterTextMudouValor = true;
+				}
+				//Caso seje primeira vez abrindo o modal, faz uma pesquisa geral.
+				if(primeiraVez) {
+					$(btnPesquisar).click();
+					primeiraVez = false;
+				}
+		    }
+
+		    var fecharModal = function fecharModal() {
+			    modalAberto = false;
+				$(formModal).dialog("close");
+				inputCodigo = $("##{cc.clientId}:input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				if (inputCodigo == null ||  !inputCodigo.is('input')){
+					inputCodigo = $("#input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				}
+				$(inputCodigo).focus();
+				$(inputCodigo).select();
+			}
+
+			//Busca novo registro quando o inputCodigo perde foco(verifica se o registro já está atualizado antes de fazer a busca)
+			var atualizarItem = function atualizarItem() {
+				inputCodigo = $("##{cc.clientId}:input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				if (inputCodigo == null ||  !inputCodigo.is('input')){
+					inputCodigo = $("#input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+				}
+				//Verifica se o modal está fechado e se o valor digitado foi alterado desde a ultima busca.
+				if(!modalAberto && $(inputCodigo).val() != $(inputCodigo).data('codigoatualizado')) {
+					//scriptCommand do omnifaces, realiza chamada ajax que busca o novo registro e atualiza UI.
+					buscarRegistroCommand_#{cc.attrs.id}({"codigoValue": $(inputCodigo).val()});
+					//#{cc.attrs.onComplete};
+				}
+			}
+
+			var selecionarTudo = function selecionarTudo(field) {
+				$(field).select();
+			}
+
+			var tabelaDoubleClick = function tabelaDoubleClick(row) {
+				$(row).find("#" + submitButton.attr('id').replace(/:/g,"\\:")).click();
+			}
+
+			//Inicialização
+		   	$( document ).ready(function() {
+		    formModal = $("##{cc.clientId}:dialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			btnModal = $("##{cc.clientId}:bt_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			btnPesquisar = $("##{cc.clientId}:bt_pesquisar_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			filterText = $("##{cc.clientId}:filter_text_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			inputCodigo = $("##{cc.clientId}:input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			dialogAnchor = $("##{cc.clientId}:dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			
+			if (formModal == null ||  !formModal.is('div')){
+				formModal = $("#dialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}
+
+			if (btnModal == null ||  !btnModal.is('button')){
+				btnModal = $("#bt_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}	
+
+			if (btnPesquisar == null ||  !btnPesquisar.is('a')){
+				btnPesquisar = $("#bt_pesquisar_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}	
+
+			if (filterText == null ||  !filterText.is('input')){
+				filterText = $("#filter_text_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}
+			
+			if (inputCodigo == null ||  !inputCodigo.is('input')){
+				inputCodigo = $("#input_codigo_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}
+			
+			if(dialogAnchor == null || !dialogAnchor.is('div')) {
+				dialogAnchor = $("#dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"));
+			}
+
+			$(filterText).on('input', function(){
+			    filterTextMudouValor = true;
+			});
+			
+
+			
+			$(formModal).dialog({
+				autoOpen : false,
+				height: "auto",
+				closeText: "",
+				width: "#{cc.attrs.widthDialog}",
+				draggable: false,
+				resizable: false,
+				dialogClass: "inputSearchDialog",
+				position: { my: "left top", at: "left bottom", of: dialogAnchor },
+				appendTo: "#dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"),
+				close: function(event, ui){modalAberto = false;},
+				open: function( event, ui ){modalAberto = true;}
+				
+			});
+
+			$(btnModal).on( "click", function() {			
+				abrirModal();
+				return false;				
+		    });
+
+
+			//atualizaTabela();
+			//filterTextMudouValor = true;
+		    } ); 
+			
+		    return {
+		    	atualizaTabela: atualizaTabela,
+		    	pesquisar: pesquisar,
+		    	ignorarEnter: ignorarEnter,
+		    	abrirPesquisaSpace: abrirPesquisaSpace,
+		    	abrirModal: abrirModal,
+		    	fecharModal: fecharModal,
+		    	dialogKeyPress: dialogKeyPress,
+		    	atualizarItem: atualizarItem,
+		    	setFilterTextMudouValor: setFilterTextMudouValor,
+		    	selecionarTudo: selecionarTudo,
+		    	tabelaDoubleClick: tabelaDoubleClick
+		    	
+		    }
+		}();
+		//]]>
+	</script>
+		<h:panelGroup id="#{cc.attrs.id}" rendered="#{cc.attrs.rendered}" style="#{cc.attrs.stylePanel}"
+			styleClass="panelComponentesNeA #{cc.attrs.styleClass} inputSearch">
+			<!-- Este remoteCommand faz: 
+           		Busca o registro cujo código foi digitado no inputCodigo e atualiza o atributo value -->
+			<o:commandScript name="buscarRegistroCommand_#{cc.attrs.id}" render="inputSearch_#{cc.attrs.id}" execute="input_codigo_#{cc.attrs.id}"
+				actionListener="#{cc.buscarRegistro()}" oncomplete="#{cc.attrs.onComplete}">
+				<f:setPropertyActionListener target="#{cc.attrs.value}" value="#{cc.objetoSelecionado}" />
+			</o:commandScript>
+			<nea:outputText id="lbl_#{cc.attrs.id}" value="#{cc.attrs.label}" required="#{cc.attrs.required}"/>
+			<br />
+			<div>
+				<h:panelGroup id="inputSearch_#{cc.attrs.id}">
+					<h:inputText id="input_codigo_#{cc.attrs.id}" styleClass="text-field ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-left "
+						style="width: #{cc.attrs.widthCodigo} ; margin-right: -1px; #{cc.attrs.style}" pt:data-codigoatualizado="#{cc.codigoValor}"
+						onblur="inputSearch_#{cc.attrs.id}.atualizarItem()" value="#{cc.codigoValor}" onfocus="inputSearch_#{cc.attrs.id}.selecionarTudo(this)"
+						onkeypress="return inputSearch_#{cc.attrs.id}.abrirPesquisaSpace(event, this)"
+						readonly="#{(cc.attrs.controller != null and cc.attrs.controller.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController)}"
+						disabled = "#{cc.attrs.disabled}" required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
+					</h:inputText>
+					<h:inputText id="descricao" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default"
+						style="width: #{cc.attrs.widthDescricao}; background-color: #dddddd;" disabled="true"
+						value="#{cc.attrs.atributoDescricao == null ? '' : cc.attrs.atributoDescricao}" />
+				</h:panelGroup>
+				
+				<c:choose>
+					<!-- Verifica se a inserção de um novo registro está habilitada, se sim renderiza o botão que para inserir novo registro -->
+					<c:when test="#{(cc.attrs.controller != null and cc.attrs.controller.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController) or (cc.attrs.disabled)}">
+						<button disabled="disabled" id="bt_#{cc.attrs.id}"
+							class="hoverable input-search-abrir-modal-button ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only">
+							<span class="ui-button-icon-left ui-icon ui-c search"></span>
+						</button>
+					</c:when>
+					<c:otherwise>
+						<!-- Botão de inserir novo registro -->
+						<h:commandLink id="btnNovo#{cc.attrs.id}" accesskey="n" title="Criar novo registro. (Alt + N)" action="#{cc.inicializaNovoItem()}"
+							styleClass="hoverable ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+							rendered="#{(cc.attrs.naPermissao != null ? autenticador.hasPermissao(cc.attrs.naPermissao.concat('-INSERIR')) : false) and (cc.attrs.pathFragmentForm != null)}"
+							style="height: 21px !important; width: 23px !important; padding: 0 !important; float: right; margin-left: -1px !important;">
+							<span class="ui-button-icon-left ui-icon ui-c add"></span>
+							<f:ajax render="#{cc.clientId}:novo_item_form_#{cc.attrs.id}"
+								onevent="function(data) { if (data.status === 'success') { 
+   								  		inputSearchInserir_#{cc.attrs.id}.abrirInserirModal();}}" />
+						</h:commandLink>
+
+						<button id="bt_#{cc.attrs.id}" class="hoverable input-search-abrir-modal-button ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only">
+							<span class="ui-button-icon-left ui-icon ui-c search"></span>
+						</button>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<!-- Dialog de pesquisa de registros -->
+			<div id="dialog_anchor_#{cc.attrs.id}"></div>
+			<div id="dialog_#{cc.attrs.id}" style="display: none;" title="Pesquisar #{cc.attrs.label}">
+				<p:messages id="mensages" rendered="false" />
+				<div style="margin-bottom: 10px">
+					<h:panelGroup id="filter_panel_#{cc.attrs.id}">
+						<h:selectOneMenu id="filter_option__#{cc.attrs.id}" value="#{cc.selectedFilter}" styleClass="text-field form-control ui-widget ui-corner-all"
+							style="height: 23px;" immediate="true" converter="omnifaces.SelectItemsConverter">
+							<f:selectItems value="#{cc.simpleFilters}" var="var" itemLabel="#{var.fieldAlias}" />
+						</h:selectOneMenu>
+						<h:inputText autocomplete="off" id="filter_text_#{cc.attrs.id}" value="#{cc.valueFilter}" style="margin-left: 5px;"
+							styleClass="text-field form-control ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" immediate="true"
+							onkeypress="return inputSearch_#{cc.attrs.id}.dialogKeyPress(event, this)" />
+					</h:panelGroup>
+
+					<h:commandLink id="bt_pesquisar_#{cc.attrs.id}" action="#{cc.pesquisar}" value="" type="button"
+						styleClass="hoverable input-search-pesquisar-button ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+						<span class="ui-button-icon-left ui-icon ui-c search"></span>
+						<f:ajax execute="#{cc.clientId}:filter_panel_#{cc.attrs.id}" render="#{cc.clientId}:pgRegistros_#{cc.attrs.id}"
+							onevent="function(data) { if (data.status === 'success') { 
+   								  inputSearch_#{cc.attrs.id}.atualizaTabela(); } }" />
+					</h:commandLink>
+				</div>
+
+				<!-- Tabela do resultado da pesquisa -->
+				<h:panelGroup id="pgRegistros_#{cc.attrs.id}">
+					<table style="width: 100% !important;" tabindex="0" onkeydown="return inputSearch_#{cc.attrs.id}.dialogKeyPress(event, this)"
+						id="pgRegistrosTable_#{cc.attrs.id}" class="tabela display compact cell-border">
+						<thead>
+							<tr class="table-header">
+								<ui:repeat var="tableHeader" value="#{cc.dynamicHeaders}">
+									<td class="column-header dt-head-center" scope="col">#{tableHeader}</td>
+								</ui:repeat>
+								<td scope="row" class="column-header dt-head-center">Opção</td>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- ITERA LISTA CRIANDO LINHAS DA TABELA -->
+							<ui:repeat id="items" var="item" value="#{cc.lista}" varStatus="repeatStatus">
+								<tr class="table-row hoverable" ondblclick="inputSearch_#{cc.attrs.id}.tabelaDoubleClick(this)">
+									<ui:repeat var="column" value="#{cc.dynamicColumns}">
+										<td class="table-cell noselect">#{cc.getValorByFieldName(item, column)}</td>
+									</ui:repeat>
+									<td class="table-cell dt-body-center"><h:commandButton id="btn_selecionar_#{cc.attrs.id}" actionListener="#{cc.selecionarRegistro(item)}"
+											value="Selecionar" styleClass="hoverable selecionar-button ui-button ui-widget ui-state-default ui-corner-all">
+											<f:ajax onevent="function(data) { if (data.status === 'success') { 
+   								  					inputSearch_#{cc.attrs.id}.fecharModal();#{cc.attrs.onComplete};}}"
+												render="#{cc.clientId}:inputSearch_#{cc.attrs.id}" execute="@this" />
+											<f:setPropertyActionListener target="#{cc.attrs.value}" value="#{item}" />
+										</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+					</table>
+				</h:panelGroup>
+			</div>
+
+			<!-- Dialog de criar registro novo, renderizado somente se criação de registro estiver habilitada -->
+			<h:panelGroup
+				rendered="#{(cc.attrs.naPermissao != null ? autenticador.hasPermissao(cc.attrs.naPermissao.concat('-INSERIR')) : false) and (cc.attrs.pathFragmentForm != null)}">
+				<script type="text/javascript">
+					//<![CDATA[
+					var inputSearchInserir_#{cc.attrs.id} = function () {
+
+					//view compontents
+					var inserirModal;//Modal de criar novo registro
+					var btnInserirModal;//Botão que abre o modal
+					var btnSalvar;//Botão de salvar novo registro
+
+					var validationFailed = false;
+					
+					var abrirInserirModal =  function abrirInserirModal() {
+				        modalAberto = true;
+						$(inserirModal).dialog("open");
+						$(inserirModal).dialog("moveToTop");
+				    }
+
+				    var fecharInserirModal = function fecharInserirModal() {
+					    modalAberto = false;
+						$(inserirModal).dialog("close");
+					}
+
+				    //Caso usuário pressione Enter dentro do modal, aciona botão de salvar registro.
+					var dialogKeyPress = function dialogKeyPress(e) {
+						var ev = e || event;
+			            var key = ev.which || ev.keyCode;
+			            if(key == 13) {
+							$(btnSalvar).click();
+							if (e.stopPropagation){
+								e.stopPropagation();
+							}
+							else if(window.event){
+							   window.event.cancelBubble=true;
+							}
+							return false;
+			            }
+						return true;
+					}
+
+					var setValidationFailed = function setValidationFailed(value) {
+						validationFailed = value;
+					}
+
+					var isValidationFailed = function isValidationFailed() {
+						return validationFailed;
+					}
+					
+					//Inicialização do modal de criar novo registro.
+				   	$( document ).ready(function() {
+				    	inserirModal = $("##{cc.clientId}:novo_item_dialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						if (inserirModal == null ||  !inserirModal.is('div')){
+							inserirModal = $("#novo_item_dialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						}	
+
+						btnInserirModal = $("##{cc.clientId}:btnNovo#{cc.attrs.id}".replace(/:/g,"\\:"));
+						if (btnInserirModal == null ||  !btnInserirModal.is('input')){
+							btnInserirModal = $("#btnNovo#{cc.attrs.id}".replace(/:/g,"\\:"));
+						}	
+
+					    var inserirDialogAnchor = $("##{cc.clientId}:novo_item_dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						if(inserirDialogAnchor == null || !inserirDialogAnchor.is('div')) {
+							inserirDialogAnchor = $("#novo_item_dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						}
+
+						btnSalvar = $("##{cc.clientId}:btnSalvarDialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						if (btnSalvar == null ||  !btnSalvar.is('a')){
+							btnSalvar = $("#btnSalvarDialog_#{cc.attrs.id}".replace(/:/g,"\\:"));
+						}	
+						
+						$(inserirModal).dialog({
+							autoOpen : false,
+							height: "auto",
+							closeText: "",
+							width: "auto",
+							draggable: false,
+							resizable: false,
+							dialogClass: "inputSearchDialog",
+							position: { my: "left top", at: "left bottom", of: inserirDialogAnchor },
+							appendTo: "#novo_item_dialog_anchor_#{cc.attrs.id}".replace(/:/g,"\\:"),
+							close: function(event, ui){
+								modalAberto = false;
+								toggleNovoItemForm_#{cc.attrs.id}();
+							},
+							open: function( event, ui ){
+								modalAberto = true;
+								toggleNovoItemForm_#{cc.attrs.id}();
+							}
+						
+						});
+
+						$(btnInserirModal).on( "click", function() {			
+							abrirInserirModal();
+							return false;				
+					    });
+				    } ); 
+					
+				    return {
+				    	abrirInserirModal: abrirInserirModal,
+				    	fecharInserirModal: fecharInserirModal,
+				    	dialogKeyPress: dialogKeyPress,
+				    	setValidationFailed: setValidationFailed,
+				    	isValidationFailed: isValidationFailed
+				    }
+				}();
+				//]]>
+				</script>
+				<h:panelGroup id="updateValidationStatus_#{cc.attrs.id}">
+					<h:outputScript>
+   						inputSearchInserir_#{cc.attrs.id}.setValidationFailed(#{facesContext.validationFailed});
+					</h:outputScript>
+				</h:panelGroup>
+				<div id="novo_item_dialog_anchor_#{cc.attrs.id}"></div>
+				<div id="novo_item_dialog_#{cc.attrs.id}" style="display: none;" title="Novo #{cc.attrs.label}" tabindex="0"
+					onkeydown="return inputSearchInserir_#{cc.attrs.id}.dialogKeyPress(event)">
+					<o:commandScript name="toggleNovoItemForm_#{cc.attrs.id}" action="#{cc.toggleNovoItemForm()}" render="novo_item_form_container_#{cc.attrs.id}"></o:commandScript>
+					<h:panelGroup layout="block" id="novo_item_form_container_#{cc.attrs.id}">
+						<h:panelGroup layout="block" id="novo_item_form_#{cc.attrs.id}" rendered="#{cc.novoItemFormRendered}">
+							<ui:include src="#{cc.attrs.pathFragmentForm}">
+								<ui:param name="controller" value="#{cc.attrs.entityController}" />
+							</ui:include>
+						</h:panelGroup>
+					</h:panelGroup>
+					<div align="center">
+						<h:commandLink id="btnSalvarDialog_#{cc.attrs.id}" value="" title="Salvar registro. (Alt + S)" actionListener="#{cc.novoItem()}"
+							styleClass="hoverable ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" style="font-size: 8pt; margin-right: 5px !important;">
+							<span class="ui-button-icon-left ui-icon ui-c save"></span>
+							<span class="ui-button-text ui-c">Salvar</span>
+							<f:ajax execute="#{cc.clientId}:novo_item_form_#{cc.attrs.id}" render="#{cc.clientId}:novo_item_form_container_#{cc.attrs.id} #{cc.clientId}:inputSearch_#{cc.attrs.id} #{cc.clientId}:updateValidationStatus_#{cc.attrs.id}"
+								onevent="function(data) { if (data.status === 'success') { 
+   								  		if(!inputSearchInserir_#{cc.attrs.id}.isValidationFailed())inputSearchInserir_#{cc.attrs.id}.fecharInserirModal();}}">
+							</f:ajax>
+							<f:setPropertyActionListener target="#{cc.attrs.value}" value="#{cc.objetoSelecionado}" />
+						</h:commandLink>
+
+						<button id="btnCancelarDialog_#{cc.attrs.id}" onclick="inputSearchInserir_#{cc.attrs.id}.fecharInserirModal(); return false"
+							class="hoverable ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" style="font-size: 8pt;">
+							<span class="ui-button-icon-left ui-icon ui-c cancelar"></span> <span class="ui-button-text ui-c">Cancelar</span>
+						</button>
+
+					</div>
+
+				</div>
+
+			</h:panelGroup>
+		</h:panelGroup>
+
+	</composite:implementation>
+
+</ui:composition>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+	<!-- 
+**********************************************************
+@Empresa: N&A Informática Ltda
+@Gerador: MultiSource 
+Dados da Classe:
+    @Data  = 13/05/2014 16:53:05
+    @Author  = NELSON
+    @Versão da Classe = 
+**********************************************************  
+    -->
+
+	<ui:param name="controller" value="#{naBairroController}" />
+	<ui:param name="nomeTela" value="Bairro" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+
+
+		<nea:inputText id="txtdescricao" title="Descrição" value="#{controller.objeto.descricao}" required="true" width="350px" label="Descrição"
+			controller="#{controller}" />
+
+		<h:panelGroup>
+			<!-- <nea:inputSearch id="tipoBairro" atributoCodigo="#{naBairroController.objeto.tipoBairro.id}"
+				atributoDescricao="#{naBairroController.objeto.tipoBairro.descricao}" value="#{naBairroController.objeto.tipoBairro}" controller="#{naTipoBairroController}"
+				controllerLocal="#{naBairroController}" label="Tipo Bairro" title="Selecione o Tipo do Bairro!" required="true" filtroDefault="sigla" 
+			 	 pathFragmentForm="/framework/forms/fragment/naBairroFragment.xhtml" naPermissao="naBairro" widthDialog="450px" heightDialog="200px"/>
+			 	  -->
+			 	 <nea:inputSearch2 atributoCodigo="id" controller="#{controller}" label="Tipo Bairro" id="tipoBairroInput" atributoDescricao="#{naBairroController.objeto.tipoBairro.descricao}" value="#{naBairroController.objeto.tipoBairro}" classType="br.com.neainformatica.infrastructure.entity.NaTipoBairro"
+			 	  pathFragmentForm="/framework/forms/fragment/naBairroFragment.xhtml" naPermissao="naBairro" entityController="#{naTipoBairroController}"></nea:inputSearch2>
+		</h:panelGroup>
+
+	</ui:define>
+
+</ui:composition>

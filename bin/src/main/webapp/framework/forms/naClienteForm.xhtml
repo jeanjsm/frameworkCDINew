@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+	<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 18/07/2014 18:18:43
+	@Author  = NELSON
+	@Vers�o da Classe = 
+**********************************************************  
+-->
+
+	<ui:param name="controller" value="#{naClienteController}" />
+	<ui:param name="nomeTela" value="Cliente" />
+
+	<!-- Define os campos do formul�rio -->
+	<ui:define name="camposForm">
+
+		<fieldset class="fieldSetDefault" style="margin-bottom: 10px;">
+			<legend>Dados do Cliente</legend>
+			<nea:inputText id="txtNome" value="#{naClienteController.objeto.nome}" required="true" width="550px" label="Nome" controller="#{naClienteController}"
+				maxlength="100" />
+
+			<div style="clear: both;" />
+
+			<nea:inputText id="txtIdClienteNA" value="#{naClienteController.objeto.idClienteNeA}" required="false" width="100px" label="Id Cliente NA"
+				controller="#{naClienteController}" maxlength="10" />
+
+			<nea:selectEnum id="selectSituacaoAcesso" title="Situação Acesso" value="#{naClienteController.objeto.situacaoAcesso}" label="Situação de Acesso"
+				controller="#{naClienteController}" items="#{naClienteController.listaSituacaoAcesso}" itemLabel="#{item.descricao}" width="140px" required="true"
+				selecioneLabel="Selecione">
+			</nea:selectEnum>
+
+			<nea:inputMask id="txtCnpj" value="#{naClienteController.objeto.cnpj}" required="true" width="150px" label="Cnpj" controller="#{naClienteController}"
+				typeMask="cnpj" />
+
+			<nea:selectEnum id="selectAtivo" title="Ativo" value="#{naClienteController.objeto.ativo}" label="Ativo" controller="#{naClienteController}"
+				items="#{naClienteController.listaSituacaoAtivo}" itemLabel="#{item.descricao}" width="60px" required="true" selecioneLabel="Selecione">
+			</nea:selectEnum>
+
+			<nea:inputText id="txtNomeSecretaria" value="#{naClienteController.objeto.nomeSecretaria}" required="false" width="550px" label="Nome da Secretaria"
+				controller="#{naClienteController}" maxlength="100" />
+
+			<nea:inputText id="txtSiteCliente" value="#{naClienteController.objeto.siteCliente}" required="false" width="550px" label="Site do Cliente"
+				controller="#{naClienteController}" maxlength="150" />
+
+			<nea:inputText id="txtLinkBrasao" value="#{naClienteController.objeto.linkBrasao}" required="false" width="550px" label="Link do Brasão"
+				controller="#{naClienteController}" maxlength="200" />
+
+			<nea:inputText id="txtLinkLogo" value="#{naClienteController.objeto.linkLogo}" required="false" width="550px" label="Link da Logo"
+				controller="#{naClienteController}" maxlength="200" />
+
+			<div style="clear: both;" />
+
+			<nea:inputText id="txtTelefoneDDD" value="#{naClienteController.objeto.telefoneDdd}" required="false" width="50px" label="DDD"
+				controller="#{naClienteController}" />
+
+			<nea:inputMask id="txtTelefoneNumero" value="#{naClienteController.objeto.telefoneNumero}" required="false" width="150px" label="Telefone"
+				controller="#{naClienteController}" mask="9999-9999" />
+
+			<div style="clear: both;" />
+		</fieldset>
+		<fieldset class="fieldSetDefault" style="margin-bottom: 10px;">
+			<legend>Logradouro</legend>
+			<h:panelGroup id="logradouroForm">
+				<nea:inputMask id="txtLogradouroCep" value="#{controller.objeto.logradouroCep}" required="false" width="100px" label="CEP" controller="#{controller}"
+					typeMask="cep" />
+
+				<nea:selectEntity id="cmbEstado" title="Estado" value="#{naClienteController.objeto.uf}" label="Estado" controller="#{naClienteController}"
+					onChangeListener="#{naClienteController.buscarCidades()}" onChangeUpdate="@form" selecioneLabel="Selecione" width="420px"
+					items="#{naEstadoController.service.findAll()}" itemLabel="#{item.nome}" required="false" filter="true" filterMatchMode="contains">
+				</nea:selectEntity>
+
+				<nea:selectEntity id="cmbCidade" title="Cidade" value="#{naClienteController.objeto.cidadelogradouro}" label="Cidade" controller="#{naClienteController}"
+					onChangeUpdate="@form" selecioneLabel="Selecione" width="530px" items="#{naClienteController.cidadeLista}" itemLabel="#{item.descricao}" required="false"
+					filter="true" filterMatchMode="contains">
+				</nea:selectEntity>
+
+				<nea:inputText id="txtBairroNome" value="#{naClienteController.objeto.bairroNome}" required="false" width="380px" label="Nome Bairro"
+					controller="#{naClienteController}" maxlength="150" />
+
+				<nea:selectEntity id="cmbTipoBairro" title="Tipo do Bairro" value="#{naClienteController.objeto.tipobairro}" label="Tipo de Bairro"
+					controller="#{naClienteController}" selecioneLabel="Selecione" width="140px" items="#{naTipoBairroController.service.findAll()}"
+					itemLabel="#{item.descricao}" required="false">
+				</nea:selectEntity>
+
+				<nea:inputText id="txtNomeLogradouro" value="#{naClienteController.objeto.logradouroNome}" required="false" width="550px" label="Nome Logradouro"
+					controller="#{naClienteController}" maxlength="150" />
+
+				<nea:selectEntity id="cmbTipoLogradouro" title="Tipo de Logradouro" value="#{naClienteController.objeto.tipologradouro}" label="Tipo de Logradouro"
+					controller="#{naClienteController}" selecioneLabel="Selecione" width="247px" items="#{naTipoLogradouroController.service.findAll()}"
+					itemLabel="#{item.descricao}" required="false" filter="true" filterMatchMode="contains">
+				</nea:selectEntity>
+
+				<nea:selectEnum id="selectTipoZonaLogradouro" title="Tipo Zona Logradouro" value="#{naClienteController.objeto.logradouroTipoZona}" label="Tipo Zona"
+					controller="#{naClienteController}" items="#{naClienteController.listaLogradouroTipoZona}" itemLabel="#{item.descricao}" width="247px" required="false"
+					selecioneLabel="Selecione" filter="true" filterMatchMode="contains">
+				</nea:selectEnum>
+
+				<div style="clear: both;" />
+
+				<nea:inputText id="txtLatitudeLogradouro" value="#{naClienteController.objeto.logradouroLatitude}" required="false" width="100px" label="Latitude"
+					controller="#{naClienteController}" maxlength="20" />
+
+				<nea:inputText id="txtLongitudeLogradouro" value="#{naClienteController.objeto.logradouroLongitude}" required="false" width="100px" label="Longitude"
+					controller="#{naClienteController}" maxlength="20" />
+
+				<nea:selectBooleanCheckBox id="checkBoxSemNumero" title="S/N°" value="#{naClienteController.objeto.semNumero}" label="S/N°"
+					listener="#{naClienteController.objeto.semNumero}" update="@this" />
+
+				<nea:inputText id="txtNumeroLogradouro" value="#{naClienteController.objeto.logradouroNumero}" required="false" width="91px" label="Número"
+					controller="#{naClienteController}" maxlength="10" />
+
+				<nea:inputText id="txtQuadraLogradouro" value="#{naClienteController.objeto.logradouroQuadra}" required="false" width="91px" label="Quadra"
+					controller="#{naClienteController}" maxlength="10" />
+
+				<nea:inputText id="txtLoteLogradouro" value="#{naClienteController.objeto.logradouroLote}" required="false" width="91px" label="Lote"
+					controller="#{naClienteController}" maxlength="10" />
+
+				<nea:inputText id="txtComplementoLogradouro" value="#{naClienteController.objeto.logradouroComplemento}" required="false" width="550px"
+					label="Complemento Logradouro" controller="#{naClienteController}" maxlength="150" />
+			</h:panelGroup>
+		</fieldset>
+		<p:panel header="Brasão Atual">
+			<div align="center">
+				<img id="imagem" src="data:image/jpg;base64,#{imagemController.byteToImage(controller.getImagemById(controller.objeto.id))}" height="150px" width="150px" />
+			</div>
+		</p:panel>
+
+		<h:panelGrid columns="1" style="margin-left: 15px;" rendered="#{naClienteController.state ne 'BROWSE'}">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{controller.handleFileUpload}" mode="advanced" auto="true" sizeLimit="1048576" allowTypes="/(\.|\/)(bmp|jpe?g|png)$/"
+					value="#{controller.file}" invalidFileMessage="Arquivo inv�lido, favor selecionar um arquivo do tipo .bmp, .jpeg ou .png!"
+					invalidSizeMessage="Tamanho do arquivo não suportado!" label="Adicionar Brasão" style="width: 900px; hight: 20px" update="@all">
+				</p:fileUpload>
+
+				<h:panelGrid rendered="#{controller.exibeImagem(controller.objeto.brasao)}" id="gridImagem">
+					<f:event type="preRenderView" listener="#{controller.getImagemById(controller.objeto.id)}" />
+					<img id="imagem" src="data:image/jpg;base64,#{imagemController.byteToImage(controller.objeto.brasao)}" height="150px" width="150px" />
+				</h:panelGrid>
+			</h:form>
+		</h:panelGrid>
+
+	</ui:define>
+
+</ui:composition>

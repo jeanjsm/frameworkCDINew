@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="_blankPaisagem" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="753" leftMargin="67" rightMargin="22" topMargin="22" bottomMargin="22" uuid="9f4f2f84-6ae3-4f83-a0eb-b2518056a8ef">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Arial" fontSize="8"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BRASAO_PREFEITURA" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="NOME_PREFEITURA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_SECRETARIA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_DIVISAO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOME_SISTEMA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBTITULO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DATA_HORA_IMPRESSAO" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="NOME_USUARIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SITE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="VERSAO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="PAGE_HEADER" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="PAGE_FOOTER" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement uuid="5116f107-41bb-4e0d-9cb7-883fbf45df6c" x="0" y="0" width="750" height="60"/>
+				<subreportParameter name="TITULO">
+					<subreportParameterExpression><![CDATA[$P{TITULO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_DIVISAO">
+					<subreportParameterExpression><![CDATA[$P{NOME_DIVISAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATA_HORA_IMPRESSAO">
+					<subreportParameterExpression><![CDATA[$P{DATA_HORA_IMPRESSAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BRASAO_PREFEITURA">
+					<subreportParameterExpression><![CDATA[$P{BRASAO_PREFEITURA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PAGINA">
+					<subreportParameterExpression><![CDATA[$V{PAGE_NUMBER}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_SECRETARIA">
+					<subreportParameterExpression><![CDATA[$P{NOME_SECRETARIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBTITULO">
+					<subreportParameterExpression><![CDATA[$P{SUBTITULO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_PREFEITURA">
+					<subreportParameterExpression><![CDATA[$P{NOME_PREFEITURA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_SISTEMA">
+					<subreportParameterExpression><![CDATA[$P{NOME_SISTEMA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{PAGE_HEADER} != null ? $P{PAGE_HEADER} : br.com.neainformatica.infrastructure.tools.Tools.getSubReport("_pageHeaderPaisagem.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="50"/>
+	</detail>
+	<pageFooter>
+		<band height="12">
+			<subreport isUsingCache="false">
+				<reportElement uuid="d67b1fbd-c221-48ee-ad1a-eaeac4651793" x="0" y="0" width="750" height="12"/>
+				<subreportParameter name="NOME_USUARIO">
+					<subreportParameterExpression><![CDATA[$P{NOME_USUARIO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SITE">
+					<subreportParameterExpression><![CDATA[$P{SITE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="VERSAO">
+					<subreportParameterExpression><![CDATA[$P{VERSAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{PAGE_FOOTER} != null ? $P{PAGE_FOOTER} : br.com.neainformatica.infrastructure.tools.Tools.getSubReport("_pageFooterPaisagem.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

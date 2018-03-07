@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	template="/framework/template/templateForm.xhtml">
+
+ 
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 20/06/2014 17:59:57
+	@Author  = NELSON
+	@Versão da Classe = 
+**********************************************************  
+-->
+
+	<ui:param name="controller" value="#{organogramaController}" />
+	<ui:param name="nomeTela" value="Organograma" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+		
+
+        <nea:inputText id="txtestruturanivel" title="Estruturanivel" value="#{controller.objeto.estruturanivel}" required="false" width="70px" label="Estruturanivel" controller="#{controller}"/>
+  
+        <nea:inputText id="txtestruturaorganizacion" title="Estruturaorganizacion" value="#{controller.objeto.estruturaorganizacion}" required="false" width="70px" label="Estruturaorganizacion" controller="#{controller}"/>
+  
+        <nea:inputText id="txtorganogramasuperior" title="Organogramasuperior" value="#{controller.objeto.organogramasuperior}" required="false" width="70px" label="Organogramasuperior" controller="#{controller}"/>
+  
+        <nea:inputText id="txtdescricao" title="Descricao" value="#{controller.objeto.descricao}" required="false" width="700px" label="Descricao" controller="#{controller}"/>
+  
+        <nea:inputText id="txt" title="" value="#{controller.objeto.id}" required="false" width="70px" label="" controller="#{controller}"/>
+  
+        <nea:inputText id="txtmascara" title="Mascara" value="#{controller.objeto.mascara}" required="false" width="350px" label="Mascara" controller="#{controller}"/>
+  
+        <nea:inputText id="txtsigla" title="Sigla" value="#{controller.objeto.sigla}" required="false" width="70px" label="Sigla" controller="#{controller}"/>
+  
+        <nea:inputText id="txtusuario" title="Usuario" value="#{controller.objeto.usuario}" required="false" width="70px" label="Usuario" controller="#{controller}"/>
+  
+		
+	</ui:define>
+
+</ui:composition>

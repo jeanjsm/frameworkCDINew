@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	template="/framework/template/templateForm.xhtml">
+
+ 
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 13/05/2014 16:54:02
+	@Author  = NELSON
+	@Versão da Classe = 
+**********************************************************  
+-->
+
+	<ui:param name="controller" value="#{naTipoBairroController}" />
+	<ui:param name="nomeTela" value="Tipo de Bairro" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+		
+
+        <nea:inputText id="txtdescricao" title="Descrição" value="#{controller.objeto.descricao}" required="false" width="350px" label="Descrição" controller="#{controller}"/>
+  
+		
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="false"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="header" required="false" type="String" default="Processando..." shortDescription="Mensagem no cabeçalho do componente. " />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="imagePath" required="false" type="String" default="#{resource['neainformatica/framework/images/loading.gif']}"
+			shortDescription="Caminho da imagem que será apresentada ao usuario." />
+	</composite:interface>
+
+	<composite:implementation>
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog styleClass="ajaxStatusDialog" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" appendTo="@(body)">
+			<p:graphicImage value="#{cc.attrs.imagePath}" style="float:left; margin-left:25px" />
+			<br />
+			<h:outputText value="Carregando..." />
+		</p:dialog>
+
+	</composite:implementation>
+
+</ui:composition>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="nea-frameworkCDI" basedir="." default="build-jar">
+
+	<property name="war.dir" value="C:/Na_java/workspace/prestacaocontasservices/src/main/webapp/WEB-INF/lib" />
+	
+	<property name="jar.name" value="nea-frameworkCDI" />
+	<property name="build.dir" value="target" />
+	<property name="classes.dir" value="target/classes" />
+
+	<target name="build-jar">
+
+		<echo message="Apagando versões anteriores..." />
+		<delete>
+			<fileset dir="${war.dir}" includes="${jar.name}*.jar" />
+		</delete>
+
+		<echo message="Criando pastas necessarias" />
+		<mkdir dir="${classes.dir}/META-INF/" />
+		<mkdir dir="${classes.dir}/META-INF/resources" />
+
+		<echo message="copiando resources para META-INF" />
+		<copy todir="${classes.dir}/META-INF/resources">
+			<fileset dir="${classes.dir}/resources" />
+		</copy>
+
+		<echo message="Copiando beans.xml" />
+		<copy file="${classes.dir}/META-INF/beans.xml" tofile="${classes.dir}/META-INF/beans.xml" />
+
+		<echo message="Gerando jar" />
+		<jar destfile="${war.dir}/${jar.name}.jar" encoding="UTF-8">
+			<fileset dir="${build.dir}/classes">
+				<include name="**/br/com/**" />
+				<include name="**META-INF/resources/**" />
+				<include name="**META-INF/beans.xml" />
+				<exclude name="**br/com/neainformatica/infrastructure/produces/EntityManagerProduces.class" />
+			</fileset>
+			<fileset dir="${build.dir}/classes/">
+				<include name="framework/**" />
+			</fileset>
+		</jar>
+
+	</target>
+
+</project>

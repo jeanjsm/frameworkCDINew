@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui" 
+    template="/framework/template/templateList.xhtml">
+<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 22/07/2014 11:44:30
+	@Author  = NELSON
+	@Vers�o da Classe = 
+**********************************************************  
+-->
+
+   <ui:param name = "controller" value="#{naCidadeController}" />
+   <ui:param name = "nomeTela" value = "Cidade" />
+   <ui:param name = "permissao" value="NA_CIDADE" />
+   <ui:param name = "filtroDefault" value="Sigla" />
+
+	<ui:define name="dataTablePrincipal">
+
+		<p:column headerText="Código IBGE" style="text-align:center" >
+			<h:outputText value="#{dt.codigoIbge}" />
+		</p:column>
+		<p:column headerText="Descrição" style="text-align:center" >
+			<h:outputText value="#{dt.descricao}" />
+		</p:column>
+		<p:column headerText="Estado">
+			<h:outputText value="#{dt.estado.id} - #{dt.estado.nome}" />
+		</p:column>		
+		<p:column headerText="Ativo">
+			<h:outputText value="#{dt.ativo.descricao}" />
+		</p:column>		
+	</ui:define>
+
+	<ui:define name="itens_adicionais">
+	</ui:define>
+
+	<ui:define name="itens">
+	</ui:define>
+
+</ui:composition>

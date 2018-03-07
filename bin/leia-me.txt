@@ -1,0 +1,36 @@
+
+JAVA_OPTS
+-Xmx4g -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30
+
+Xmx = Tamanho máximo a ser alocado
+MinHeapFreeRatio = percentual mínimo a ser alocado pelo heap após a execução do garbage colector (no caso 10% a mais que o size utilizado pela aplicação)
+MaxHeapFreeRatio = percentual máximo a ser alocado pelo heap após a execução do garbage colector (no caso 40% a mais que o size utilizado pela aplicação)
+
+
+
+
+
+Padrão para o registro de LOG   Adicionar no wildfly ---------------------------------------------------
+
+<logger category="br.com.neainformatica">
+    <level name="INFO"/>
+</logger>
+<logger category="javax.enterprise.resource.webcontainer.jsf.context">
+    <level name="FATAL"/>
+</logger>
+<logger category="io.undertow.request">
+    <level name="FATAL"/>
+</logger>
+<logger category="org.picketlink.authentication.UserAlreadyLoggedInException">
+    <level name="FATAL"/>
+</logger>
+
+<logger category="org.apache.http.client.protocol.ResponseProcessCookies">
+    <level name="FATAL"/>
+</logger>
+
+--------------------------------------------------------------------------------------------------------
+
+
+
+

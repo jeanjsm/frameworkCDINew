@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+
+	<navigation-rule>
+		<from-view-id>/common/login.xhtml</from-view-id>
+
+		<navigation-case>
+			<from-action>#{identity.login()}</from-action>
+			<if>#{identity.loggedIn}</if>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-action>#{identity.login()}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/common/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-action>#{identity.logout()}</from-action>
+			<if>#{true}</if>
+			<to-view-id>/common/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<application>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+			<supported-locale>pt_BR</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>messages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<message-bundle>ValidationMessages</message-bundle>
+		<el-resolver>br.com.neainformatica.infrastructure.filter.ELResolver</el-resolver>
+	</application>
+
+</faces-config>

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="title" required="true" type="String"
+			shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="nomeAtributo" required="true" type="String" shortDescription="nome do atributo onde o arquivo deverá ser gravado" />
+		<composite:attribute name="required" required="false" type="boolean" default="false"
+			shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<h:panelGroup id="#{cc.attrs.id}" style="float:left; margin: 4px 0 0 5px">
+
+			<nea:outputText value="#{cc.attrs.label}" required="false" />
+
+			<br />
+
+			<h:outputLink id="brasaoLink" value="javascript:void(0)" onclick="dlgUpload.show()" title="#{cc.attrs.title}">
+				<p:graphicImage value="#{cc.attrs.controller.visualizarImagemPrimeFaces}" width="40px" height="40px" onclick="setNomeField()" />
+			</h:outputLink>
+
+			<p:dialog id="modalSelecionaImage" header="#{cc.attrs.label}" widgetVar="dlgUpload" modal="true" resizable="false" showEffect="clip" hideEffect="fold">
+
+				<h:panelGroup>
+					<h:form id="fromBrasaoMun" enctype="multipart/form-data">
+
+						<p:graphicImage value="#{cc.attrs.controller.visualizarImagemPrimeFaces}" width="50px" height="50px" />
+
+						<p:fileUpload label="Selecionar" cancelLabel="Cancelar" auto="true" uploadLabel="Carregar" id="imgBrasaoMun"
+							fileUploadListener="#{cc.attrs.controller.anexarArquivo}" mode="advanced" dragDropSupport="false" update="msgImgBrasao" sizeLimit="1000000"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" invalidFileMessage="Arquivo inválido!" multiple="false" fileLimit="1"
+							oncomplete="dlgUpload
+                                .hide()">
+						</p:fileUpload>
+						<p:message for="imgBrasaoMun" id="msgImgBrasao" />
+
+					</h:form>
+				</h:panelGroup>
+
+			</p:dialog>
+
+			<p:remoteCommand name="setNomeField">
+				<f:setPropertyActionListener target="#{cc.attrs.controller.nomeFieldUpload}" value="#{cc.attrs.nomeAtributo}" />
+			</p:remoteCommand>
+
+		</h:panelGroup>
+
+	</composite:implementation>
+
+</ui:composition>

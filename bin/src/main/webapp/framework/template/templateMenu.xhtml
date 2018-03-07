@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<h:outputStylesheet library="neainformatica" name="framework/css/estilo.css" /> 
+	<h:outputStylesheet library="neainformatica" name="framework/css/jquery.mmenu.all.css" />
+	<h:outputStylesheet library="neainformatica" name="css/projetoCliente.css" />
+	<style type="text/css">
+.header, .footer {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.header {
+	top: 0;
+	position: fixed;
+	left: 0;
+}
+
+.footer {
+	bottom: 0;
+	position: fixed;
+	left: 0;
+}
+</style>
+
+	<h:outputScript library="neainformatica" name="framework/js/jquery.mmenu.min.all.js" />
+	<h:outputScript library="neainformatica" name="framework/js/jquery.mmenu.min.js" />
+	<script type="text/javascript">
+            $(document).ready(function () {
+                $('nav#menu').mmenu({
+                    "slidingSubmenus": false,
+                    "labels": true,
+                    "header": {
+                        "title": "Menu",
+                        "add": true,
+                        "update": true
+                    },
+                    "searchfield": {
+                        "placeholder": "Pesquisar",
+                        "noResults": "Nada encontrado",
+                        "add": true,
+                        "search": true
+                    },
+                    "offCanvas": {
+                        "zposition": "front"
+                    },
+                    "extensions": [
+                        "pagedim-black"
+                     ]
+                });
+                /*Método que adiciona ao click do submenu a classe mm-fullsubopen que faz com que o submenu todo seja clicável*/
+                $('nav#menu').find(".mm-subopen").addClass("mm-fullsubopen");
+            });
+        </script>
+</h:head>
+
+<h:body>
+	<nea:ajaxStatus />
+
+
+	<h:form id="formAll">
+		<p:toolbar style="background: transparent; margin-bottom: -5px; border: none; " id="toolbar">
+			<c:if test="#{(empty exibeMenu ? true : exibeMenu)}">
+				<p:toolbarGroup align="right" style="padding:0" styleClass="menuFramework">
+					<!-- Menu canto direito com o nome do usuário e opções -->
+					<div class="click-nav">
+						<ul class="no-js">
+							<li><a class="clicker">#{naSessionController.naUsuarioSistema.usuario.primeiroNome}</a>
+								<ul>
+									<li><p:commandLink id="changePasswordButtom" value="Alterar Senha" onclick="PF('modalPassword').show();" /></li>
+
+									<li><p:commandLink id="modoAdiministrador" value="Modo Administrador" update="@form"
+											rendered="#{autenticador.modoAdministradorDisponivel and !autenticador.modoAdministradorAtivo}"
+											action="#{autenticador.setModoAdministradorAtivo('true')}" ajax="false" /></li>
+									<li><p:commandLink id="modoUsuario" value="Modo Usuário" rendered="#{autenticador.modoAdministradorAtivo}" update="@form"
+											action="#{autenticador.setModoAdministradorAtivo('false')}" ajax="false" /></li>
+
+									<c:if test="#{autenticador.hasPermissao('NA_CLIENTE-ACESSAR')}">
+										<li><h:link value="Cliente" outcome="/framework/forms/naClienteList.xhtml" /></li>
+									</c:if>
+									<li><h:link value="Perfil" outcome="/framework/forms/naUsuarioPerfilForm.xhtml" /></li>
+									<li><p:commandLink value="Versão" onclick="PF('dlgAbout').show();" /></li>
+									<li><p:commandLink value="Logoff" action="#{identity.logout()}"
+											rendered="#{identity != null ? (empty exibe_usuario ? false : exibe_usuario) : false}" /></li>
+								</ul></li>
+						</ul>
+					</div>
+				</p:toolbarGroup>
+			</c:if>
+		</p:toolbar>
+		<nea:about id="about" widgetVar="dlgAbout" systemName="#{infrastructureController.getNeaInfrastructureSistemaNome()}" />
+		<nea:enterprise id="enterprise" widgetVar="dlgEnterprise" systemName="#{infrastructureController.getNeaInfrastructureSistemaNome()}" />
+
+
+
+		<nav id="menu" style="display: none;">
+			<ul>
+				<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.home.png" style="margin-left: 0.5em" /> <h:link
+						value="Home" outcome="#{(empty url_home ? '/index.xhtml' : url_home)}" /></li>
+				<c:if test="#{(empty exibe_menu_sistema ? true : exibe_menu_sistema) and autenticador.modoAdministradorAtivo}">
+					<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.lock.png" style="margin-left: 0.5em" /><a>Segurança</a>
+						<ul>
+							<c:if test="#{autenticador.hasPermissao('NA_USUARIO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.user.png" style="margin-left: 0.5em" />
+									<h:link value="Cadastro de Usuário" outcome="/framework/forms/naUsuarioList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_PERFIL-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.user.tie.png"
+										style="margin-left: 0.5em" /> <h:link value="Cadastro de Perfil" outcome="/framework/forms/naPerfilList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_AUDITORIA-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.page.search.png"
+										style="margin-left: 0.5em" /> <h:link value="Consulta Auditoria" outcome="/framework/forms/naAuditoria.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_PERMISSOES-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.key.png" style="margin-left: 0.5em" />
+									<h:link value="Configurar Permissões de Acesso" outcome="/framework/forms/seguranca/naPermissoesAcesso.xhtml" /></li>
+							</c:if>
+						</ul></li>
+
+					<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.page.check.png"
+							style="margin-left: 0.5em" /><a>Cadastro Unificado</a>
+						<ul>
+							<c:if test="#{autenticador.hasPermissao('NA_TIPO_BAIRRO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.home.garage.png"
+										style="margin-left: 0.5em" /> <h:link value="Tipo Bairro" outcome="/framework/forms/naTipoBairroList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_BAIRRO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.home.garage.png"
+										style="margin-left: 0.5em" /> <h:link value="Bairro" outcome="/framework/forms/naBairroList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_TIPO_LOGRADOURO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.home.location.round.png"
+										style="margin-left: 0.5em" /> <h:link value="Tipo Logradouro" outcome="/framework/forms/naTipoLogradouroList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_LOGRADOURO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.home.location.round.png"
+										style="margin-left: 0.5em" /> <h:link value="Logradouro" outcome="/framework/forms/naLogradouroList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_PAIS-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.globe.png" style="margin-left: 0.5em" />
+									<h:link value="Pais" outcome="/framework/forms/naPaisList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_ESTADO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.globe.png" style="margin-left: 0.5em" />
+									<h:link value="Estado" outcome="/framework/forms/naEstadoList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_CIDADE-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.globe.png" style="margin-left: 0.5em" />
+									<h:link value="Cidade" outcome="/framework/forms/naCidadeList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_NACIONALIDADE-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.globe.png" style="margin-left: 0.5em" />
+									<h:link value="Nacionalidade" outcome="/framework/forms/naNacionalidadeList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_PARAMETROS-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.sign.parking.png"
+													style="margin-left: 0.5em" /> <h:link value="Parâmetros" outcome="/framework/forms/naParametroList.xhtml" /></li>
+							</c:if>
+							<c:if test="#{autenticador.hasPermissao('NA_AGENDAMENTO-ACESSAR')}">
+								<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.sign.parking.png"
+													style="margin-left: 0.5em" /> <h:link value="Agendar sincronismos" outcome="/framework/forms/naAgendamentoList.xhtml" /></li>
+							</c:if>
+						</ul></li>
+				</c:if>
+				<c:if test="#{autenticador.modoAdministradorAtivo}">
+					<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.printer.png" style="margin-left: 0.5em" /><a>Relatórios</a>
+						<ul>
+							<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.page.text.png"
+									style="margin-left: 0.5em" /> <h:link value="Auditoria" outcome="/framework/forms/relatorioAuditoria.xhtml" /></li>
+						</ul></li>
+				</c:if>
+				<c:if test="#{!autenticador.modoAdministradorAtivo}">
+					<ui:insert name="itens_menu" />
+				</c:if>
+				<li><p:graphicImage styleClass="img-menu-lateral" library="neainformatica" name="framework/images/img/appbar.door.leave.png" style="margin-left: 0.5em" />
+					<p:commandLink value="Logoff" action="#{identity.logout()}" /></li>
+
+			</ul>
+		</nav>
+
+
+	</h:form>
+
+
+
+	<p:dialog id="changePassword" closeOnEscape="true" widgetVar="modalPassword" header="Alterar senha!" width="415" resizable="false" showEffect="fold"
+		hideEffect="clip" dynamic="true" modal="true">
+		<h:form id="formNewPassword">
+			<p:messages id="messagePassword" />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<h:outputText value="Senha Atual:" />
+					<p:password id="oldPassword" value="#{naUsuarioController.senhaAtual}" required="true" requiredMessage="A senha atual deve ser informada!"
+						immediate="false" />
+
+					<h:outputText value="Nova Senha:" />
+					<p:password id="newPassword" feedback="true" weakLabel="Fraca" goodLabel="Bom" strongLabel="Forte" promptLabel="Entre com a Senha!"
+						value="#{naUsuarioController.novaSenha}" required="true" requiredMessage="A nova senha deve ser informada!" immediate="false" maxlength="32" />
+
+					<h:outputText value="Digite novamente:" />
+					<p:password id="confirmNewPassword" value="#{naUsuarioController.novaSenhaConfirmacao}" required="true" requiredMessage="Confirme a nova senha!"
+						immediate="false" maxlength="32" />
+
+				</h:panelGrid>
+			</div>
+
+			<hr />
+			<div align="center">
+				<p:commandButton value="Alterar" actionListener="#{naUsuarioController.alterarSenhaDoUsuario}" title="Clique para alterar sua senha!" ajax="true"
+					update=":formAll,formNewPassword" oncomplete="handleLoginRequest(xhr, status, args)" icon="password" />
+				<p:spacer width="15px" />
+				<p:commandButton value="Cancelar" onclick="PF('modalPassword').hide();" title="Cancelar!" ajax="true" immediate="true" icon="cancelar" />
+			</div>
+			<!-- update=":formAll:messagePassword,formNewPassword" -->
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+            $(function () {
+                $('.click-nav > ul').toggleClass('no-js js');
+                $('.click-nav .js ul').hide();
+                $('.click-nav .js').click(function (e) {
+                    $('.click-nav .js ul').slideToggle(200);
+                    $('.clicker').toggleClass('active');
+                    e.stopPropagation();
+                });
+                $(document).click(function () {
+                    if ($('.click-nav .js ul').is(':visible')) {
+                        $('.click-nav .js ul', this).slideUp();
+                        $('.clicker').removeClass('active');
+                    }
+                });
+            });
+    		$('#menu').css({ 'display': "none" });
+        </script>
+        
+        <script type="text/javascript">
+		        function handleLoginRequest(xhr, status, args) {
+		            if (args.validationFailed || !args.permitirAlteracao) {
+		                modalPassword.jq.effect("shake", {times: 5}, 100);
+		            }
+		            else {
+		            	PF('modalPassword').hide();
+		                $('#changePasswordButtom').fadeOut();
+		            }
+		        }
+        </script>
+</h:body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="rendered" required="false" type="boolean" default="true"
+			shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="required" required="false" type="boolean"
+			shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="style" required="false" type="String" default="color: #CC3300; font-size: 11px;font-weight: bold;"
+			shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="styleClass" required="false" type="String"
+			shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+	</composite:interface>
+
+	<composite:implementation>
+		<h:outputText id="#{cc.attrs.id}" value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" />
+		<h:outputText value=" *" rendered="#{cc.attrs.rendered and cc.attrs.required}" style="#{cc.attrs.style}" styleClass="#{cc.attrs.styleClass}" />
+	</composite:implementation>
+
+</ui:composition>

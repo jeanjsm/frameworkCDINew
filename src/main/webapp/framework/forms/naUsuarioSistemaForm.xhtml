@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+<ui:composition template="/framework/template/templateForm.xhtml">
+
+	<ui:param name="controller" value="#{naUsuarioController}" />
+	<ui:param name="nomeTela" value="Usuário" />
+	<ui:param name="permissao" value="Usuário" />
+	<ui:param name="exibeBarrabotoes" value="false" />
+	<ui:param name="exibeBotaoCancelar" value="false" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<fieldset class="fieldSetDefault">
+			<legend>Cadastrar Nível de Acesso</legend>
+
+
+
+			<h:panelGrid columns="1">
+				<p>
+					Usuário: <strong> #{naUsuarioController.objeto.nome} </strong>
+				</p>
+
+				<p:outputLabel value="Escolha o Sistema" for="addSistema" />
+				<p:autoComplete id="addSistema" dropdown="true" value="#{naUsuarioController.sistemaSelecionado}" itemValue="#{s}" itemLabel="#{s.sistema}" required="true"
+					requiredMessage="O sistema deve ser selecionado!" completeMethod="#{naUsuarioController.obterSistemas}" size="70" converter="#{genericEntityConverter}"
+					forceSelection="true" var="s" scrollHeight="250">
+				</p:autoComplete>
+			</h:panelGrid>
+
+			<nea:selectEnum id="enumNivelUsuairo" itemLabel="#{item.descricao}" items="#{naUsuarioController.listaNivelSistemaUsuario}" width="500px" required="true"
+				requiredMessage="O nível de acesso deve ser selecionado!" value="#{naUsuarioController.nivelSelecionado}" label="Nível de Acesso"
+				ignoreReadOnlyController="true" controller="#{controller}">
+			</nea:selectEnum>
+
+		</fieldset>
+
+		<p:spacer height="10" />
+
+		<div align="center">
+			<p:commandButton value="Adicionar" icon="add" action="#{naUsuarioController.adicionarSistemaUsuario()}" update="panelistaSistemaDoUsuario" ajax="false"
+				process="panelistaSistemaDoUsuario" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 100px;" />
+		</div>
+
+		<p:spacer height="10" />
+
+		<p:dataTable id="dtTableUsuarioSistema" emptyMessage="Nenhum Registro encontrado!" value="#{naUsuarioController.listaSistemaDoUsuario}" var="nau"
+			paginator="true" paginatorPosition="bottom" widgetVar="wvTableUsuarioSistema" paginatorAlwaysVisible="false">
+
+			<f:facet name="header">
+				<p:outputLabel>
+					Sistemas acessados por este usuário
+				</p:outputLabel>
+			</f:facet>
+
+			<p:column headerText="Nome Sistema">
+				#{nau.sistema.sistema}
+            </p:column>
+
+			<p:column headerText="Nível do Usuário">
+				#{nau.nivelUsuario.descricao}
+            </p:column>
+
+			<p:column headerText="Ação">
+				<p:commandLink title="Remover Registro" action="#{naUsuarioController.removerSistemaUsuario(nau)}" update="@widgetVar(wvTableUsuarioSistema)"
+					immediate="true">
+					<p:graphicImage value="#{resource['neainformatica/framework/images/remove.png']}" />
+				</p:commandLink>
+
+				<p:commandLink title="Exibir Permissões Efetivas" oncomplete="PF('dlgPermissaoEfetiva').show()"
+					action="#{naUsuarioController.buscarPermissoesEfetivas(nau)}" update="@widgetVar(tableListaAtorPermissao)" immediate="true">
+					<p:graphicImage value="#{resource['neainformatica/framework/images/newpassword.png']}" />
+				</p:commandLink>
+
+			</p:column>
+		</p:dataTable>
+
+		<p:dialog header="Permissões Efetivas" widgetVar="dlgPermissaoEfetiva" modal="true" height="600" width="800">
+
+			<h:panelGroup id="pgGridPermissoes" style="float:left;">
+
+				<p:dataTable id="dtPermissoes" value="#{naUsuarioController.listaAtorPermissao}" var="p" widgetVar="tableListaAtorPermissao">
+
+					<f:facet name="header">
+						<h:outputText value="Permissões de acesso" />
+					</f:facet>
+
+					<p:column headerText="Tipo" width="40">
+						<h:outputText value="#{p.ator.tipo.descricao}" />
+					</p:column>
+
+					<p:column headerText="Descrição" width="300">
+						<h:outputText value="#{p.permissao.descricao}" /> - 
+						<h:outputText value="#{p.ator.nome}" />
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:outputText value="Acessar" />
+						</f:facet>
+
+						<div align="center">
+							<p:commandLink disabled="true">
+								<nea:outputSimNaoCheck value="#{p.acessar.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:outputText value="Inserir" />
+						</f:facet>
+
+						<div align="center">
+							<p:commandLink disabled="true">
+								<nea:outputSimNaoCheck value="#{p.inserir.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:outputText value="Alterar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink disabled="true">
+								<nea:outputSimNaoCheck value="#{p.alterar.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="40">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+
+						<div align="center">
+							<p:commandLink disabled="true">
+								<nea:outputSimNaoCheck value="#{p.excluir.value}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+
+		</p:dialog>
+
+	</ui:define>
+
+	<ui:define name="botoesAdicionaisEsquerda">
+
+		<p:commandButton id="btnSalvarUsuarioSistema" value="Salvar" icon="save" accesskey="s" title="Salvar registro. (Alt + S)" ajax="false" immediate="true"
+			action="#{naUsuarioController.salvarSistemaUsuario()}" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+		<p:spacer width="5" />
+		<p:commandButton id="btnCancelarUsuarioSistema" value="Cancelar" icon="cancelar" accesskey="s" title="Salvar registro. (Alt + C)" ajax="false"
+			immediate="true" action="#{naUsuarioController.cancelarSistemaUsuario()}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+	</ui:define>
+
+</ui:composition>
+</html>

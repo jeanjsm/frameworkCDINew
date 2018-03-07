@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+	<composite:interface componentType="cCSimpleSearch">
+		<composite:attribute name="id" required="true" type="String"
+			shortDescription="O identificador de componente para esse componente. 
+                           Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="controller" required="true"
+			shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="itemLabel" required="false" type="String"
+			shortDescription="avaliada como uma String que servirá como o rótulo a ser mostrado para o item." />
+		<composite:attribute name="itemValue" required="false" type="String"
+			shortDescription="expressão de valor apontando para qualquer coleção ou matriz. Os elementos de membro pode ser instâncias de SelectItem ou qualquer objeto Java. " />
+		<composite:attribute name="update" required="true" type="String" shortDescription="componente(s) para ser atualizado com ajax." />
+		<composite:attribute name="waterMark" default="Pesquisar Por" type="String" required="false"
+			shortDescription="Exibe uma marca dágua como dica sobre um campo de entrada." />
+		<composite:attribute name="onSearchComplete" required="false" type="String"
+			shortDescription="Função de retorno no lado do cliente para executar quando o pedido ajax está concluída." />
+		<composite:attribute name="enableSearchAdvanced" required="false" default="true" type="boolean" shortDescription="Habilita um botão de busca avançada " />
+		<composite:attribute name="filtroDefault" required="false" type="String" shortDescription="Define o filtro que ja virá selecionado na combo." />
+
+		<composite:attribute name="atributoFiltro" required="false" type="String"
+			shortDescription="Define o atributo para o filtro padrão, quando este search depende do valor de outro." />
+		<composite:attribute name="valorFiltro" required="false"
+			shortDescription="Define o valor que será usado como filtro padrão, quando este search depende do valor de outro." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:focus for="txtKeyword#{cc.attrs.id}" />
+		<p:remoteCommand id="rcAtualizaFiltroDefault" name="rcAtualizaFiltroDefault" update="somPesquisa#{cc.attrs.id}"
+			onstart="console.log('rcAtualizaFiltroDefault() start')" />
+
+		<h:panelGrid id="pgSimpleSearch#{cc.attrs.id}" columns="4">
+
+			<p:selectOneMenu id="somPesquisa#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.filterBy}" style="min-width: 100px" binding="#{cc.filtro}">
+				<f:selectItem itemLabel="Filtrar Por..." itemValue="" />
+				<f:selectItems value="#{cc.attrs.controller.filterController.simpleFilters}" itemLabel="#{cc.attrs.itemLabel}" itemValue="#{cc.attrs.itemValue}"
+					noSelectionValue="Filtrar por" />
+			</p:selectOneMenu>
+
+			<p:inputText id="txtKeyword#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.filterText}" />
+
+			<p:commandButton id="btnBuscar#{cc.attrs.id}" icon="search" action="#{cc.attrs.controller.filter}" update="#{cc.attrs.update}"
+				oncomplete="#{cc.attrs.onSearchComplete}" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 22px; width: 25px;"
+				title="Pesquisar" process="pgSimpleSearch#{cc.attrs.id}">
+				<f:setPropertyActionListener target="#{cc.attrs.controller.atributoFiltroDefault}" value="#{cc.attrs.atributoFiltro}" />
+				<f:setPropertyActionListener target="#{cc.attrs.controller.valorFiltroDefault}" value="#{cc.attrs.valorFiltro}" />
+			</p:commandButton>
+
+			<p:commandButton id="btnBuscarAvancada#{cc.attrs.id}" icon="searchplus" rendered="#{cc.attrs.enableSearchAdvanced}"
+				onclick="wgdlgPesquisaAvancada#{cc.attrs.id}.show();" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 22px; width: 25px;"
+				title="Pesquisa Avançada">
+				<f:setPropertyActionListener target="#{cc.attrs.controller.atributoFiltroDefault}" value="#{cc.attrs.atributoFiltro}" />
+				<f:setPropertyActionListener target="#{cc.attrs.controller.valorFiltroDefault}" value="#{cc.attrs.valorFiltro}" />
+			</p:commandButton>
+
+			<p:defaultCommand target="btnBuscar#{cc.attrs.id}" />
+
+		</h:panelGrid>
+
+		<p:watermark for="txtKeyword#{cc.attrs.id}" value="#{cc.attrs.waterMark}" />
+
+		<p:dialog id="dlgPesquisaAvancada#{cc.attrs.id}" header="Pesquisa Avançada" widgetVar="wgdlgPesquisaAvancada#{cc.attrs.id}" modal="true" height="500"
+			width="950">
+
+			<p:outputPanel id="panelDialogAvancado#{cc.attrs.id}">
+
+				<p:messages />
+
+				<div style="margin: 0px; padding: 0px;">
+
+					<div id="left#{cc.attrs.id}" style="position: absolute; left: 10px; width: 210px; margin: 0px; padding: 0px;">
+
+
+						<div style="position: relative; float: left; width: 50px; top: 5px; padding-right: 5px;">
+							<h:outputLabel value="Operador" />
+							<h:outputLabel value="*" style="color: #FF0000; width: 5px;" />
+						</div>
+
+						<div style="float: right; text-align: left;">
+							<p:selectOneMenu id="cmbOperador#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.operatorType}" style="width: 150px;">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems value="#{cc.attrs.controller.filterController.operatorFilters}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+
+					<div id="leftcenter#{cc.attrs.id}" style="margin: 0px 400px 0px 220px; clear: both; position: absolute; padding: 0px;">
+
+						<div style="position: relative; float: left; width: 40px; top: 5px; padding-right: 5px;">
+							<h:outputLabel value="Campo" />
+							<h:outputLabel value="*" style="color: #FF0000; width: 5px;" />
+						</div>
+
+						<div style="float: right; text-align: left;">
+							<p:selectOneMenu id="cmbCampo#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.advancedFilterBy}" style="width: 230px;">
+								<f:selectItem itemLabel="Filtrar Por..." itemValue="" />
+								<f:selectItems value="#{cc.attrs.controller.filterController.advancedFilters}" />
+							</p:selectOneMenu>
+						</div>
+
+					</div>
+					<div id="rightcenter#{cc.attrs.id}" style="margin: 0px 100px 0px 500px; clear: both; position: absolute; padding: 0px;">
+
+						<div style="position: relative; float: left; width: 50px; top: 5px; padding-right: 5px;">
+							<h:outputLabel value="Critério" />
+							<h:outputLabel value="*" style="color: #FF0000; width: 5px;" />
+						</div>
+
+						<div style="float: right; text-align: left;">
+							<p:selectOneMenu id="cmbCriterio#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.criterionFilter}" style="width: 100px;">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems value="#{cc.attrs.controller.filterController.criterionsFilters}" />
+
+								<p:ajax update="panelValorAvancado#{cc.attrs.id}" oncomplete="wgdlgPesquisaAvancada#{cc.attrs.id}.show();"
+									listener="#{cc.attrs.controller.filterController.handleCriterionChange}" />
+							</p:selectOneMenu>
+						</div>
+
+					</div>
+					<div id="right#{cc.attrs.id}" style="margin: 0px 0px 0px 640px; background: #FF0000; padding: 0px;">
+
+						<div style="position: relative; float: left; width: 50px; top: 5px; left: 15px;">
+							<h:outputLabel value="Valor" />
+							<h:outputLabel value="*" style="color: #FF0000; width: 5px;" />
+						</div>
+
+						<div style="float: right; text-align: left;">
+
+							<p:outputPanel id="panelValorAvancado#{cc.attrs.id}">
+								<p:inputText id="txtAdvancedInitialFilter#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.advancedInitialFilterText}" />
+
+								<h:outputLabel id="lblEAvd#{cc.attrs.id}" value="e" style=" padding-right: 5px; padding-left: 2px;"
+									rendered="#{cc.attrs.controller.filterController.advancedFinalFilterEnable}" />
+
+								<p:inputText id="txtAdvancedFinalFilter#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.advancedFinalFilterText}"
+									rendered="#{cc.attrs.controller.filterController.advancedFinalFilterEnable}" />
+
+								<h:outputLabel id="lblSpacer#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.inLabel}"
+									style=" padding-right: 5px; padding-left: 2px; width: 200px; color: #ff0000; font-size:8px;"
+									rendered="#{!cc.attrs.controller.filterController.advancedFinalFilterEnable}" />
+							</p:outputPanel>
+
+						</div>
+					</div>
+				</div>
+
+				<div style="clear: both; position: relative; left: 10px; top: 10px; width: 275px; margin: 0px; padding: 0px;">
+					<p:commandButton id="btnAddBusca#{cc.attrs.id}" icon="filter" action="#{cc.attrs.controller.filterController.addAdvancedFilter()}" ajax="true"
+						update="panelDialogAvancado#{cc.attrs.id}" value="Adicionar Filtro" title="Adicionar Filtro"
+						style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 150px;" />
+				</div>
+
+				<br />
+				<br />
+
+				<p:treeTable id="treeTable#{cc.attrs.id}" value="#{cc.attrs.controller.filterController.root}" var="advancedFilter">
+					<f:facet name="header">  
+                  Filtros  
+               </f:facet>
+
+					<p:column style="width:800px; text-align: left;">
+						<f:facet name="header">  
+                     Filtro  
+                  </f:facet>
+						<h:outputText value="#{advancedFilter.fieldName}" />
+					</p:column>
+
+					<!--  
+                    <p:column style="width:50px">
+                         <f:facet name="header">  
+                          Remover  
+                      </f:facet>
+                                          
+                         <p:commandLink title="Remover Filtro" styleClass="ui-icon ui-icon-close" />					
+                    </p:column>
+               -->
+				</p:treeTable>
+
+				<br />
+
+				<p:commandButton id="btnRemoverTodos#{cc.attrs.id}" icon="cancel" action="#{cc.attrs.controller.filterController.removeAllAdvancedFilter()}" ajax="true"
+					update="panelDialogAvancado#{cc.attrs.id}" value="Remover Todos os Filtros" title="Remover Todos os Filtros"
+					style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 200px;" />
+
+				<p:commandButton id="btnFiltrarAvancado#{cc.attrs.id}" icon="cancel" action="#{cc.attrs.controller.filterAdvanced()}" ajax="true" update="@form"
+					value="Filtrar" title="Filtrar" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 200px;" />
+			</p:outputPanel>
+		</p:dialog>
+
+	</composite:implementation>
+
+</ui:composition>

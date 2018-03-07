@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true" type="String" shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="title" required="false" type="String" default="#{cc.attrs.label}" shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="rendered" type="boolean" default="true" shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="disabled" required="false" type="boolean" default="false" shortDescription="Sinalizador indicando que este elemento não deve nunca recebem o foco ou ser incluído em uma subsequente enviar. Um valor de falsas causas nenhum atributo a ser prestado, enquanto um valor de true faz com que o atributo a ser processado como disabled = 'desabled'." />
+		<composite:attribute name="required" required="false" type="boolean" default="false" shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="requiredMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é obrigatório!" shortDescription="um atributo habilitado expressão de valor que, se presente, será usado como o texto da mensagem de validação para a instalação 'necessária', se a instalação 'necessária' é usado." />
+		<composite:attribute name="controller" required="true" shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="stylePanel" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada no panel que envolve o componente." />
+		<composite:attribute name="styleClass" required="false" type="String" shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+		<composite:attribute name="ignoreReadOnlyController" required="false" type="boolean" default="false" shortDescription="Não utiliza o controller para definir a propriedade readOnly (default:false)" />
+		<composite:attribute name="controllerLocal" required="true" shortDescription="Este controller é o da tela atual, responsavel por determinar se o campo é read only" />
+		<composite:attribute name="atributoCodigo" required="true" shortDescription="Atributo que será mostrado como identificador do registro selecionado." />
+		<composite:attribute name="atributoDescricao" required="true" type="String" shortDescription="Atributo que será mostrado como descrição do registro selecionado." /> />
+        <composite:attribute name="atributoFiltro" required="false" type="String" shortDescription="Define o atributo para o filtro padrão, quando este inputSearch depende de outro." />
+		<composite:attribute name="valorFiltro" required="false" shortDescription="Define o valor que será usado como filtro padrão, quando este inputSearch depende de outro." />
+		<composite:attribute name="widthCodigo" required="false" type="String" default="40px" shortDescription="Tamanho do espaço reservado para o código - por exemplo 100px" />
+		<composite:attribute name="widthDescricao" required="false" type="String" default="300px" shortDescription="Tamanho do espaço reservado para a descrição - por exemplo 100px" />
+		<composite:attribute name="filtroDefault" required="false" type="String" shortDescription="Define o filtro que ja virá selecionado na combo. O nome deve ser idêntico ao field da entity" />
+		<composite:attribute name="onComplete" required="false" type="String" shortDescription="nome do método javaScript que será chamado após a seleção de um registro." />
+		<composite:attribute name="pathFragmentForm" required="false" type="String" shortDescription="Caminho completo do fragment que será exibido quando o usuario clicar no botao de adicinar novo" />
+		<composite:attribute name="naPermissao" required="false" type="String" shortDescription="Nome da permissao que o usuario deve ter para poder adicionar um novo registro" />
+		<composite:attribute name="widthDialog" required="false" type="String" shortDescription="Largura em px do dialog que será aberto quando o usuario clicar no botao de adicionar novo registro." />
+		<composite:attribute name="heightDialog" required="false" type="String" shortDescription="Altura em px do Dialog que será aberto quando o usuario clicar no botao de adicionar novo registro." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<script>
+         //<![CDATA[
+         var forceDialog = false;
+
+         function setForceDialog(force) {
+            console.log("setForceDialog()");
+            forceDialog = force;
+         }
+         ;
+
+         function abrirPesquisaSpace_#{cc.attrs.id}(e) {
+            console.log("abrirPesquisaSpace_#{cc.attrs.id}()");
+            var ev = e || event;
+            var key = ev.which || ev.keyCode;
+            if (key == 32) {
+               console.log("abrindo caixa de pesquisa");
+               PF('naDialog#{cc.attrs.id}Widget').show();
+            }
+         }
+         ;
+
+
+
+         function forceOpenDialog_#{cc.attrs.id}() {
+            console.log("forceOpenDialog_#{cc.attrs.id}()");
+            if (forceDialog == true) {
+               forceDialog = false;
+               PF('naDialog#{cc.attrs.id}Widget').valueOf(null);
+               PF('naDialog#{cc.attrs.id}Widget').show();
+            }
+         }
+         ;
+
+         function fecharDialog_#{cc.attrs.id}(xhr, status, args) {
+            console.log(args.validationFailed);
+            if (args.validationFailed) {
+               PF('widgetVarDialog_#{cc.attrs.id}').jq.effect("shake", {times: 5}, 100);
+            } else {
+               PF('widgetVarDialog_#{cc.attrs.id}').hide();
+            }
+         }
+         ;
+         //]]>
+      </script>
+
+		<h:panelGroup id="#{cc.attrs.id}" rendered="#{cc.attrs.rendered}" style="#{cc.attrs.stylePanel}" styleClass="panelComponentesNeA">
+
+			<nea:outputText id="lbl_#{cc.attrs.id}" value="#{cc.attrs.label}" required="#{cc.attrs.required}" />
+			<br />
+			<h:panelGrid id="pgInputSearch#{cc.attrs.id}" columns="5" style="border-spacing: 0; margin-top: -0.9px;">
+
+				<p:inputText id="txtNeaCodigo#{cc.attrs.id}" value="#{cc.attrs.atributoCodigo}" title="#{cc.attrs.title}" widgetVar="widgetVarCodigo_#{cc.attrs.id}"
+					style="width: #{cc.attrs.widthCodigo} ; #{cc.attrs.style}" required="false" onkeydown="abrirPesquisaSpace_#{cc.attrs.id}(arguments[0])"
+					readonly="#{(cc.attrs.controllerLocal != null and cc.attrs.controllerLocal.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController)}"
+					requiredMessage="#{cc.attrs.requiredMessage}">
+
+					<p:ajax event="change" onsuccess="detach_#{cc.attrs.id}(); rmcChangeKey#{cc.attrs.id}();" onstart="console.log('txtNeaCodigo#{cc.attrs.id} change start')"
+						oncomplete="console.log('txtNeaCodigo#{cc.attrs.id} change complete')" process="@this" />
+
+				</p:inputText>
+
+				<p:inputText id="txtNeaDescricao#{cc.attrs.id}" value="#{cc.attrs.atributoDescricao}" widgetVar="widgetVarDescricao_#{cc.attrs.id}" readonly="true"
+					title="#{cc.attrs.title}" disabled="true"
+					style="width: #{cc.attrs.widthDescricao} ; opacity: 1.00; background: #CCCCCC; text-shadow: 0px 0px 0px; margin-left: -3px; margin-button: -1px; height: 14px;" />
+
+				<p:commandButton id="btnPesquisar#{cc.attrs.id}" widgetVar="btnPesquisar#{cc.attrs.id}Widget" icon="search" partialSubmit="true"
+					style="text-align: center; font-size-adjust: inherit; font-size: 7pt; height: 20px; width: 25px; margin-left: -3px;"
+					disabled="#{(cc.attrs.controllerLocal != null and cc.attrs.controllerLocal.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController) or (cc.attrs.disabled)}"
+					title="Pesquisar" onstart="rmcPesquisar#{cc.attrs.id}();" action="#{cc.attrs.controller.actionPreSearch}" immediate="true" />
+
+				<p:commandButton id="btnNovo#{cc.attrs.id}" icon="add" oncomplete="PF('widgetVarDialog_#{cc.attrs.id}').show();" accesskey="n"
+					title="Criar novo registro. (Alt + N)"
+					rendered="#{(cc.attrs.naPermissao != null ? autenticador.hasPermissao(cc.attrs.naPermissao.concat('-INSERIR')) : false) and (cc.attrs.pathFragmentForm != null)}"
+					disabled="#{(cc.attrs.controllerLocal != null and cc.attrs.controllerLocal.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController) or (cc.attrs.disabled)}"
+					style="text-align: center; font-size-adjust: inherit; font-size: 7pt; height: 20px; width: 25px; margin-left: -3px;" />
+
+			</h:panelGrid>
+
+		</h:panelGroup>
+
+		<p:remoteCommand id="rmcPesquisar#{cc.attrs.id}" name="rmcPesquisar#{cc.attrs.id}" process="@this" partialSubmit="true"
+			update="@widgetVar(widgetVarPanel_#{cc.attrs.id})" onstart="console.log('rmcPesquisar#{cc.attrs.id} start');"
+			oncomplete="console.log('rmcPesquisar#{cc.attrs.id} complete');">
+			<f:setPropertyActionListener target="#{cc.attrs.controller.atributoFiltroDefault}" value="#{cc.attrs.atributoFiltro}" />
+			<f:setPropertyActionListener target="#{cc.attrs.controller.valorFiltroDefault}" value="#{cc.attrs.valorFiltro}" />
+		</p:remoteCommand>
+
+		<p:remoteCommand id="rmcSelecionar#{cc.attrs.id}" name="rmcSelecionar#{cc.attrs.id}" action="#{cc.attrs.controller.actionPosSelect}" partialSubmit="true"
+			process="@this @widgetVar(widgetVarCodigo_#{cc.attrs.id}) @widgetVar(widgetVarDescricao_#{cc.attrs.id})"
+			update="@widgetVar(widgetVarCodigo_#{cc.attrs.id}) @widgetVar(widgetVarDescricao_#{cc.attrs.id})" onstart="console.log('rmcSelecionar#{cc.attrs.id} start');"
+			oncomplete="console.log('rmcSelecionar#{cc.attrs.id} complete'); #{cc.attrs.onComplete};">
+			<f:setPropertyActionListener target="#{cc.attrs.value}" value="#{cc.attrs.controller.cloneObjetoPrincipal}" />
+			<f:actionListener type="br.com.neainformatica.infrastructure.listener.CleanForms" />
+		</p:remoteCommand>
+
+		<p:remoteCommand id="detach_#{cc.attrs.id}" name="detach_#{cc.attrs.id}" actionListener="#{cc.attrs.controllerLocal.detachObject}" />
+
+		<p:remoteCommand id="rmcChangeKey#{cc.attrs.id}" name="rmcChangeKey#{cc.attrs.id}" actionListener="#{cc.attrs.controller.actionChangeKey}"
+			action="#{cc.attrs.controller.actionChangeKey}" partialSubmit="true" oncomplete="rmcChangeKeyComplete#{cc.attrs.id}();" process="@this @parent"
+			update="@widgetVar(widgetVarCodigo_#{cc.attrs.id}) @widgetVar(widgetVarDescricao_#{cc.attrs.id})" onstart="console.log('rmcChangeKey#{cc.attrs.id} start');">
+
+			<f:setPropertyActionListener target="#{cc.attrs.controller.valorChave}" value="#{cc.attrs.atributoCodigo}" />
+			<f:setPropertyActionListener target="#{cc.attrs.controller.atributoFiltroDefault}" value="#{cc.attrs.atributoFiltro}" />
+			<f:setPropertyActionListener target="#{cc.attrs.controller.valorFiltroDefault}" value="#{cc.attrs.valorFiltro}" />
+			<f:actionListener type="br.com.neainformatica.infrastructure.listener.CleanForms" />
+
+		</p:remoteCommand>
+
+		<p:remoteCommand id="rmcChangeKeyComplete#{cc.attrs.id}" immediate="true" name="rmcChangeKeyComplete#{cc.attrs.id}"
+			actionListener="#{cc.attrs.controller.actionChangeKeyComplete}" partialSubmit="true"
+			update="@widgetVar(widgetVarCodigo_#{cc.attrs.id}) @widgetVar(widgetVarDescricao_#{cc.attrs.id}) @parent"
+			onstart="console.log('rmcChangeKeyComplete#{cc.attrs.id} start')"
+			oncomplete="console.log('rmcChangeKeyComplete#{cc.attrs.id} complete');#{cc.attrs.onComplete};forceOpenDialog_#{cc.attrs.id}();">
+
+			<f:setPropertyActionListener target="#{cc.attrs.value}" value="#{cc.attrs.controller.cloneObjetoPrincipal}" />
+		</p:remoteCommand>
+
+		<p:overlayPanel appendToBody="true" id="naDialog#{cc.attrs.id}" widgetVar="naDialog#{cc.attrs.id}Widget" for="btnPesquisar#{cc.attrs.id}" hideEffect="fade"
+			dynamic="true" my="left bottom" at="right bottom" showCloseIcon="true" style="width: 50% !important;">
+			<p:panel widgetVar="widgetVarPanel_#{cc.attrs.id}">
+				<h:form id="formOverlayPanel#{cc.attrs.id}" prependId="false">
+
+					<nea:simpleSearch id="simpleSearch#{cc.attrs.id}" atributoFiltro="#{cc.attrs.atributoFiltro}" valorFiltro="#{cc.attrs.valorFiltro}"
+						filtroDefault="#{cc.attrs.filtroDefault}" update="@widgetVar(dtSearch#{cc.attrs.id})" controller="#{cc.attrs.controller}" enableSearchAdvanced="false" />
+
+					<p:outputPanel id="opnOverlayPanelDataTable#{cc.attrs.id}">
+
+						<p:dataTable id="dataTableEditSearch#{cc.attrs.id}" value="#{cc.attrs.controller.lazyList}" var="list" rowKey="#{list.id}" selectionMode="single"
+							widgetVar="dtSearch#{cc.attrs.id}" paginator="true" rows="10" paginatorPosition="bottom" selection="#{cc.attrs.controller.inputSearchSelectdObject}"
+							lazy="true" emptyMessage="Não há dados cadastrados">
+
+							<p:ajax event="rowSelect" immediate="true" onsuccess="rmcSelecionar#{cc.attrs.id}(); PF('naDialog#{cc.attrs.id}Widget').hide();" />
+
+							<p:columns value="#{cc.attrs.controller.columns}" var="column" columnIndexVar="colIndex">
+								<f:facet name="header">#{column.header}</f:facet> 
+                           #{list[column.property]}  
+                     </p:columns>
+
+						</p:dataTable>
+
+					</p:outputPanel>
+
+				</h:form>
+
+			</p:panel>
+
+		</p:overlayPanel>
+
+		<p:dialog id="dialog_#{cc.attrs.id}" widgetVar="widgetVarDialog_#{cc.attrs.id}" modal="true" resizable="true" header="#{cc.attrs.label}"
+			width="#{cc.attrs.widthDialog}" height="#{cc.attrs.heightDialog}" dynamic="true" appendTo="@(body)" closeOnEscape="true"
+			onShow="rmcAtualizarDialog_#{cc.attrs.id}();">
+
+			<h:form prependId="false" id="formDialog_#{cc.attrs.id}">
+
+				<p:outputPanel id="outputPanelDialog_#{cc.attrs.id}">
+
+					<p:messages id="msgFormDetailFragment" />
+
+					<ui:include src="#{cc.attrs.pathFragmentForm}">
+						<ui:param name="controller" value="#{cc.attrs.controller}" />
+					</ui:include>
+
+					<div align="center">
+						<p:commandButton id="btnSalvarDialog1_#{cc.attrs.id}" value="Salvar" ajax="true" icon="save" title="Salvar registro. (Alt + S)"
+							action="#{pessoaController.salvarDetail()}" process="@form"
+							style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;"
+							update="formDialog_#{cc.attrs.id}:outputPanelDialog_#{cc.attrs.id}" oncomplete="fecharDialog_#{cc.attrs.id}(xhr, status, args)"
+							onsuccess="rmcSelecionar#{cc.attrs.id}(); " />
+						<p:spacer width="7" />
+
+						<p:commandButton id="btnCancelarDialog_#{cc.attrs.id}" value="Cancelar" icon="cancelar" action="#{cc.attrs.controller.cancelDetail()}" immediate="true"
+							oncomplete="PF('widgetVarDialog_#{cc.attrs.id}').hide();" title="Cancelar. (Alt + C)"
+							style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+					</div>
+
+
+
+					<!-- Este remoteCommand faz: 
+           Chama o metodo Create do controller (para setar o StateForm = INSERT), Atualiza o outputPanel com Form "limpo"  -->
+					<p:remoteCommand id="rmcAtualizarDialog_#{cc.attrs.id}" name="rmcAtualizarDialog_#{cc.attrs.id}" action="#{cc.attrs.controller.createModal()}"
+						partialSubmit="true" update="@form" process="@this" onstart="console.log('rmcAtualizarDialog_#{cc.attrs.id} start');"
+						oncomplete="console.log('rmcAtualizarDialog_#{cc.attrs.id} complete');" />
+
+					<!-- Este remoteCommand faz:	
+           É chamado no clique do botao salvar; Chama o metodo salvarDetail do controller (por que o botao nao funciona devido a mudança de formularios),  -->
+					<!-- Chama o remoteCommand rmcSelecionar (que seleciona o objeto criado no combo para o usuario)  -->
+					<p:remoteCommand id="rmcSalvarDialog_#{cc.attrs.id}" name="rmcSalvarDialog_#{cc.attrs.id}" process="@form"
+						onstart="console.log('rmcSalvarDialog_#{cc.attrs.id} start');" onsuccess="rmcSelecionar#{cc.attrs.id}(); "
+						oncomplete="console.log('rmcSalvarDialog_#{cc.attrs.id} complete'); fecharDialog_#{cc.attrs.id}(xhr, status, args)"
+						action="#{pessoaController.salvarDetail()}" update="formDialog_#{cc.attrs.id}:outputPanelDialog_#{cc.attrs.id}">
+					</p:remoteCommand>
+
+				</p:outputPanel>
+
+			</h:form>
+
+		</p:dialog>
+
+	</composite:implementation>
+
+</ui:composition>

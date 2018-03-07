@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<about>
+	<versions class="list">
+		<versions>
+			<name>2015.01.28</name>
+			<builds class="list">
+
+				<builds>
+					<name>[15] - 25/01/2016</name>
+					<implementations class="list">
+						<implementations>
+							<name>Correção nos métodos de busca de parâmetros e unificação do envio de e-mails </name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[14] - 15/09/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Corrigido atualizaBase para postgres existeFK, existeUnique, existIndex </name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[11] - 27/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Remoção da Classe NaConfiguracao e suas dependências</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[10] - 26/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado rotina que cria perfis default</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[9] - 26/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado rotina que cria parâmetros de valores fixo /
+								refatorado Atualiza base princiapl</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[8] - 21/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado formatador de telefone componente nea:inputMask.
+							</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[7] - 20/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Correções de layout.</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[6] - 19/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado evento de seleção de data no componente
+								nea:inputDate.</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[5] - 18/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Correção nas permissões de acesso.</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[4] - 17/08/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Correção na exclusão do perfil "SUPORTE"</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[1] - 28/01/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Correção no Versão que não estava sendo renderizado</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+		<versions>
+			<name>2015.01.08</name>
+			<builds class="list">
+				<builds>
+					<name>[1] - 08/01/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionada opção de alteração de senha por e-mail</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+		<versions>
+			<name>2014.05.05</name>
+			<builds class="list">
+				<builds>
+					<name>[6] - 08/01/2015</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionada opção de alteração de senha por e-mail</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[5] - 29/12/2014</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado atalho por teclado no inputSearch</name>
+						</implementations>
+						<implementations>
+							<name>Corrigido filtro por código no inputSearch</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[4] - 06/08/2014</name>
+					<implementations class="list">
+						<implementations>
+							<name>Corrigido impressão dos cabeçalhos nas aplicações clientes
+							</name>
+						</implementations>
+
+					</implementations>
+				</builds>
+				<builds>
+					<name>[3] - 15/07/2014</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado componente inputMask</name>
+						</implementations>
+						<implementations>
+							<name>Removido component inputCEP</name>
+						</implementations>
+						<implementations>
+							<name>Removido component inputCNPJ</name>
+						</implementations>
+						<implementations>
+							<name>Removido component inputCPF</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[2] - 26/05/2014</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado componente inputCPF</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado componente inputCNPJ</name>
+						</implementations>
+						<implementations>
+							<name>Corrigido validação de CPF</name>
+						</implementations>
+						<implementations>
+							<name>Corrigido converter do componente selectEntity</name>
+						</implementations>
+						<implementations>
+							<name>Corrigido componente inputCEP</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado Dialect para o Firebird</name>
+						</implementations>
+					</implementations>
+				</builds>
+				<builds>
+					<name>[1] - 05/05/2014</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado propriedade style no selectEntity</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado propriedade filter no selectEntity</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado mascara no componente inputDate</name>
+						</implementations>
+						<implementations>
+							<name>Corrigido rotina que define o logo padrão para as
+								aplicações clientes
+							</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado estrutura para armazenamento de parametos</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado campo Ativo no cadastro de Estado</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado componente outputSimNao</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+
+		<versions>
+			<name>2012.10.01</name>
+			<builds class="list">
+				<builds>
+					<name>[1] - 01/10/2012</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado controle de usuários</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado mestre-detalhe</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado Auditoria</name>
+						</implementations>
+						<implementations>
+							<name>Adicionado Atualização de Base</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+		<versions>
+			<name>2012.09.01</name>
+			<builds class="list">
+				<builds>
+					<name>[2] - 13/09/2012</name>
+					<implementations class="list">
+						<implementations>
+							<name>Alteração do Layout do sistema</name>
+						</implementations>
+					</implementations>
+				</builds>
+
+				<builds>
+					<name>[1] - 01/09/2012</name>
+					<implementations class="list">
+						<implementations>
+							<name>Criação de componente de Edit Search</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+
+		<versions>
+			<name>2012.08.01</name>
+			<builds class="list">
+				<builds>
+					<name>[1] - 01/08/2012</name>
+					<implementations class="list">
+						<implementations>
+							<name>Adicionado sobre gerado por XML</name>
+						</implementations>
+					</implementations>
+				</builds>
+			</builds>
+		</versions>
+	</versions>
+</about>
+
+
+
+
+

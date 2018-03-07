@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true" shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="title" required="false" type="String" default="#{cc.attrs.label}" shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="width" required="false" type="String" default="250px" shortDescription="Tamanho do campo selectOneRadio valor em pixels. Por exemplo 100px" />
+		<composite:attribute name="widgetVar" required="false" type="String" default="widgetVarInputMask_#{cc.attrs.id}" shortDescription="Nome utilizado pelo Primefaces para recuperar e referenciar elementos client-side em outros componentes." />
+		<composite:attribute name="rendered" shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="disabled" required="false" default="false" shortDescription="Sinalizador indicando que este elemento não deve nunca recebem o foco ou ser incluído em uma subsequente enviar. Um valor de falsas causas nenhum atributo a ser prestado, enquanto um valor de true faz com que o atributo a ser processado como disabled = 'desabled'." />
+		<composite:attribute name="required" required="false" default="false" shortDescription="Sinalizador  indicando que o usuário é obrigado a fornecer um valor apresentado para este componente de entrada." />
+		<composite:attribute name="requiredMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é obrigatório!" shortDescription="um atributo habilitado expressão de valor que, se presente, será usado como o texto da mensagem de validação para a instalação 'necessária', se a instalação 'necessária' é usado." />
+		<composite:attribute name="mensagensNoComponent" required="false" type="boolean" default="false" shortDescription="indica se a mensagem de erro aparecera abaixo no camponente ou no cabeçalho do formulario" />
+		<composite:attribute name="watermark" required="false" type="String" shortDescription="Watermark exibe uma dica sobre um campo de entrada." />
+		<composite:attribute name="type" required="false" type="String" shortDescription="Tipo de campo de entrada. O padrão é texto." />
+		<composite:attribute name="controller" required="true" shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="converter" required="false" type="String" shortDescription="Uma expressão el ou um texto literal que define um conversor para o componente. Quando é uma expressão EL, está resolvido para uma instância do conversor. No caso, é um texto estático, ele deve se referir a um ID de conversor." />
+		<composite:attribute name="converterMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é inválido! " shortDescription="valor de expressão um atributo que, se estiver presente, será utilizado como o texto da mensagem conversor activado, substituindo qualquer mensagem que vem do conversor." />
+		<composite:attribute name="validatorId" required="false" type="String" default="" shortDescription="Registrar uma instância Validador nomeado no UIComponent associado com a ação personalizada mais próximo UIComponent pai. Se este elemento está aninhado dentro de uma tag UIComponent que tem outras crianças UIComponent, o validador será automaticamente adicionado a todos os componentes da criança, bem como este. A implementação deve garantir isso ocorre mesmo se o pai desse elemento não é uma instância de EditableValueHolder." />
+		<composite:attribute name="validatorMessage" required="false" type="String" default="O campo '#{cc.attrs.label}' é inválido!" shortDescription="Mensagem que será exibida quando a validação falhar!" />
+		<composite:attribute name="style" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada quando esse componente é processado." />
+		<composite:attribute name="stylePanel" required="false" type="String" shortDescription="estilo(s) CSS a ser aplicada no panel que envolve o componente." />
+		<composite:attribute name="styleClass" required="false" type="String" shortDescription="lista separada por espaços de classe de estilo CSS(s) a ser aplicado quando isso elemento é renderizado. Este valor deve ser passada através como a 'classe' atributo na marcação gerada." />
+		<composite:attribute name="onkeyup" required="false" type="String" shortDescription="Javascript código executado quando uma tecla é liberada sobre este elemento." />
+		<composite:attribute name="ignoreReadOnlyController" required="false" type="boolean" default="false" shortDescription="Não utiliza o controller para definir a propriedade readOnly (default:false)" />
+		<composite:attribute name="oncomplete" required="false" type="String" shortDescription="Javascript código executado quando a acao do componente estiver completa." />
+		<composite:attribute name="onblur" required="false" type="String" shortDescription="Função callback lado do cliente para executar quando elemento de entrada perde o foco." />
+		<composite:attribute name="typeMask" required="false" type="String" shortDescription="identifica o tipo de mascara que deve ser utilizada. ex: cpf, cnpj ou cep" />
+		<composite:attribute name="mask" required="false" type="String" shortDescription="especificar manualmente a mascara a ser utilizada. ex: 9999-9999, 999.999.999-99" />
+		<composite:attribute name="immediate" required="false" type="boolean" default="false" shortDescription="Sinalizador que indica que o valor deste componente deve ser convertido e validado imediatamente ( isto é, durante fase de Aplicar Pedido de valores), em vez de esperar até a fase validações de processo." />
+	</composite:interface>
+
+	<composite:implementation>
+		<h:outputScript library="neainformatica" name="framework/js/mascaraCpfeCnpj.js" target="head" />
+		<script type="text/javascript" language="JavaScript">
+         var $ = jQuery;
+         $(document).ready(function () {
+
+            if ("#{cc.attrs.typeMask}" == 'cep') {
+               $("input[id*='inputMask_#{cc.attrs.id}']").mask('99999-999');
+            } else if ("#{cc.attrs.typeMask}" == 'cpf') {
+               $("input[id*='inputMask_#{cc.attrs.id}']").mask('999.999.999-99');
+            } else if ("#{cc.attrs.typeMask}" == 'cnpj') {
+               $("input[id*='inputMask_#{cc.attrs.id}']").mask('99.999.999/9999-99');
+            } else if ("#{cc.attrs.typeMask}" == 'telefone') {
+               $("input[id*='inputMask_#{cc.attrs.id}']").mask('(99) 9999-9999');
+            } else if ("#{cc.attrs.typeMask}" == 'cpfcnpj') {
+
+            } else {
+               $("input[id*='inputMask_#{cc.attrs.id}']").mask('#{cc.attrs.mask}');
+            }
+         });
+      </script>
+
+
+		<h:panelGroup id="#{cc.attrs.id}" rendered="#{cc.attrs.rendered}" style="#{cc.attrs.stylePanel}" styleClass="panelComponentesNeA">
+			<nea:outputText id="lbl_#{cc.attrs.id}" value="#{cc.attrs.label}" required="#{cc.attrs.required}" />
+			<br />
+			<p:inputText id="#{cc.attrs.typeMask}_inputMask_#{cc.attrs.id}" value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" disabled="#{cc.attrs.disabled}"
+				required="#{cc.attrs.required}" title="#{cc.attrs.title}" type="#{cc.attrs.type}" requiredMessage="#{cc.attrs.requiredMessage}"
+				style="width: #{cc.attrs.width} ; #{cc.attrs.style}" readonly="#{(cc.attrs.controller.state eq 'BROWSE') and (!cc.attrs.ignoreReadOnlyController)}"
+				converter="#{cc.attrs.converter}" converterMessage="#{cc.attrs.converterMessage}" widgetVar="#{cc.attrs.widgetVar}"
+				validatorMessage="#{cc.attrs.validatorMessage}" styleClass="#{cc.attrs.styleClass}" onkeyup="#{cc.attrs.onkeyup}" maxlength="18"
+				onkeypress="#{(cc.attrs.typeMask == 'cpfcnpj') ? 'return mascara(this)' : ''}" onblur="#{(cc.attrs.controller.state eq 'BROWSE') ? '' : cc.attrs.onblur}"
+				immediate="#{cc.attrs.immediate}">
+
+				<f:validator validatorId="#{cc.attrs.validatorId}" disabled="#{cc.attrs.validatorId == ''}" />
+				<c:if test="(cc.attrs.controller.state ne 'BROWSE')">
+					<p:ajax event="blur" process="@this" oncomplete="#{cc.attrs.oncomplete}" />
+				</c:if>
+				<f:converter converterId="inputMaskConverter" />
+			</p:inputText>
+			<p:message for="#{cc.attrs.typeMask}_inputMask_#{cc.attrs.id}" rendered="#{cc.attrs.mensagensNoComponent eq true}" />
+			<p:watermark for="#{cc.attrs.typeMask}_inputMask_#{cc.attrs.id}" value="#{cc.attrs.watermark}" />
+
+		</h:panelGroup>
+
+
+	</composite:implementation>
+
+</ui:composition>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+<ui:composition template="/framework/template/templateList.xhtml">
+
+	<ui:param name="controller" value="#{naUsuarioController}" />
+	<ui:param name="nomeTela" value="Usuários" />
+	<ui:param name="permissao" value="NA_USUARIO" />
+	<ui:param name="exibeBotaoNovo" value="false" />
+
+	<ui:param name="exibeBotaoExcluir" value="false" />
+
+	<ui:define name="dataTablePrincipal">
+
+		<p:ajax event="rowSelect" global="false" />
+
+		<p:column id="dtCodigo" headerText="Código Usuário" resizable="true">
+			<h:outputText value="#{dt.ator.id}" />
+		</p:column>
+
+		<p:column id="dtNome" headerText="Nome" resizable="true">
+			<h:outputText value="#{dt.nome}" />
+		</p:column>
+
+		<p:column id="dtCPFCnpj" headerText="CPF" resizable="true">
+			<h:outputText value="#{dt.cpfCnpj}">
+				<f:converter converterId="cpfCnpjConverter" />
+			</h:outputText>
+		</p:column>
+
+		<p:column id="dtEmail" headerText="E-mail" resizable="true">
+			<h:outputText value="#{dt.email}" />
+		</p:column>
+
+		<p:column id="dtDataNascimento" headerText="Data Nascimento" resizable="true">
+			<h:outputText value="#{dt.dataNascimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+
+	</ui:define>
+
+	<ui:define name="botoesAdicionais">
+
+		<p:commandButton id="btnNovoUsuario" value="Novo" icon="add" accesskey="n" ajax="true" immediate="true" action="#{naUsuarioController.limpaCampos()}"
+			oncomplete="PF('dlgNovoUsuario').show();"
+			rendered="#{(empty permissao ? true : autenticador.hasPermissao(permissao.concat('-INSERIR')) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Criar novo registro. (Alt + N)"
+			update="@widgetVar(dlgNovoUsuario)" />
+
+
+		<p:commandButton id="btnAddSistemas" value="Sistemas" action="#{naUsuarioController.navegaParaUsuarioSistema()}" ajax="false" icon="add-user"
+			rendered="#{(controller.objeto.id != null) and (autenticador.hasPermissao(permissao.concat('-ALTERAR')))}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;"
+			title="Vincula acesso aos sistemas para o usuário selecionado" />
+		<p:spacer width="1" />
+
+		<p:splitButton value="Gerenciar Senhas" update="panelRestarSenha" icon="changePassword"
+			rendered="#{(controller.objeto.id != null) and (autenticador.hasPermissao(permissao.concat('-ALTERAR')))}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px;">
+			<p:menuitem value="Resetar Senha" action="#{naUsuarioController.resetarSenha()}" update="panelRestarSenha" icon="ui-icon-arrowrefresh-1-w"
+				styleClass="height: 30px;" />
+			<p:menuitem value="Enviar por Email" action="#{naUsuarioController.enviaSenhaEmail()}" ajax="true" icon="ui-icon-disk" />
+		</p:splitButton>
+
+		<p:dialog widgetVar="dlgNovaSenha" modal="true" closable="false" resizable="false">
+			<h:panelGroup id="panelRestarSenha">
+
+				<p:outputPanel deferred="true">
+					<h4>Sua senha foi gerada com sucesso!</h4>
+					<h1>
+						<p>#{naUsuarioController.novaSenha}</p>
+					</h1>
+				</p:outputPanel>
+
+				<div style="height: 1px"></div>
+
+				<p:commandButton id="btnOk" value="Ok" onclick="PF('dlgNovaSenha').hide()" icon="check-green" />
+
+			</h:panelGroup>
+		</p:dialog>
+
+
+		<p:dialog id="iddlgNovoUsuario" header="Informe o CPF" widgetVar="dlgNovoUsuario" dynamic="true" modal="true" resizable="false" closable="false">
+
+			<p:panel style="border:none" widgetVar="pnPesquisaUsuario">
+				<p:growl id="msgCpfInformado" />
+
+
+				<h:panelGrid id="panelNovoUsuarioPesquisa" columns="2" style="border-spacing: 0; margin-top: -0.9px;">
+
+					<nea:inputMask id="maskCpf" value="#{controller.cpfInformado}" label="CPF" controller="#{controller}" typeMask="cpf" required="true"
+						ignoreReadOnlyController="true" />
+
+					<p:commandButton id="btnPesquisa" action="#{naUsuarioController.buscarUsuario()}" icon="search" ajax="true"
+						style="text-align: center; font-size-adjust: inherit; font-size: 7pt; height: 23px; width: 25px; margin-left: -3px; margin-top: 13px;"
+						oncomplete="handleLoginRequest(xhr, status, args)" update="msgCpfInformado" />
+
+					<p:defaultCommand target="btnPesquisa" />
+
+				</h:panelGrid>
+
+				<p:commandButton id="btnCancelNovoCadastro" value="Cancelar" icon="cancelar" accesskey="c" title="Cancelar. (Alt + C)" onclick="PF('dlgNovoUsuario').hide()"
+					ajax="true" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
+
+			</p:panel>
+		</p:dialog>
+
+
+		<p:confirmDialog id="includeConfirmDialog" widgetVar="wvIncludeConfirmDialog" closeOnEscape="true" header="Deseja incluir acesso ao usuário ?"
+			closable="false" severity="warning32">
+			<h:form>
+				<p:outputPanel>
+					<p>
+						O CPF informado já encontra-se cadastrado, mas não possui acesso ao sistema <strong><b>#{naSessionController.naSistema.sistema}! </b></strong> <br>
+							Deseja incluir o acesso? </br>
+					</p>
+				</p:outputPanel>
+
+				<div align="center">
+					<p:commandButton id="confirminclude" value="Sim" icon="ok16" oncomplete="PF('wvIncludeConfirmDialog').hide();" accesskey="s"
+						action="#{naUsuarioController.novoUsuarioSistema()}" ajax="false" style="width:70px;" immediate="true" />
+					<p:commandButton id="declineinclude" value="Não" icon="cancel16" onclick="PF('dlgInformacao').show()" type="button" style="width:70px;" immediate="true" />
+				</div>
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog id="dlgCadastroExsistente" widgetVar="dlgCadastroExsistente" closeOnEscape="true" closable="false" severity="warning32"
+			header="CPF informado já possui registro na base de dados!"
+			message="O CPF informado já encontra-se cadastrado para o sistema #{naSessionController.naSistema.sistema}">
+
+			<div align="center">
+				<p:commandButton value="Ok" icon="ok16" action="#{naUsuarioController.atualizaDadosDaGridPrincipal()}" oncomplete="PF('dlgCadastroExsistente').hide()"
+					update="dataTable" style="width:70px;" immediate="true" onclick="PF('dlgInformacao').show()" />
+			</div>
+		</p:confirmDialog>
+
+		<p:confirmDialog id="dlgInformacao" widgetVar="dlgInformacao" closeOnEscape="true" closable="false" header="Atenção!" message="Operação Cancelada!">
+			<div align="center">
+				<p:commandButton value="Ok" icon="ok16" oncomplete="PF('dlgInformacao').hide() PF('wvIncludeConfirmDialog').hide()" update="dataTable" style="width:70px;"
+					immediate="true" />
+			</div>
+		</p:confirmDialog>
+
+		<script type="text/javascript">
+		   function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.permitirAlteracao) {
+                	dlgNovoUsuario.jq.effect("shake", {times: 5}, 100);                	
+                }
+                else {
+                	PF('dlgNovoUsuario').hide();                	
+                    $('#changePasswordButtom').fadeOut();
+                }
+            }
+		</script>
+	</ui:define>
+</ui:composition>
+
+</html>

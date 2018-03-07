@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/framework/template/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{controller.initConversation}" />
+		</f:metadata>
+		<p:panel style="padding: 5px; border:none;"
+			rendered="#{identity.loggedIn}">
+
+			<adm:breadcrumb title="#{nomeTela}" />
+
+			<h:form>
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<p:commandButton id="btnNovo" value="Novo" icon="fa fa-plus" accesskey="n" action="#{controller.create()}" ajax="false"
+										rendered="#{((empty exibeBotaoNovo ? true : exibeBotaoNovo) and (empty permissao ? true : autenticador.hasPermissao(permissao.concat('-INSERIR'))) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+										styleClass="btn-primary" title="Criar novo registro. (Alt + N)" />
+
+						<p:spacer width="2" />
+						<p:commandButton id="btnApagar" value="Apagar" icon="delete"
+										rendered="#{((empty exibeBotaoExcluir ? true : exibeBotaoExcluir) and (controller.objeto.id != null) and (empty permissao ? true : autenticador.hasPermissao(permissao.concat('-EXCLUIR'))) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+										accesskey="a" onclick="PF('wvDeleteConfirmDialog').show();" type="button"
+										styleClass="btn-danger" title="Apagar registro. (Alt + A)" />
+									<p:spacer width="1" />
+
+					</div>
+				</div>
+			</h:form>
+
+			<p:dialog header="Default Selecionadas"
+				widgetVar="defaultSelecionadas" height="250" width="400"
+				responsive="true" styleClass="box-success">
+				<p:dataList id="listaDefaultSelecionadas" value="" var="default"
+					type="definition">
+
+				</p:dataList>
+			</p:dialog>
+
+		</p:panel>
+	</ui:define>
+
+</ui:composition>

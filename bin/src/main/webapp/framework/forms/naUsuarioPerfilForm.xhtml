@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/framework/template/templateForm.xhtml">
+
+	<ui:param name="controller" value="#{naUsuarioPerfilController}" />
+	<ui:param name="nomeTela" value="Perfil do Usuário" />
+	<ui:param name="permissao" value="Perfil" />
+	<ui:param name="exibeBotaoSalvarMais" value="false" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<nea:inputMask controller="#{naUsuarioPerfilController}" id="inputCPF" label="CPF" value="#{naUsuarioPerfilController.objeto.cpfCnpj}" disabled="true"
+			width="150px" typeMask="cpf" />
+
+		<nea:inputText controller="#{naUsuarioPerfilController}" id="inputNome" label="Nome" value="#{naUsuarioPerfilController.objeto.nome}" required="true"
+			width="430px" />
+
+		<nea:inputText controller="#{naUsuarioPerfilController}" id="inputEmail" label="E-Mail" value="#{naUsuarioPerfilController.objeto.email}" required="true"
+			width="451px" />
+
+		<nea:inputDate controller="#{naUsuarioPerfilController}" id="inputDate" label="Data Nascimento" value="#{naUsuarioPerfilController.objeto.dataNascimento}"
+			required="true" />
+
+		<h:panelGrid columns="3">
+
+			<nea:selectEnum controller="#{naUsuarioPerfilController}" id="inputDDD" label="DDD" value="#{naUsuarioPerfilController.objeto.telefoneDdd}"
+				items="#{naUsuarioPerfilController.listEnumDdd}" itemLabel="#{item.descricao}" width="100px" />
+
+			<nea:inputText controller="#{naUsuarioPerfilController}" id="inputTelefone" label="Telefone" value="#{naUsuarioPerfilController.objeto.telefoneNumero}"
+				required="false" width="150px" />
+
+			<nea:inputInteger controller="#{naUsuarioPerfilController}" id="inputRamal" label="Ramal" value="#{naUsuarioPerfilController.objeto.telefoneRamal}"
+				required="false" width="50px" />
+
+		</h:panelGrid>
+		<p:dataTable id="dataTableSistemas" value="#{naUsuarioPerfilController.listaSistemas}" var="dtItem" widgetVar="dtLazySistema"
+			emptyMessage="Não há dados cadastrados" rendered="true">
+
+			<p:column headerText="Nome">
+				<nea:outputText value="#{dtItem.sistema.sistema}" />
+			</p:column>
+
+			<p:column headerText="Nível Acesso">
+				<nea:outputText value="#{dtItem.nivelUsuario.descricao}" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

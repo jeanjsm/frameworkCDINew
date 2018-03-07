@@ -1,0 +1,52 @@
+.globe-container
+{
+   margin: 4% auto 19%;
+    width: 70px;
+    height:70px;
+    border:1px solid transparent;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    overflow:hidden;
+    background:url("#{resource['neainformatica/framework/images/rotation/linhas.png']}") top left no-repeat;
+    -webkit-animation: rotate 10s infinite linear;
+    -moz-animation: rotate 10s infinite linear;
+    -ms-animation: rotate 10s infinite linear;
+ 	-moz-box-shadow: 0px 5px 15px #888;
+	-webkit-box-shadow: 0px 5px 15px #888;
+	box-shadow: 0px 5px 15px #888;  
+}
+.globe
+{    
+    position:absolute;
+    width:158px;
+    height:162px;
+   
+}
+
+@-webkit-keyframes rotate{
+  0% {
+   background-position:0px 0px;
+  }
+  100% {
+     background-position:-100px 0px;
+  }
+
+}
+
+@-ms-keyframes rotate{
+   0% {
+   background-position:0px 0px;
+  }
+  100% {
+     background-position:-100px 0px;
+  }
+}
+@-moz-keyframes rotate{
+ 0% {
+   background-position:0px 0px;
+  }
+  100% {
+     background-position:-100px 0px;
+  }
+}

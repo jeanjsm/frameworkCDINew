@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<h:head>
+		<!-- 
+      <script type="text/javascript"	src="http://maps.google.com/maps/api/js?sensor=false"/>
+      -->
+	</h:head>
+
+	<composite:interface>
+		<composite:attribute name="systemName" required="true" shortDescription="Texto exibido no Header." />
+		<composite:attribute name="widgetVar" required="true" type="String" default="widgetVarInputText_#{cc.attrs.id}"
+			shortDescription="Nome utilizado pelo Primefaces para recuperar e referenciar elementos client-side em outros componentes." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:dialog id="dlg_enterprise" header="#{cc.attrs.systemName}" widgetVar="#{cc.attrs.widgetVar}" modal="true" dynamic="true" resizable="false">
+
+			<div align="center">
+				<p:graphicImage value="#{resource['neainformatica/framework/images/nea.png']}" />
+			</div>
+
+			<br />
+			<br />
+			<!-- 					
+                   <p:gmap zoom="20" type="HYBRID" center="-20.471733,-54.629383"	style="width:600px;height:400px" model="#{mapaController.mapa}"/>
+         -->
+
+		</p:dialog>
+
+	</composite:implementation>
+</ui:composition>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="/framework/template/templateList.xhtml">
+    <!--
+    **********************************************************
+       @Empresa: N&A Informática Ltda
+       @Gerador: MultiSource
+       Dados da Classe:
+        @Data  = 28/04/2014 17:43:44
+        @Author  = NELSON
+        @Versão da Classe =
+    **********************************************************
+    -->
+
+    <ui:param name="controller" value="#{naAgendamentoController}"/>
+    <ui:param name="nomeTela" value="Agendamento"/>
+    <ui:param name="permissao" value="NA_AGENDAMENTO"/>
+    <ui:param name="exibeBotaoNovo" value="false"/>
+    <ui:param name="exibeBotaoExcluir" value="false"/>
+
+    <ui:define name="dataTablePrincipal">
+
+
+        <p:column headerText="Sistema">
+            <h:outputText value="#{dt.sistema.sistema}"/>
+        </p:column>
+
+        <p:column headerText="Código Tarefa">
+            <h:outputText value="#{dt.codigoTarefa}"/>
+        </p:column>
+
+        <p:column headerText="Nome">
+            <h:outputText value="#{dt.nome}"/>
+        </p:column>
+
+        <p:column headerText="Descrição">
+            <h:outputText value="#{dt.descricao}"/>
+        </p:column>
+
+        <p:column headerText="Ativo">
+            <h:outputText value="#{dt.ativo.descricao}"/>
+        </p:column>
+
+    </ui:define>
+
+    <ui:define name="itens_adicionais">
+    </ui:define>
+
+    <ui:define name="itens">
+    </ui:define>
+
+</ui:composition>

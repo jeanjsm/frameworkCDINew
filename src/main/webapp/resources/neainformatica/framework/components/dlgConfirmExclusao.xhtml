@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="id" required="true"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="icon" required="false" default="ui-icon-closethick" shortDescription="Icone de representação" />
+		<composite:attribute name="update" required="false" shortDescription="Componentes a serem atualizados após a exclusão" />
+		<composite:attribute name="message" required="false" default="Deseja realmente apagar este registro?"
+			shortDescription="Mensagem explicativa de confirmação do usuário" />
+		<composite:attribute name="header" required="false" default="Confirmação de Exclusão" shortDescription="Mensagem no cabeçalho da janela de confirmação" />
+		<composite:attribute name="actionConfirm" required="true" shortDescription="Action que será executada caso o usuário confirme a exclusão"
+			method-signature="void action(java.lang.String)" />
+		<composite:attribute name="disabled" required="false" type="boolean" default="false"
+			shortDescription="Sinalizador indicando que este elemento não deve nunca recebem o foco ou ser incluído em uma subsequente enviar. Um valor de falsas causas nenhum atributo a ser prestado, enquanto um valor de true faz com que o atributo a ser processado como disabled = 'desabled'." />
+		<composite:attribute name="rendered" type="boolean" default="true"
+			shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+		<composite:attribute name="title" required="false" type="String" default="#{cc.attrs.label}"
+			shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+	</composite:interface>
+
+	<composite:implementation>
+		<p:commandButton id="cmd#{cc.attrs.id}" icon="#{cc.attrs.icon}" onclick="PF('wvDlgConfirmExclusao').show();" title="#{cc.attrs.title}"
+			rendered="#{cc.attrs.rendered}" disabled="#{cc.attrs.disabled}" />
+
+		<p:confirmDialog id="dlgConfirmExclusao" widgetVar="wvDlgConfirmExclusao" closeOnEscape="true" message="#{cc.attrs.message}" header="#{cc.attrs.header}"
+			closable="false" severity="warning32">
+
+			<div align="center">
+				<p:commandButton id="confirm" value="Sim" icon="ok16" oncomplete="PF('wvDlgConfirmExclusao').hide();" action="#{cc.attrs.actionConfirm}" ajax="true"
+					style="width:70px;" immediate="true" update="#{cc.attrs.update}" />
+				<p:commandButton id="decline" value="Não" icon="cancel16" onclick="PF('wvDlgConfirmExclusao').hide();" type="button" style="width:70px;" immediate="true" />
+			</div>
+
+		</p:confirmDialog>
+
+	</composite:implementation>
+
+</ui:composition>

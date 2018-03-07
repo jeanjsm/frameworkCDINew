@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+
+	<h:outputStylesheet library="neainformatica" name="framework/css/estilo.css" />
+
+</h:head>
+
+<h:body>
+	<h:panelGroup id="dlgLogin" styleClass="dlgLogin">
+		<p:graphicImage id="bg_login_top" name="neainformatica/framework/images/bg_login_top.png" style="float: right; margin-top: -2.6%; margin-right: 12.3%;" />
+
+		<p:messages id="messages_dlgLogin" style="margin-top: 35px; margin-left: 10px; margin-right: 5px;" closable="true" />
+
+		<table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 80%;">
+			<tr>
+				<td align="center" valign="middle"><p:graphicImage id="bg_top" name="neainformatica/framework/images/logo_3d.png" /></td>
+				<td>
+					<div class="or-spacer-vertical left">
+						<div class="mask" />
+					</div>
+				</td>
+				<td align="center">
+
+					<div>
+						<h:outputScript library="neainformatica" name="framework/js/redimensionarGrid.js" />
+						<p:remoteCommand name="redimensionarGrid" actionListener="#{naSessionController.redimensionarGrid}" process="@this" />
+
+						<p:inputText id="usuario" styleClass="nea-campos-login" required="true" label="Usuário" value="#{autenticador.loginUsuarioDigitado}"
+							requiredMessage="Informe o nome de usuário" />
+						<p:watermark for="usuario" value="CPF (números)" />
+
+						<p:inputText id="senha" styleClass="nea-campos-login" required="true" label="Senha" value="#{autenticador.loginSenhaDigitada}" type="password"
+							requiredMessage="Informe a Senha" />
+						<p:watermark for="senha" value="Senha" />
+
+						<p:commandButton id="btnAcessar" styleClass="btn btn-lg btn-primary btn-block" value="Acessar" 
+							style="text-align: center; font-size-adjust: inherit; height: 30px; width: 180px !important; background: #8DD8A2;"
+							actionListener="#{autenticador.login()}" ajax="false" update="@form">
+						</p:commandButton>
+
+						<br />
+						<br />
+
+						<h:commandLink action="#{autenticador.exibirFormRecuperarSenha()}" value="Esqueci minha senha"
+							title="Gera uma nova senha e a envia para o email de cadastro" immediate="true" />
+
+						<ui:insert name="botoesAdicionaisLogin" />
+
+						<br /> <br />
+					</div>
+				</td>
+			</tr>
+		</table>
+	</h:panelGroup>
+
+</h:body>
+
+</html>

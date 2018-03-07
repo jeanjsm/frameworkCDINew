@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/template.xhtml">
+
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{controller.initConversation}" />
+		</f:metadata>
+
+		<p:panel style="padding: 5px; border:none;" rendered="#{identity.loggedIn}">
+
+			<h:form prependId="false" id="templateListForm">
+
+				<p:tabView id="tbvTemplate" styleClass="formRelevo" cache="false" dynamic="true">
+
+					<p:tab title="#{nomeTela}" id="tab">
+
+						<h:link outcome="#{(empty linkBotaoFechar ? '/index.xhtml' : linkBotaoFechar)}">
+							<p:graphicImage name="neainformatica/framework/images/close23.png" id="form_close" styleClass="nea-close-icon" title="Clique aqui para fechar" />
+						</h:link>
+
+						<ui:insert name="informacoes" />
+
+						<div align="center">
+							<p:toolbar id="panelBotoes" styleClass="toolbarCadastro" rendered="#{(empty exibeBarrabotoes ? true : exibeBarrabotoes)}">
+
+								<p:toolbarGroup align="left" id="tgLeft">
+
+									<p:commandButton id="btnNovo" value="Novo" icon="add" accesskey="n" action="#{controller.create()}" ajax="false"
+										rendered="#{((empty exibeBotaoNovo ? true : exibeBotaoNovo) and (empty permissao ? true : autenticador.hasPermissao(permissao.concat('-INSERIR'))) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+										style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Criar novo registro. (Alt + N)" />
+
+									<p:spacer width="1" />
+
+									<p:commandButton id="btnEditar" value="Alterar" icon="edit"
+										rendered="#{((empty exibeBotaoEditar ? true : exibeBotaoEditar) and (controller.objeto.id != null) and (empty permissao ? true : autenticador.hasPermissao(permissao.concat('-ALTERAR'))) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+										accesskey="x" immediate="true" action="#{controller.update()}" ajax="false"
+										style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Alterar registro. (Alt + X)" />
+									<p:spacer width="1" />
+									<p:commandButton id="btnApagar" value="Apagar" icon="delete"
+										rendered="#{((empty exibeBotaoExcluir ? true : exibeBotaoExcluir) and (controller.objeto.id != null) and (empty permissao ? true : autenticador.hasPermissao(permissao.concat('-EXCLUIR'))) and (!naSessionController.sistemaEmModoSomenteLeitura))}"
+										accesskey="a" onclick="PF('wvDeleteConfirmDialog').show();" type="button"
+										style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" title="Apagar registro. (Alt + A)" />
+									<p:spacer width="1" />
+									<p:commandButton id="btnMostrarDetalhe" value="Visualizar" icon="detail16" rendered="#{controller.objeto.id != null}" accesskey="t"
+										action="#{controller.showFormDetail()}" ajax="false" style="text-align: center; font-size: 8pt; font-size-adjust: inherit; height: 30px; width: 85px;"
+										title="Visualizar (Alt + T)" />
+									<p:spacer width="1" />
+
+									<p:confirmDialog id="deleteConfirmDialog" widgetVar="wvDeleteConfirmDialog" closeOnEscape="true" message="Deseja realmente apagar este registro?"
+										header="Confirmação de Exclusão" closable="false" severity="warning32">
+										<div align="center">
+											<p:commandButton id="confirm" value="Sim" icon="ok16" oncomplete="PF('wvDeleteConfirmDialog').hide();" action="#{controller.delete()}" ajax="false"
+												style="width:70px;" immediate="true" />
+											<p:commandButton id="decline" value="Não" icon="cancel16" onclick="PF('wvDeleteConfirmDialog').hide();" type="button" style="width:70px;" immediate="true" />
+										</div>
+									</p:confirmDialog>
+
+									<h:panelGroup rendered="#{!(naSessionController.sistemaEmModoSomenteLeitura)}">
+										<ui:insert name="botoesAdicionais" />
+									</h:panelGroup>
+
+								</p:toolbarGroup>
+								<p:toolbarGroup align="right" id="tgRight">
+
+									<ui:insert name="botoesAdicionaisDireita" />
+
+									<nea:simpleSearch id="searchList" update=":templateListForm:tbvTemplate:dataTable" controller="#{controller}" />
+
+								</p:toolbarGroup>
+							</p:toolbar>
+						</div>
+
+						<p:outputPanel id="panelGridPrincipal">
+							<div align="center">
+							
+							<ui:insert name="conteudoAdicionalCabecalhoDataTable" />
+
+								<p:dataTable id="dataTable" value="#{controller.lazyList}" var="dt" paginator="true" paginatorPosition="bottom" rowKey="#{dt.id}" selectionMode="single"
+									widgetVar="dtLazy" lazy="true" selection="#{controller.objeto}" rows="#{controller.quantidadeLinhasNoGrid}" emptyMessage="Não há dados cadastrados"
+									rendered="#{(empty exibeDataTablePrincipal ? true : exibeDataTablePrincipal)}" first="#{controller.pagina}">
+
+									<p:ajax event="page" listener="#{controller.paginacao}" />
+
+									<p:ajax event="rowSelect" global="false"
+										update=":templateListForm:tbvTemplate:panelBotoes :templateListForm:tbvTemplate:panelGridDetalhes :templateListForm:tbvTemplate" />
+
+									<ui:insert name="dataTablePrincipal" />
+
+								</p:dataTable>
+
+							</div>
+
+							<ui:insert name="conteudoAdicionalRodapeDataTable" />
+
+						</p:outputPanel>
+
+						<p:outputPanel id="panelGridDetalhes">
+							<div align="right" style="padding-top: 10px;"></div>
+						</p:outputPanel>
+
+						<ui:insert name="itens_adicionais" />
+
+					</p:tab>
+
+					<ui:insert name="itens" />
+
+				</p:tabView>
+
+			</h:form>
+
+		</p:panel>
+
+		<br />
+		<br />
+
+		<nea:ajaxStatus id="ajstList" />
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateParametros.xhtml">
+
+	<ui:param name="controller" value="#{naAuditoriaController}" />
+	<ui:param name="nomeTela" value="Relatório de Auditoria" />
+
+	<ui:define name="botoesEsquerda">
+
+		<p:commandButton id="btnRelatorioAuditoria" value="Imprimir Listagem" icon="imagemRelatorio16" ajax="false" action="#{controller.printAuditoria('PDF')}"
+			style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 150px;" title="Imprimir relatório de auditoria." />
+
+	</ui:define>
+
+	<ui:define name="botoesDireita">
+		<nea:simpleSearch update=":templateParametrosForm:tbvTemplateParametros:dataTable" controller="#{controller}" />
+	</ui:define>
+
+	<ui:define name="panelParametros">
+
+		<div align="center">
+
+			<p:dataTable id="dataTable" value="#{controller.lazyList}" var="dt" paginator="true" paginatorPosition="bottom" widgetVar="dtLazy" lazy="true" rows="15" emptyMessage="Não há dados cadastrados">
+
+				<p:column id="dtTabela" headerText="Tabela">
+					<h:outputText value="#{dt.tabela}" />
+				</p:column>
+
+				<p:column id="dtUsuario" headerText="Usuário">
+					<h:outputText value="#{dt.usuario}" />
+				</p:column>
+
+				<p:column id="dtDataAuditoria" headerText="Data Auditoria">
+					<h:outputText value="#{dt.dataAuditoria}" />
+				</p:column>
+
+				<p:column id="dtTpOperacao" headerText="Operação">
+					<h:outputText value="#{dt.tipoOperacao.descricao}" />
+				</p:column>
+
+				<p:column id="dtChaveRegistro" headerText="Chave (Registro)">
+					<h:outputText value="#{dt.chaveRegistro}" />
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

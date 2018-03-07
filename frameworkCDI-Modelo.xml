@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="frameworkCDI" basedir="." default="svnCheckout">
+
+	<!-- Adicionar ao Path do Windows -->
+	<property name="svnant.home" value="C:/Na_Java/adicionais/svnant" />
+	<property name="maven.home" value="C:/Na_Java/adicionais/apache-maven/bin" />
+
+	<property name="ant.project.svn.url" value="https://srvfontes/svn/frameworkCDI/trunk" />
+	<property name="ant.project.build.path" value="target/${ant.project.name}" />
+
+	<path id="ant.project.classpath">
+		<fileset dir="${svnant.home}" includes="*.jar" />
+	</path>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="ant.project.classpath" />
+
+	<target name="svnCheckout">
+		<svnSetting id="svn.settings" svnkit="false" javahl="false" />
+
+		<echo message="Obtendo revision ${ant.project.svn.url}" />
+		<svn refid="svn.settings">
+			<singleinfo target="${ant.project.svn.url}" request="lastRevision" property="ant.project.svn.revision" />
+		</svn>
+		<echo message="Revision ${ant.project.svn.revision}" />
+
+		<echo message="Checando ${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-${ant.project.svn.revision}.jar" />
+		<available file="${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-${ant.project.svn.revision}.jar" property="ant.project.jar.exist" />
+
+		<fail if="ant.project.jar.exist" message="nea-${ant.project.name}-${ant.project.svn.revision}.jar atualizada." />
+		<echo message="Criando ${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-${ant.project.svn.revision}.jar" />
+
+		<echo message="Deletando ${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-*.jar" />
+		<delete>
+			<fileset dir="${basedir}/src/main/webapp/WEB-INF/lib" includes="nea-${ant.project.name}-*.jar" />
+		</delete>
+
+		<echo message="Deletando ${ant.project.build.path}" />
+		<delete dir="${ant.project.build.path}" />
+
+		<echo message="Checkout ${ant.project.svn.url}" />
+		<svn refid="svn.settings">
+			<checkout url="${ant.project.svn.url}" destPath="${ant.project.build.path}" />
+		</svn>
+
+		<echo message="Copiando dependencias do maven" />
+		<exec executable="${maven.home}/mvn.cmd" dir="${ant.project.build.path}" spawn="false">
+			<arg value="clean" />
+			<arg value="dependency:copy-dependencies" />
+		</exec>
+
+		<echo message="Criando ${ant.project.build.path}/target/classes" />
+		<mkdir dir="${ant.project.build.path}/target/classes" />
+
+		<echo message="Compilando ${ant.project.build.path}/src/main/java" />
+		<javac srcdir="${ant.project.build.path}/src/main/java" destdir="${ant.project.build.path}/target/classes" source="1.7" includeantruntime="false" encoding="UTF-8">
+			<classpath path="ant.project.classpath">
+				<fileset dir="${ant.project.build.path}/target/dependency" includes="*.jar" />
+				<fileset dir="${ant.project.build.path}/src/main/webapp/WEB-INF/lib" includes="*.jar" />
+			</classpath>
+		</javac>
+
+		<echo message="Copiando beans.xml" />
+		<copy file="${ant.project.build.path}/src/main/resources/META-INF/beans.xml" tofile="${ant.project.build.path}/target/classes/META-INF/beans.xml" />
+
+		<echo message="Removendo entityManagerProduces" />
+		<delete file="${ant.project.build.path}/target/classes/br/com/neainformatica/infrastructure/produces/EntityManagerProduces.class" />
+
+		<echo message="Copiando resources" />
+		<copy todir="${ant.project.build.path}/target/classes/META-INF/resources">
+			<fileset dir="${ant.project.build.path}/src/main/webapp/resources" />
+		</copy>
+
+		<echo message="Copiando Templates" />
+		<copy todir="${ant.project.build.path}/target/classes/framework/template">
+			<fileset dir="${ant.project.build.path}/src/main/webapp/framework/template" />
+		</copy>
+
+		<echo message="Copiando Forms Comuns" />
+		<copy todir="${ant.project.build.path}/target/classes/framework/forms">
+			<fileset dir="${ant.project.build.path}/src/main/webapp/framework/forms" />
+		</copy>
+
+		<echo message="Copiando Altera��o de Senha" />
+		<copy todir="${ant.project.build.path}/target/classes/framework/publico">
+			<fileset dir="${ant.project.build.path}/src/main/webapp/framework/publico" />
+		</copy>
+
+		<echo message="Deletando ${ant.project.build.path}/target/classes/META-INF/resources/neainformatica/relatorios/*.jrxml" />
+		<delete>
+			<fileset dir="${ant.project.build.path}/target/classes/META-INF/resources/neainformatica/relatorios" includes="*.jrxml" />
+		</delete>
+
+		<echo message="Criando JAR ${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-${ant.project.svn.revision}.jar" />
+		<jar destfile="${basedir}/src/main/webapp/WEB-INF/lib/nea-${ant.project.name}-${ant.project.svn.revision}.jar" basedir="${ant.project.build.path}/target/classes" />
+
+		<echo message="Deletando ${ant.project.build.path}" />
+		<delete dir="${ant.project.build.path}" />
+		
+		<echo message="Alterando pom.xml..."/>
+		<replaceregexp file="pom.xml" match="nea-frameworkCDI-.*?.jar" replace="nea-${ant.project.name}-${ant.project.svn.revision}.jar" flags="gs"/>
+	</target>
+
+</project>

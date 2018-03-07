@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateList.xhtml">
+	<!-- 
+**********************************************************
+   @Empresa: N&A Informática Ltda
+   @Gerador: MultiSource 
+   Dados da Classe:
+	@Data  = 22/07/2014 11:26:33
+	@Author  = NELSON
+	@Vers�o da Classe = 
+**********************************************************  
+-->
+
+	<ui:param name="controller" value="#{naEstadoController}" />
+	<ui:param name="nomeTela" value="Estado" />
+	<ui:param name="permissao" value="NA_ESTADO" />
+
+	<ui:define name="dataTablePrincipal">
+
+		<p:column headerText="Código do IBGE" style="text-align:center">
+			<h:outputText value="#{dt.ibge}" />
+		</p:column>
+		<p:column headerText="Nome" style="text-align:center">
+			<h:outputText value="#{dt.nome}" />
+		</p:column>
+		<p:column headerText="Sigla" style="text-align:center">
+			<h:outputText value="#{dt.sigla}" />
+		</p:column>
+		<p:column headerText="País">
+			<h:outputText value="#{dt.pais.nome}" />
+		</p:column>
+	</ui:define>
+
+	<ui:define name="itens_adicionais">
+	</ui:define>
+
+	<ui:define name="itens">
+	</ui:define>
+
+</ui:composition>

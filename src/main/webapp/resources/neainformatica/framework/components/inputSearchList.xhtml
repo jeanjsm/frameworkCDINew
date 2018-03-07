@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components">
+
+	<composite:interface>
+
+		<composite:attribute name="id" required="true" type="String"
+			shortDescription="O identificador de componente para esse componente. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="idInputSearch" required="true" type="String"
+			shortDescription="O identificador de componente para o componente InputSearch. Este valor deve ser exclusivo dentro do componente pai mais próximo que é um contêiner de nomeação." />
+		<composite:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+		<composite:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+		<composite:attribute name="title" required="true" type="String" default="#{cc.attrs.label}"
+			shortDescription="Informação do título consultivo sobre elementos de marcação gerados para esse componente." />
+		<composite:attribute name="width" required="false" type="String" default="150px"
+			shortDescription="Tamanho do campo selectOneRadio valor em pixels. Por exemplo 100px" />
+		<composite:attribute name="controller" required="true"
+			shortDescription="Controller local da tela em que o componente esta sendo utilizado, serve para validar se a pagina esta em modo exibicao ou modo edição e outros controles de estado." />
+		<composite:attribute name="widgetVar" required="true" shortDescription="Nome do widget do lado do cliente." />
+		<composite:attribute name="containerPadrao" required="true" type="String" default=":formTemplate:tbvTemplateList"
+			shortDescription="Container que este componente esta inserido. Será utilizado para concatenar com o ID do componente para ser encontrado na arvore do DOM." />
+		<composite:attribute name="dynamic" required="true" type="boolean" default="false"
+			shortDescription="O modo dinâmico permite diálogo para buscar o seu conteúdo antes de ser mostrado ao invés de no carregamento da página que é útil para reduzir o tempo de carregamento da página inicial. O padrão é falso." />
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:dialog id="naDialog" header="#{cc.attrs.label}" widgetVar="#{cc.attrs.widgetVar}" modal="true" resizable="false" width="400" height="250"
+			dynamic="#{cc.attrs.dynamic}">
+
+			<h:outputText value="#{cc.attrs.controller}" />
+
+			<nea:simpleSearch id="simpleSearch_#{cc.attrs.id}" controller="#{cc.attrs.controller}" enableSearchAdvanced="false"
+				update="#{cc.attrs.containerPadrao}:#{cc.attrs.idInputSearch}:#{cc.attrs.id}:dataTableEditSearch" />
+
+			<p:outputPanel>
+
+				<p:dataTable id="dataTableEditSearch" value="#{cc.attrs.controller.lazyList}" var="list" rowKey="#{list.id}" selectionMode="single" widgetVar="dtSearch"
+					selection="#{cc.attrs.value}" paginator="true" rows="8" paginatorPosition="bottom" lazy="true" emptyMessage="Não há dados cadastrados">
+
+					<p:ajax event="rowSelect" oncomplete="wvDialog.hide()"
+						update="#{cc.attrs.containerPadrao}:#{cc.attrs.idInputSearch}:txtNeaCodigo #{cc.attrs.containerPadrao}:#{cc.attrs.idInputSearch}:txtNeaDescricao" />
+
+					<p:columns value="#{cc.attrs.controller.columns}" var="column" columnIndexVar="colIndex">
+
+						<f:facet name="header">  
+                     #{column.header}  
+                  </f:facet>  
+
+                  #{list[column.property]}  
+               </p:columns>
+
+				</p:dataTable>
+
+			</p:outputPanel>
+
+		</p:dialog>
+
+	</composite:implementation>
+
+</ui:composition>

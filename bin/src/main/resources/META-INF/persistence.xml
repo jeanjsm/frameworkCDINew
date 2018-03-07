@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
+
+	<persistence-unit name="PU" transaction-type="JTA">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>java:/frameworkCDIDS</jta-data-source>
+
+		<class>br.com.neainformatica.infrastructure.entity.NaAgendamento</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAtor</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAtorPermissao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAlteracaoSenha</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAuditoria</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAuditoriaItem</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaBairro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaCidade</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaCliente</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaEstado</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaEstadoRegiao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaGestao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaLogradouro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaNacionalidade</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPais</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroGrupo</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroItem</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroValor</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPerfil</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPermissao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaSistema</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaTipoBairro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaTipoLogradouro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuario</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioPerfil</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioSistema</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioToken</class>
+		
+		
+		<class>br.com.neainformatica.infrastructure.auditoria.NaAuditoriaTabela</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<!-- Firebird
+			<property name="hibernate.dialect" value="br.com.neainformatica.infrastructure.dao.FirebirdDialect" />
+			<property name="hibernate.ejb.interceptor" value="br.com.neainformatica.infrastructure.dao.HibernateInterceptor" />
+-->
+			<!-- postgres -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+
+
+			<property name="hibernate.hbm2ddl.auto" value="none" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="PU-test">
+		<class>br.com.neainformatica.infrastructure.entity.NaAgendamento</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAtor</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAtorPermissao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAlteracaoSenha</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAuditoria</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaAuditoriaItem</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaBairro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaCidade</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaCliente</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaEstado</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaEstadoRegiao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaGestao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaLogradouro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaNacionalidade</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPais</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroGrupo</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroItem</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaParametroValor</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPerfil</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaPermissao</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaSistema</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaTipoBairro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaTipoLogradouro</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuario</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioPerfil</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioSistema</class>
+		<class>br.com.neainformatica.infrastructure.entity.NaUsuarioToken</class>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+
+	<!-- 
+**********************************************************
+@Empresa: N&A Informática Ltda
+@Gerador: MultiSource 
+Dados da Classe:
+    @Data  = 13/05/2014 16:53:40
+    @Author  = NELSON
+    @Versão da Classe = 
+**********************************************************  
+    -->
+
+	<ui:param name="controller" value="#{naNacionalidadeController}" />
+	<ui:param name="nomeTela" value="Nacionalidade" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+
+		<nea:inputText id="txtnome" title="Nome" value="#{controller.objeto.nome}" required="true" width="350px" label="Nome" controller="#{controller}" />
+
+<!-- 		<nea:inputSearch id="inputSearchPais" title="País" atributoCodigo="#{controller.objeto.pais.id}" atributoDescricao="#{controller.objeto.pais.nome}"
+			value="#{controller.objeto.pais}" label="País" controller="#{naPaisController}" controllerLocal="#{controller}" required="true" />
+ -->
+ 		<nea:inputSearch2 atributoCodigo="id" controller="#{controller}" label="País" id="inputsearchpais" atributoDescricao="#{controller.objeto.pais.nome}" 
+ 		value="#{controller.objeto.pais}" classType="br.com.neainformatica.infrastructure.entity.NaPais" filtroDefault="nome"></nea:inputSearch2>
+
+	</ui:define>
+
+</ui:composition>

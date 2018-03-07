@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="_pageHeaderRetrato" pageWidth="595" pageHeight="842" columnWidth="504" leftMargin="0" rightMargin="91" topMargin="0" bottomMargin="0" uuid="df605ea1-233a-4e74-a69c-c22fb264efb5">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Arial" fontSize="8"/>
+	<parameter name="BRASAO_PREFEITURA" class="java.lang.Object"/>
+	<parameter name="NOME_PREFEITURA" class="java.lang.String"/>
+	<parameter name="NOME_SECRETARIA" class="java.lang.String"/>
+	<parameter name="NOME_DIVISAO" class="java.lang.String"/>
+	<parameter name="NOME_SISTEMA" class="java.lang.String"/>
+	<parameter name="TITULO" class="java.lang.String"/>
+	<parameter name="SUBTITULO" class="java.lang.String"/>
+	<parameter name="DATA_HORA_IMPRESSAO" class="java.util.Date"/>
+	<parameter name="PAGINA" class="java.lang.Integer"/>
+	<detail>
+		<band height="60">
+			<image>
+				<reportElement x="0" y="0" width="62" height="55" uuid="ec99dedf-8dde-4a01-8143-df00c7adf99a"/>
+				<imageExpression><![CDATA[new ByteArrayInputStream((byte[]) $P{BRASAO_PREFEITURA})]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="59" width="504" height="1" uuid="c15aadbb-324f-404f-aa3c-40f7accee8d6"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="0" width="210" height="12" uuid="30a12c2e-3adf-4a33-91f3-310fa0131244"/>
+				<textFieldExpression><![CDATA[$P{NOME_PREFEITURA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="12" width="210" height="12" uuid="b1ef90ed-f689-4051-ab18-bbc6b7b98ada"/>
+				<textFieldExpression><![CDATA[$P{NOME_SECRETARIA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="24" width="210" height="12" uuid="917edfb1-f689-4577-96b7-8009157bd3ba"/>
+				<textFieldExpression><![CDATA[$P{NOME_DIVISAO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="294" y="0" width="210" height="12" uuid="13813135-c019-4ffc-82aa-5ef3ef69c403"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{NOME_SISTEMA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="36" width="442" height="13" uuid="405243ec-dcab-4898-a5b6-9f4e6e52d4a7"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="48" width="442" height="12" uuid="f278d9e1-6c00-4e9e-ac5c-5f2b643baac2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{SUBTITULO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Impresso em: &apos;dd/MM/yyyy HH:mm" isBlankWhenNull="true">
+				<reportElement x="294" y="12" width="210" height="12" uuid="6dbc7ebf-19fe-4e97-8ec9-1d0160422835"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DATA_HORA_IMPRESSAO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="294" y="24" width="210" height="12" uuid="1e297815-e46d-45e9-bf48-769efa7a692c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página: " + $P{PAGINA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="http://java.sun.com/jsf/composite" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="label" required="true" type="String" shortDescription="Um nome de usuário localizada apresentável para esse componente." />
+	<cc:attribute name="value" required="true" shortDescription="Valor(váriavel ou Objeto no Managed Bean) onde será armazenado o mesmo" />
+	<cc:attribute name="rendered" type="boolean" default="true"
+		shortDescription="Sinalizador que indica se ou não este componente deve ser processado (durante tornar fase de resposta ), ou processadas em qualquer forma subsequente enviar. O valor padrão para esta propriedade é verdadeiro." />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<h:inputText value="#{cc.attrs.value}" rendered="#{cc.attrs.rendered}" style="text-transform: lowercase" label="#{cc.attrs.label}"
+		converterMessage="Valor inválido:  #{cc.attrs.label}" validatorMessage="Valor inválido:  #{cc.attrs.label}" size="50">
+		<f:validateRegex
+			pattern="^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$" />
+		<cc:insertChildren />
+	</h:inputText>
+</cc:implementation>
+</html>

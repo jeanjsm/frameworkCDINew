@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components"
+	template="/framework/template/template.xhtml">
+
+	<ui:define name="body">
+
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{controller.initConversation}" />
+		</f:metadata>
+
+		<p:panel style="padding: 5px; border:0"
+			rendered="#{identity.loggedIn}">
+
+			<h:form id="templateListForm">
+
+				<p:tabView id="tbvTemplate" dynamic="true" styleClass="formRelevo">
+
+					<p:tab title="#{nomeTela}" id="tab">
+
+						<div align="center">
+							<p:toolbar id="panelBotoes" styleClass="toolbarTabelaExterna">
+								<p:toolbarGroup align="left" id="tgLeft">
+
+									<ui:insert name="botoesAdicionais" />
+
+								</p:toolbarGroup>
+								<p:toolbarGroup align="right" id="tgRight">
+
+									<nea:simpleSearch id="searchList" controller="#{controller}"
+										update=":templateListForm:tbvTemplate:dataTable" />
+
+								</p:toolbarGroup>
+							</p:toolbar>
+						</div>
+
+						<p:outputPanel id="panelGridPrincipal">
+							<div align="center">
+
+								<p:dataTable id="dataTable" value="#{controller.lazyList}"
+									var="dt" paginator="true" paginatorPosition="bottom"
+									rowKey="#{dt.id}" selectionMode="single" widgetVar="dtLazy"
+									lazy="true" selection="#{controller.objeto}" rows="15"
+									emptyMessage="Não há dados cadastrados">
+
+									<p:ajax event="rowSelect" global="false"/> 
+
+									<ui:insert name="dataTablePrincipal" />
+
+								</p:dataTable>
+							</div>
+
+						</p:outputPanel>
+
+						<ui:insert name="itens_adicionais" />
+
+					</p:tab>
+
+					<ui:insert name="itens" />
+
+				</p:tabView>
+
+			</h:form>
+
+		</p:panel>
+
+		<br />
+		<br />
+
+		<nea:ajaxStatus id="ajstList" />
+
+	</ui:define>
+
+</ui:composition>

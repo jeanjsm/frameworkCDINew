@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" template="/framework/template/templateForm.xhtml">
+
+	<ui:param name="controller" value="#{naLogradouroController}" />
+	<ui:param name="nomeTela" value="Logradouros" />
+
+	<!-- Define os campos do formulário -->
+	<ui:define name="camposForm">
+
+		<nea:selectEntity id="txttipologradouro" title="Tipo" value="#{controller.objeto.tipologradouro}" label="Tipo" controller="#{controller}"
+			selecioneLabel="Selecione" width="130px" items="#{naTipoLogradouroController.service.findAll()}" itemLabel="#{item.descricao}" required="true" filter="true"
+			filterMatchMode="contains" />
+
+		<nea:inputText id="txtdescricao" title="Descrição" value="#{controller.objeto.descricao}" required="false" width="350px" label="Descrição"
+			controller="#{controller}" />
+
+	</ui:define>
+
+</ui:composition>

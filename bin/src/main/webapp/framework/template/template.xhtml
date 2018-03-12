@@ -1,136 +1,65 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/admin.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-<h:head>
-	<h:outputStylesheet library="neainformatica" name="framework/css/estilo.css" />
-	<h:outputStylesheet library="neainformatica" name="css/projetoCliente.css" />
+    <ui:define name="head">
+        <h:outputStylesheet library="css" name="showcase.css"/>
+        <h:outputStylesheet library="css" name="prism.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
 
-	<h:outputScript library="neainformatica" name="framework/js/tools.js" />
-	<h:outputScript library="neainformatica" name="framework/js/jquery.maskedinput-1.4.1.js" />
-	<h:outputScript library="neainformatica" name="framework/js/calendar_i18n.js" />
-	<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
 
-	<f:facet name="first">
-		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-		<title>#{title}</title>
-	</f:facet>
+        <title>Crud AdminFaces</title>
+    </ui:define>
+    
+    
 
+    <ui:define name="logo-lg">
+        Karanalpe
+    </ui:define>
 
-	<script type="text/javascript">
-		$("#menu").attr("style","display: none;");
-		</script>
+    <ui:define name="logo-mini">
+        K
+    </ui:define>
 
+    <ui:define name="menu-begin">
+        <ui:include src="/includes/menu-search.xhtml"/>
+    </ui:define>
 
+     <ui:define name="menu">
+         <ui:include src="/includes/menu.xhtml"/>
+     </ui:define>
 
-</h:head>
+    <ui:define name="top-menu">
+        <ui:include src="/includes/top-menu.xhtml"/>
+    </ui:define>
+    
+    <ui:define name="content-end">
+        <section class="content">
+        	<c:if test="#{(empty ignoraLogin ? false : ignoraLogin) or (identity.loggedIn)}">
+        		<h:outputText value="Teste" />
+    		</c:if>
+            <ui:insert name="code"/>
+        </section>
+    </ui:define>
+    
+    <ui:define name="footer">
+        <a target="_blank"
+           href="http://karanalpe.com.br/">
+            Copyright (C) 2017 - Karanalpe
+        </a>
+        <div class="pull-right hidden-xs" style="color: gray">
+            <i>v1.0</i>
+        </div>
 
-<h:body>
-
-	<ui:debug hotkey="x" rendered="#{facesContext.application.projectStage == 'Production'}" />
-	
-	<c:if test="#{(empty ignoraLogin ? false : ignoraLogin) or (identity.loggedIn)}">
-		<p:outputPanel>
-			<div id="tudo">
-				<div class="head">				
-					<ui:param name="exibeMenu" value="#{(empty exibeMenu ? true : exibeMenu)}" />
-					<ui:include src="/common/header.xhtml" />
-					<ui:insert name="head" />
-				</div>
-				<div id="conteudo">
-					<div class="body">
-						<div>
-							<p:messages id="messages" globalOnly="true" closable="true" escape="false" rendered="#{(empty exibeMessages ? true : exibeMessages)}"/>
-						</div>
-
-						<!-- Adiciona o componente responsável por mostrar mensagens -->
-						<!-- <p:growl id="growl" showDetail="false" globalOnly="true" life="10000" autoUpdate="true" /> -->
-						<p:outputPanel>
-							<div id="tela">
-								<ui:insert name="body" />
-							</div>
-						</p:outputPanel>
-					</div>
-				</div>
-
-				<h:panelGroup rendered="#{(empty exibeRodape ? true : exibeRodape)}">
-					<div id="rodape" class="footer">
-						<ui:include src="rodape.xhtml" />
-					</div>
-				</h:panelGroup>
-
-				<!--CRIADO DIALOG PARA DEFINIR CLIENTE CASO EXISTA MAIS DE UM NACLIENTE NO BANCO-->
-				<p:dialog id="dlgDefineCliente" widgetVar="modalDefineCliente" header="Escolha o Cliente!" resizable="false" showEffect="fold" hideEffect="clip"
-					dynamic="true" modal="true" visible="#{naSessionController.apresentaModalEscolhaCliente()}" closable="false">
-					<h:form id="formDefineCliente">
-						<p:messages id="messageDefineCliente" />
-
-						<div align="center">
-							<h:panelGrid>
-								<p:selectOneMenu id="selectCliente" value="#{naSessionController.naCliente}" converter="#{genericEntityConverter}" effect="fade" var="cl" filter="true"
-									filterMatchMode="contains" style="width: 500px;" required="true">
-									<f:selectItem itemLabel="Selecione" itemValue="" />
-									<f:selectItems value="#{naClienteController.buscarListaCliente()}" var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente}" />
-									<p:column headerText="Secretária">#{cl.nome}</p:column>
-									<p:column headerText="CNPJ" width="50">#{cl.cidadeNome}</p:column>
-								</p:selectOneMenu>
-							</h:panelGrid>
-						</div>
-
-						<hr />
-						<div align="center">
-							<p:commandButton value="Confirmar" title="Clique para definir o cliente!" ajax="true" update="@all" icon="ui-icon-circle-check"
-								actionListener="#{naSessionController.defineNaCliente()}" oncomplete="handleCliente(xhr, status, args)" />
-
-							<p:spacer width="15px" />
-
-							<p:commandButton value="Cancelar" onclick="PF('modalDefineCliente').hide();" title="Cancelar!" ajax="true" immediate="true" icon="cancelar"
-								rendered="#{naSessionController.modalSelectClienteBtnCancel}" />
-						</div>
-					</h:form>
-				</p:dialog>
-			</div>
-		</p:outputPanel>
-
-	</c:if>
-
-	<c:otherwise>
-		<c:if test="#{(empty ignoraLogin ? true : false) and (not identity.loggedIn)}">
-
-			<p:outputPanel>
-				<div align="center" style="width: 100%;">
-					<f:event type="preRenderView" listener="#{naSessionController.redirecionaParaLogin()}" />
-					<p:panel style="width:60%;">
-						<p style="color: #FF6600; font-family: Tahoma; font-size: 100px; font-weight: normal; margin-top: 0;" align="center">OPS! :(</p>
-						<h2 align="center" style="margin: -10% 0 5% 0;">Você não efetuou login no sistema!</h2>
-						<div>
-							<h:form>
-								<p:commandButton ajax="false" action="/common/login.xhtml" value="Ir para a tela de Login" styleClass="buton-volar" icon="ui-icon-home" />
-							</h:form>
-						</div>
-					</p:panel>
-				</div>
-			</p:outputPanel>
-		</c:if>
-	</c:otherwise>
+        <h:outputScript library="js" name="prism.js"  target="head"/>
+    </ui:define>
 
 
-	<script type="text/javascript">
-				function handleCliente(xhr, status, args) {
-					if (args.validationFailed || args.ocorreuInconsistencia) {
-							PF('modalDefineCliente').jq.effect(
-												"shake", {
-												times : 3
-								}, 100);
-									} else {
-										PF('modalDefineCliente').hide();
-									}
-								}
-				$("#menu").removeAttr("style");
-		</script>
-
-</h:body>
-</html>
+</ui:composition>

@@ -4,3 +4,4 @@
 .idea
 target
 bin/target
+src/main/resources/rebel.xml

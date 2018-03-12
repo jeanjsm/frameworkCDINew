@@ -1,68 +1,67 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" xmlns:nea="http://java.sun.com/jsf/composite/neainformatica/framework/components" xmlns:c="http://java.sun.com/jsp/jstl/core" template="/framework/template/template.xhtml">
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/framework/template/template.xhtml">
 
-	<ui:define name="body">
+    <ui:define name="title">
+        Cadastro Default
+    </ui:define>
 
-		 
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{controller.initConversation}" />
-		</f:metadata>
-		
-		<p:panel rendered="#{identity.loggedIn}" style="border:none;">
+    <ui:define name="body">
+        <f:metadata>
+        </f:metadata>
 
-			<h:form id="formTemplate" prependId="false" style="border:none;" enctype="multipart/form-data">
+        <h:form id="form" prependId="false">
+            <p:focus/>
 
-				<p:tabView id="tbvTemplateList" style="#{controller.definirWidthForm(max-width)}" styleClass="formRelevo" dynamic="true" cache="false">
+			
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Salvar" update="@form"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
 
-					<p:tab title="#{nomeTela}" id="tabList">
-						<p:commandLink action="#{controller.cancel()}" title="Clique aqui para fechar" ajax="false" immediate="true">
-							<p:graphicImage name="neainformatica/framework/images/close23.png" id="form_close" styleClass="nea-close-icon" />
-						</p:commandLink>
-						<p:panel id="panelCampos">
+                        <p:commandButton value="Excluir" process="@this"
+                                         icon="fa fa-trash"
+                                         styleClass="btn-danger">
+                        </p:commandButton>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="Voltar" immediate="true"
+                                         action="lista-default?faces-redirect=true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                                         
+                    </div>
+                    
+                    <p:splitButton value="Salvar" update="@form"
+                                   icon="fa fa-check"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        <p:menuitem value="Excluir"
+                                    process="@this"
+                                    icon="fa fa-trash"/>
+                        <p:separator/>
+                        <p:menuitem value="Voltar" action="lista-default?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
 
-							<p:messages id="messagesTemplateForm" closable="true" escape="false"/>
+                    
 
-							<ui:insert name="camposForm" />
-							<br />
+                    <p:separator/>
 
-						</p:panel>
-						<br />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <p:outputLabel for="id" value="ID"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:inputText id="id" value="" size="4" readonly="true" styleClass="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
 
-						<div class="nea-button-fields" align="center">
-						
-							<ui:insert name="botoesAdicionaisEsquerda" />
-						
-							<p:commandButton id="btnSalvar" value="Salvar" icon="save" accesskey="s" title="Salvar registro. (Alt + S)" action="#{controller.salvar}" ajax="false"
-								rendered="#{(empty exibeBotaoSalvar ? true : exibeBotaoSalvar) and (controller.state eq 'EDIT' or controller.state eq 'INSERT') and (!naSessionController.sistemaEmModoSomenteLeitura)}"
-								style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
-							<p:spacer width="5px" />
-							<p:commandButton id="btnSalvarMais" value="Salvar+" accesskey="b" title="Salvar e criar novo registro. (Alt + B)" icon="saveplus" action="#{controller.salvarMais}" ajax="false"
-								rendered="#{(empty exibeBotaoSalvarMais ? true : exibeBotaoSalvarMais) and (controller.state eq 'INSERT') and (!naSessionController.sistemaEmModoSomenteLeitura)}"
-								style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
-							<p:spacer width="5px" />
-							<p:commandButton id="btnCancelar" value="Cancelar" icon="cancelar" accesskey="c" title="Cancelar. (Alt + C)" immediate="true" action="#{controller.cancel}" ajax="false"
-								rendered="#{(empty exibeBotaoCancelar ? true : exibeBotaoCancelar)}" style="text-align: center; font-size-adjust: inherit; font-size: 8pt; height: 30px; width: 80px;" />
-							<p:spacer width="5px" />
-
-							<ui:insert name="botoesAdicionaisDireita" />
-
-						</div>
-
-						<br />
-					</p:tab>
-				</p:tabView>
-			</h:form>
-
-		</p:panel>
-		
-		
-		<ui:insert name="areaForaFormPrincipal" />
-
-		<nea:ajaxStatus id="ajstForm" />
-		
-
-	</ui:define>
+    </ui:define>
 
 </ui:composition>
